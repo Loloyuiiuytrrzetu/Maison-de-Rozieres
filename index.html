@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Maison de Rozières – Boulangerie & Pâtisserie artisanale à Baie-Mahault, Guadeloupe. Croissants au beurre, pains au chocolat, forêt noire et tartes faits avec passion." />
+  <title>Maison de Rozières – Boulangerie & Pâtisserie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <header class="header" id="header">
+    <nav class="nav container">
+      <a href="#accueil" class="nav__logo">
+        <span class="nav__logo-cherry">🍒</span>
+        <span class="nav__logo-text">Maison de Rozières</span>
+      </a>
+      <button class="nav__toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__menu" id="navMenu">
+        <li><a href="#accueil" class="nav__link">Accueil</a></li>
+        <li><a href="#about" class="nav__link">Notre histoire</a></li>
+        <li><a href="#specialites" class="nav__link">Spécialités</a></li>
+        <li><a href="#avis" class="nav__link">Avis</a></li>
+        <li><a href="#contact" class="nav__link">Horaires & Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="accueil">
+    <div class="hero__overlay"></div>
+    <div class="hero__content container">
+      <p class="hero__tagline">Boulangerie & Pâtisserie artisanale</p>
+      <h1 class="hero__title">Maison de<br /><em>Rozières</em></h1>
+      <p class="hero__sub">Tradition boulangère &amp; savoir-faire local<br />Fait avec passion, servi avec le sourire</p>
+      <div class="hero__rating">
+        <span class="stars">★★★★★</span>
+        <span class="rating-text">5,0 / 5 — Note parfaite</span>
+      </div>
+      <a href="#specialites" class="btn btn--primary">Découvrir nos créations</a>
+    </div>
+    <div class="hero__scroll" aria-hidden="true">
+      <span></span>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section class="about section" id="about">
+    <div class="container about__grid">
+      <div class="about__text">
+        <span class="section-label">Notre histoire</span>
+        <h2 class="section-title">Un savoir-faire né<br />de la passion</h2>
+        <p>Au cœur de Baie-Mahault, la <strong>Maison de Rozières</strong> est une boulangerie-pâtisserie artisanale qui perpétue la tradition française avec l'âme des Antilles.</p>
+        <p>Chaque matin, notre équipe se lève avant l'aube pour pétrir, façonner et cuire des pains et pâtisseries d'exception. Nos croissants sont pur beurre, nos pains au chocolat sont réputés être les meilleurs de Guadeloupe, et nos tartes font voyager.</p>
+        <p>Ici, chaque produit est le fruit d'un geste maîtrisé, d'ingrédients soigneusement choisis et d'un amour sincère pour le beau et le bon.</p>
+        <div class="about__values">
+          <div class="value">
+            <span class="value__icon">🌾</span>
+            <span class="value__label">Ingrédients de qualité</span>
+          </div>
+          <div class="value">
+            <span class="value__icon">🤝</span>
+            <span class="value__label">Savoir-faire artisanal</span>
+          </div>
+          <div class="value">
+            <span class="value__icon">❤️</span>
+            <span class="value__label">Fait avec passion</span>
+          </div>
+        </div>
+      </div>
+      <div class="about__visual">
+        <div class="about__card about__card--main">
+          <div class="about__card-inner">
+            <span class="about__icon">🍞</span>
+            <p>Fraîchement préparé chaque matin</p>
+          </div>
+        </div>
+        <div class="about__card about__card--accent">
+          <div class="about__card-inner">
+            <span class="about__rating-big">5,0</span>
+            <span class="stars-sm">★★★★★</span>
+            <p>Note parfaite sur Google</p>
+          </div>
+        </div>
+        <div class="about__card about__card--sm">
+          <div class="about__card-inner">
+            <span class="about__icon">📍</span>
+            <p>Baie-Mahault, Guadeloupe</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SPECIALTIES ===== -->
+  <section class="specialites section section--alt" id="specialites">
+    <div class="container">
+      <span class="section-label">Nos créations</span>
+      <h2 class="section-title section-title--center">Nos spécialités</h2>
+      <p class="section-intro">De la viennoiserie classique aux entremets raffinés, chaque bouchée est une invitation au plaisir.</p>
+      <div class="products__grid">
+
+        <article class="product-card">
+          <div class="product-card__emoji">🥐</div>
+          <h3 class="product-card__title">Croissants au beurre</h3>
+          <p class="product-card__desc">Feuilletage délicat, beurre pur, dorure parfaite. Nos croissants ont converti même les plus sceptiques.</p>
+          <span class="product-card__badge">Coup de cœur</span>
+        </article>
+
+        <article class="product-card product-card--featured">
+          <div class="product-card__emoji">🍫</div>
+          <h3 class="product-card__title">Pain au chocolat</h3>
+          <p class="product-card__desc">Élu meilleur pain au chocolat de Guadeloupe par nos clients. Feuilleté, généreux, irrésistible.</p>
+          <span class="product-card__badge product-card__badge--gold">Le meilleur de Guadeloupe</span>
+        </article>
+
+        <article class="product-card">
+          <div class="product-card__emoji">🍰</div>
+          <h3 class="product-card__title">Forêt noire</h3>
+          <p class="product-card__desc">Crème exceptionnelle et réconfortante, cerises au kirsch généreusement présentes, génoise aérienne.</p>
+          <span class="product-card__badge">Incontournable</span>
+        </article>
+
+        <article class="product-card">
+          <div class="product-card__emoji">🥧</div>
+          <h3 class="product-card__title">Tartes artisanales</h3>
+          <p class="product-card__desc">Des tartes qui font voyager. Garnitures créatives, pâte sablée croustillante, finitions soignées.</p>
+          <span class="product-card__badge">Fait maison</span>
+        </article>
+
+        <article class="product-card">
+          <div class="product-card__emoji">🥖</div>
+          <h3 class="product-card__title">Pains de tradition</h3>
+          <p class="product-card__desc">Baguettes, pains de campagne et spécialités locales façonnés selon la plus pure tradition boulangère.</p>
+          <span class="product-card__badge">Tradition</span>
+        </article>
+
+        <article class="product-card">
+          <div class="product-card__emoji">🧁</div>
+          <h3 class="product-card__title">Pâtisseries fines</h3>
+          <p class="product-card__desc">Entremets, choux, éclairs et créations du jour pour ravir petits et grands à chaque visite.</p>
+          <span class="product-card__badge">Nouveautés</span>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== REVIEWS ===== -->
+  <section class="avis section" id="avis">
+    <div class="container">
+      <span class="section-label">Ce qu'ils en disent</span>
+      <h2 class="section-title section-title--center">Avis de nos clients</h2>
+      <div class="avis__summary">
+        <div class="avis__score">5,0</div>
+        <div class="avis__stars">★★★★★</div>
+        <div class="avis__count">4 avis Google · Note parfaite</div>
+      </div>
+      <div class="reviews__grid">
+
+        <article class="review-card">
+          <div class="review-card__header">
+            <div class="review-card__avatar" style="background:#E67E22">F</div>
+            <div>
+              <p class="review-card__name">Eurl FWI WORLD FOOD</p>
+              <p class="review-card__date">Il y a une semaine</p>
+            </div>
+            <div class="review-card__stars">★★★★★</div>
+          </div>
+          <p class="review-card__text">« Forêt noire 6 parts au top, la crème est exceptionnelle et réconfortante, cerises au kirsch généreusement présentes, la génoise bien!!!! Une belle découverte !!!! Continuez !!! »</p>
+        </article>
+
+        <article class="review-card">
+          <div class="review-card__header">
+            <div class="review-card__avatar" style="background:#8B1A1A">B</div>
+            <div>
+              <p class="review-card__name">Brigitte Desgranges</p>
+              <p class="review-card__date">Il y a 2 semaines</p>
+            </div>
+            <div class="review-card__stars">★★★★★</div>
+          </div>
+          <p class="review-card__text">« Je n'ai jamais aimé les croissants jusqu'à ce que je goûte ceux de Maison de Rozières. Des vrais au beurre. J'ignorais que tous ceux que j'avais mangé avant n'étaient que de pâles imitations ! »</p>
+        </article>
+
+        <article class="review-card">
+          <div class="review-card__header">
+            <div class="review-card__avatar" style="background:#27AE60">V</div>
+            <div>
+              <p class="review-card__name">vyvy</p>
+              <p class="review-card__date">Il y a 2 semaines</p>
+            </div>
+            <div class="review-card__stars">★★★★★</div>
+          </div>
+          <p class="review-card__text">« Très bonne expérience, je reviendrai tous les matins ! »</p>
+        </article>
+
+        <article class="review-card">
+          <div class="review-card__header">
+            <div class="review-card__avatar" style="background:#2C3E50">C</div>
+            <div>
+              <p class="review-card__name">Charly</p>
+              <p class="review-card__date">Il y a 2 semaines</p>
+            </div>
+            <div class="review-card__stars">★★★★★</div>
+          </div>
+          <p class="review-card__text">« Les meilleurs pains au chocolat de Guadeloupe et que dire des tartes ! ❤️ »</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT & HOURS ===== -->
+  <section class="contact section section--alt" id="contact">
+    <div class="container contact__grid">
+
+      <div class="horaires">
+        <span class="section-label">Quand nous trouver</span>
+        <h2 class="section-title">Horaires d'ouverture</h2>
+        <div class="horaires__table">
+          <div class="horaires__row">
+            <span class="horaires__day">Lundi – Vendredi</span>
+            <span class="horaires__time">06h30 – 19h00</span>
+          </div>
+          <div class="horaires__row">
+            <span class="horaires__day">Samedi</span>
+            <span class="horaires__time">07h00 – 18h00</span>
+          </div>
+          <div class="horaires__row">
+            <span class="horaires__day">Dimanche</span>
+            <span class="horaires__time">07h00 – 13h00</span>
+          </div>
+        </div>
+        <p class="horaires__note">* Horaires susceptibles de varier lors des jours fériés.</p>
+      </div>
+
+      <div class="infos">
+        <span class="section-label">Nous contacter</span>
+        <h2 class="section-title">Où nous trouver</h2>
+        <div class="infos__list">
+          <div class="info-item">
+            <span class="info-item__icon">📍</span>
+            <div>
+              <p class="info-item__label">Adresse</p>
+              <p class="info-item__value">Jardivillage Jabrun<br />Baie-Mahault 97122<br />Guadeloupe</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-item__icon">📞</span>
+            <div>
+              <p class="info-item__label">Téléphone</p>
+              <a href="tel:+590590602399" class="info-item__value info-item__link">+590 590 60 23 99</a>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-item__icon">🏪</span>
+            <div>
+              <p class="info-item__label">Type d'établissement</p>
+              <p class="info-item__value">Boulangerie & Pâtisserie artisanale</p>
+            </div>
+          </div>
+        </div>
+        <a href="https://maps.google.com/?q=Maison+de+Rozieres+Baie-Mahault+Guadeloupe" target="_blank" rel="noopener noreferrer" class="btn btn--primary btn--map">
+          Voir sur Google Maps
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="footer__logo">🍒 Maison de Rozières</span>
+        <p>Boulangerie & Pâtisserie artisanale<br />Baie-Mahault, Guadeloupe</p>
+      </div>
+      <div class="footer__links">
+        <a href="#accueil">Accueil</a>
+        <a href="#about">Notre histoire</a>
+        <a href="#specialites">Spécialités</a>
+        <a href="#avis">Avis</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer__contact">
+        <a href="tel:+590590602399">+590 590 60 23 99</a>
+        <p>Jardivillage Jabrun, Baie-Mahault</p>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© 2025 Maison de Rozières · Tous droits réservés · Fait avec ❤️ en Guadeloupe</p>
+    </div>
+  </footer>
+
+  <a href="#accueil" class="back-to-top" id="backToTop" aria-label="Retour en haut">↑</a>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
