@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>02 — Comparatif en barres · Walletiz</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  .stage { display: grid; grid-template-rows: auto 1fr; gap: var(--sp-lg); }
+  .head h1 { font-family: var(--font-titres); font-weight: var(--w-bold); font-size: var(--fs-h2); letter-spacing: var(--ls-tight); line-height: var(--lh-tight); margin-top: var(--sp-md); }
+  .head .accent-kicker { margin-bottom: var(--sp-sm); }
+
+  .chart { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-xxl); align-items: start; padding-top: 64px; }
+  .col { display: flex; flex-direction: column; align-items: center; gap: var(--sp-lg); }
+
+  .bars { display: flex; align-items: flex-end; gap: var(--sp-lg); height: 340px; }
+  .bar { width: 150px; border-radius: var(--r-md) var(--r-md) 0 0; position: relative; }
+  .bar .val { position: absolute; top: -56px; left: 0; right: 0; text-align: center; font-family: var(--font-titres); font-weight: var(--w-bold); font-size: var(--fs-h3); }
+
+  .bar.before { background: var(--brume-froide); border: 1px solid var(--lisere); }
+  .bar.before .val { color: var(--gris-brume); }
+  .bar.after { background: var(--grad-accent-bordeaux); box-shadow: 0 0 60px rgba(214,72,107,.35); }
+  .bar.after .val { color: var(--bordeaux-lueur); }
+
+  .col .title { font-family: var(--font-titres); font-weight: var(--w-semibold); font-size: var(--fs-h3); }
+  .col .title.hl { color: var(--blanc-casse); }
+  .col .title.dim { color: var(--gris-estompe); }
+  .col .desc { color: var(--gris-brume); font-size: var(--fs-body); text-align: center; max-width: 460px; line-height: var(--lh-relaxed); }
+
+  .vs { position: absolute; left: 50%; top: 62%; transform: translate(-50%,-50%); font-family: var(--font-labels); font-size: var(--fs-label); letter-spacing: var(--ls-kicker); color: var(--gris-estompe); background: var(--nuit-froide); padding: var(--sp-sm) var(--sp-md); border: 1px solid var(--lisere); border-radius: var(--r-pill); z-index: 3; }
+</style>
+</head>
+<body class="scene">
+  <div class="viewport"><div class="board">
+    <div class="chrome">
+      <div class="chrome-top">
+        <div class="brandline"><span class="dot"></span><span class="wordmark">WALLETIZ</span><span class="sep">/</span><span class="kicker">Comparatif</span></div>
+        <div class="pagenum">02 <span>/ 09</span></div>
+      </div>
+      <div class="chrome-bottom">
+        <div class="kicker">Visites répétées · sur 30 jours</div>
+        <div class="kicker">Base 100</div>
+      </div>
+    </div>
+    <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+
+    <div class="stage">
+      <div class="head">
+        <span class="accent-kicker">Avant / Avec Walletiz</span>
+        <h1>La différence tient en une relance.</h1>
+      </div>
+
+      <div class="chart">
+        <div class="col">
+          <div class="bars">
+            <div class="bar before" style="height:120px"><span class="val">100</span></div>
+          </div>
+          <div class="title dim">Sans Walletiz</div>
+          <div class="desc">Le client repart. Aucun moyen de le rappeler, aucune donnée sur son passage.</div>
+        </div>
+        <div class="col">
+          <div class="bars">
+            <div class="bar after" style="height:300px"><span class="val">+137</span></div>
+          </div>
+          <div class="title hl">Avec Walletiz</div>
+          <div class="desc">Campagnes push au bon moment + stats de fréquentation : le client revient.</div>
+        </div>
+      </div>
+
+      <div class="vs">VS</div>
+    </div>
+  </div></div>
+</body>
+</html>

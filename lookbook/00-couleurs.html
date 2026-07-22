@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>00 — Système de couleurs · Walletiz</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  .stage { display: grid; grid-template-rows: auto 1fr auto; gap: var(--sp-md); }
+
+  .head h1 {
+    font-family: var(--font-titres);
+    font-weight: var(--w-bold);
+    font-size: var(--fs-h2);
+    letter-spacing: var(--ls-tight);
+    line-height: var(--lh-tight);
+    margin-top: var(--sp-sm);
+  }
+  .head p { color: var(--gris-brume); font-size: var(--fs-body); margin-top: var(--sp-sm); }
+
+  .grid { display: grid; grid-template-columns: 460px 1fr; gap: var(--sp-lg); min-height: 0; }
+
+  /* Hero bordeaux */
+  .hero {
+    border-radius: var(--r-lg);
+    background: var(--grad-accent-bordeaux);
+    padding: var(--sp-lg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero .role { font-family: var(--font-labels); font-size: var(--fs-kicker); letter-spacing: var(--ls-kicker); text-transform: uppercase; color: var(--blanc-casse); opacity: .8; }
+  .hero .name { font-family: var(--font-titres); font-weight: var(--w-bold); font-size: 64px; line-height: var(--lh-tight); }
+  .hero .hex { font-family: var(--font-labels); font-size: var(--fs-h3); color: var(--blanc-casse); }
+  .hero .variants { display: flex; gap: var(--sp-sm); margin-top: var(--sp-md); }
+  .hero .variants div { flex: 1; height: 56px; border-radius: var(--r-sm); display: flex; align-items: flex-end; padding: var(--sp-xs); font-family: var(--font-labels); font-size: var(--fs-caption); }
+
+  .groups { display: grid; grid-template-rows: repeat(3, 1fr); gap: var(--sp-md); }
+  .group .glabel { font-family: var(--font-labels); font-size: var(--fs-kicker); letter-spacing: var(--ls-kicker); text-transform: uppercase; color: var(--gris-estompe); margin-bottom: var(--sp-sm); }
+  .swatches { display: flex; gap: var(--sp-md); }
+  .sw { flex: 1; }
+  .sw .chip { height: 68px; border-radius: var(--r-md); border: 1px solid rgba(255,255,255,.06); }
+  .sw .n { font-family: var(--font-corps); font-weight: var(--w-semibold); font-size: var(--fs-label); margin-top: var(--sp-xs); }
+  .sw .h { font-family: var(--font-labels); font-size: var(--fs-caption); color: var(--gris-estompe); }
+
+  .type { display: flex; align-items: flex-end; gap: var(--sp-xl); border-top: 1px solid var(--lisere); padding-top: var(--sp-md); }
+  .type .spec { display: flex; align-items: baseline; gap: var(--sp-md); }
+  .type .aa { font-size: 52px; line-height: 1; }
+  .type .meta .r { font-family: var(--font-labels); font-size: var(--fs-caption); color: var(--gris-estompe); text-transform: uppercase; letter-spacing: var(--ls-kicker); }
+  .type .meta .f { font-size: var(--fs-body); color: var(--gris-brume); }
+</style>
+</head>
+<body class="scene">
+  <div class="viewport"><div class="board">
+    <div class="chrome">
+      <div class="chrome-top">
+        <div class="brandline"><span class="dot"></span><span class="wordmark">WALLETIZ</span><span class="sep">/</span><span class="kicker">Système de couleurs</span></div>
+        <div class="pagenum">00 <span>/ 09</span></div>
+      </div>
+      <div class="chrome-bottom">
+        <div class="kicker">Lookbook · Identité visuelle</div>
+        <div class="kicker">1280 × 720</div>
+      </div>
+    </div>
+    <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+
+    <div class="stage">
+      <div class="head">
+        <span class="accent-kicker">Palette · Tokens nommés</span>
+        <h1>Un langage, pas des couleurs.</h1>
+        <p>Chaque teinte porte un nom et un rôle. On ne dit jamais « le rouge » — on dit <em>bordeaux, accent principal</em>.</p>
+      </div>
+
+      <div class="grid">
+        <div class="hero">
+          <div class="role">Accent principal</div>
+          <div>
+            <div class="name">bordeaux</div>
+            <div class="hex">#A81D45</div>
+          </div>
+          <div class="variants">
+            <div style="background:var(--bordeaux-profond); color:var(--blanc-casse)">profond</div>
+            <div style="background:var(--bordeaux-lueur); color:var(--noir)">lueur</div>
+          </div>
+        </div>
+
+        <div class="groups">
+          <div class="group">
+            <div class="glabel">Fonds froids</div>
+            <div class="swatches">
+              <div class="sw"><div class="chip" style="background:var(--nuit-froide)"></div><div class="n">nuitFroide</div><div class="h">#0A0F16 · fond</div></div>
+              <div class="sw"><div class="chip" style="background:var(--ardoise)"></div><div class="n">ardoise</div><div class="h">#111A25 · surface</div></div>
+              <div class="sw"><div class="chip" style="background:var(--brume-froide)"></div><div class="n">brumeFroide</div><div class="h">#1A2634 · panneau</div></div>
+              <div class="sw"><div class="chip" style="background:var(--lisere)"></div><div class="n">lisere</div><div class="h">#26364A · bordure</div></div>
+            </div>
+          </div>
+          <div class="group">
+            <div class="glabel">Textes</div>
+            <div class="swatches">
+              <div class="sw"><div class="chip" style="background:var(--blanc-casse)"></div><div class="n">blancCasse</div><div class="h">#F3F6FA · primaire</div></div>
+              <div class="sw"><div class="chip" style="background:var(--gris-brume)"></div><div class="n">grisBrume</div><div class="h">#A2B4C6 · secondaire</div></div>
+              <div class="sw"><div class="chip" style="background:var(--gris-estompe)"></div><div class="n">grisEstompe</div><div class="h">#63768A · atténué</div></div>
+            </div>
+          </div>
+          <div class="group">
+            <div class="glabel">Signaux fonctionnels</div>
+            <div class="swatches">
+              <div class="sw"><div class="chip" style="background:var(--succes)"></div><div class="n">succes</div><div class="h">#3ED598 · positif</div></div>
+              <div class="sw"><div class="chip" style="background:var(--info)"></div><div class="n">info</div><div class="h">#3AB7F0 · data</div></div>
+              <div class="sw"><div class="chip" style="background:var(--attention)"></div><div class="n">attention</div><div class="h">#F4A73B · warning</div></div>
+              <div class="sw"><div class="chip" style="background:var(--alerte)"></div><div class="n">alerte</div><div class="h">#FF4D4D · critique</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="type">
+        <div class="spec"><div class="aa" style="font-family:var(--font-titres); font-weight:var(--w-bold)">Aa</div><div class="meta"><div class="r">Titres</div><div class="f">Space Grotesk</div></div></div>
+        <div class="spec"><div class="aa" style="font-family:var(--font-corps)">Aa</div><div class="meta"><div class="r">Corps</div><div class="f">Inter</div></div></div>
+        <div class="spec"><div class="aa" style="font-family:var(--font-labels)">Aa</div><div class="meta"><div class="r">Labels · Data</div><div class="f">IBM Plex Mono</div></div></div>
+      </div>
+    </div>
+  </div></div>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lookbook — Identité visuelle Walletiz</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  :root { --thumb-w: 420px; }
+  body { background: var(--nuit-froide); color: var(--blanc-casse); font-family: var(--font-corps); min-height: 100vh; }
+
+  .page { max-width: 1500px; margin: 0 auto; padding: var(--sp-xxl) var(--sp-xl) var(--sp-xxl); }
+
+  header { display: flex; align-items: flex-end; justify-content: space-between; border-bottom: 1px solid var(--lisere); padding-bottom: var(--sp-lg); margin-bottom: var(--sp-xxl); flex-wrap: wrap; gap: var(--sp-lg); }
+  header .brandline { margin-bottom: var(--sp-md); }
+  header h1 { font-family: var(--font-titres); font-weight: var(--w-bold); font-size: var(--fs-h1); letter-spacing: var(--ls-tight); line-height: var(--lh-tight); }
+  header p { color: var(--gris-brume); font-size: var(--fs-body); margin-top: var(--sp-sm); max-width: 700px; }
+  header .meta { text-align: right; }
+  header .meta .k { font-family: var(--font-labels); font-size: var(--fs-kicker); letter-spacing: var(--ls-kicker); text-transform: uppercase; color: var(--gris-estompe); }
+  header .meta .v { font-family: var(--font-titres); font-weight: var(--w-bold); font-size: var(--fs-h2); }
+
+  .legend-bar { display: flex; gap: var(--sp-lg); flex-wrap: wrap; margin-bottom: var(--sp-xl); }
+  .legend-bar .chip { display: inline-flex; align-items: center; gap: var(--sp-sm); font-family: var(--font-labels); font-size: var(--fs-caption); letter-spacing: var(--ls-kicker); text-transform: uppercase; color: var(--gris-estompe); border: 1px solid var(--lisere); border-radius: var(--r-pill); padding: var(--sp-xs) var(--sp-md); }
+  .legend-bar .chip .sw { width: 14px; height: 14px; border-radius: var(--r-sm); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, var(--thumb-w)); gap: var(--sp-xl); justify-content: center; }
+
+  .card { text-decoration: none; color: inherit; display: block; }
+  .thumb {
+    width: var(--thumb-w);
+    height: calc(var(--thumb-w) * 720 / 1280);
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--r-md);
+    border: 1px solid var(--lisere);
+    background: var(--ardoise);
+    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  .thumb iframe {
+    width: 1280px; height: 720px; border: 0;
+    transform: scale(calc(var(--thumb-w) / 1280));
+    transform-origin: top left;
+    position: absolute; top: 0; left: 0;
+    pointer-events: none;
+  }
+  .card:hover .thumb { transform: translateY(-4px); border-color: var(--bordeaux); box-shadow: 0 24px 60px rgba(0,0,0,.55), 0 0 0 1px var(--bordeaux); }
+
+  .caption { display: flex; align-items: baseline; gap: var(--sp-md); margin-top: var(--sp-md); }
+  .caption .no { font-family: var(--font-labels); font-size: var(--fs-label); color: var(--bordeaux-lueur); letter-spacing: var(--ls-kicker); }
+  .caption .name { font-family: var(--font-titres); font-weight: var(--w-semibold); font-size: var(--fs-label); }
+  .caption .arrow { margin-left: auto; color: var(--gris-estompe); font-family: var(--font-labels); }
+
+  footer { margin-top: var(--sp-xxl); border-top: 1px solid var(--lisere); padding-top: var(--sp-lg); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--sp-md); }
+  footer .k { font-family: var(--font-labels); font-size: var(--fs-caption); letter-spacing: var(--ls-kicker); text-transform: uppercase; color: var(--gris-estompe); }
+</style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div>
+        <div class="brandline"><span class="dot"></span><span class="wordmark">WALLETIZ</span><span class="sep">/</span><span class="kicker">Lookbook</span></div>
+        <h1>Identité visuelle — 10 archétypes.</h1>
+        <p>Dix planches pour valider la direction artistique <b>avant</b> toute animation. Chaque planche n'utilise que les tokens de la charte (couleurs, polices, échelle, motion).</p>
+      </div>
+      <div class="meta">
+        <div class="k">Planches</div>
+        <div class="v">10</div>
+        <div class="k" style="margin-top:var(--sp-md)">Format · 1280×720</div>
+      </div>
+    </header>
+
+    <div class="legend-bar">
+      <span class="chip"><span class="sw" style="background:var(--bordeaux)"></span>bordeaux · accent</span>
+      <span class="chip"><span class="sw" style="background:var(--nuit-froide);border:1px solid var(--lisere)"></span>fond froid</span>
+      <span class="chip">Space Grotesk · titres</span>
+      <span class="chip">Inter · corps</span>
+      <span class="chip">IBM Plex Mono · data</span>
+    </div>
+
+    <div class="grid">
+      <a class="card" href="00-couleurs.html" target="_blank"><div class="thumb"><iframe src="00-couleurs.html" loading="eager" scrolling="no" tabindex="-1"></iframe></div><div class="caption"><span class="no">00</span><span class="name">Système de couleurs</span><span class="arrow">↗</span></div></a>
+      <a class="card" href="01-stat.html" target="_blank"><div class="thumb"><iframe src="01-stat.html" loading="eager" scrolling="no" tabindex="-1"></iframe></div><div class="caption"><span class="no">01</span><span class="name">Grosse stat</span><span class="arrow">↗</span></div></a>
+      <a class="card" href="02-barres.html" target="_blank"><div class="thumb"><iframe src="02-barres.html" loading="eager" scrolling="no" tabindex="-1"></iframe></div><div class="caption"><span class="no">02</span><span class="name">Comparatif en barres</span><span class="arrow">↗</span></div></a>
+      <a class="card" href="03-schema.html" target="_blank"><div class="thumb"><iframe src="03-schema.html" loading="eager" scrolling="no" tabindex="-1"></iframe></div><div class="caption"><span class="no">03</span><span class="name">Schéma</span><span class="arrow">↗</span></div></a>
+      <a class="card" href="04-jauge.html" target="_blank"><div class="thumb"><iframe src="04-jauge.html" loading="eager" scrolling="no" tabindex="-1"></iframe></div><div class="caption"><span class="no">04</span><span class="name">Jauge</span><span class="arrow">↗</span></div></a>
+      <a class="card" href="05-recap.html" target="_blank"><div class="thumb"><iframe src="05-recap.html" loading="eager" scrolling="no" tabindex="-1"></iframe></div><div class="caption"><span class="no">05</span><span class="name">Récap</span><span class="arrow">↗</span></div></a>
+      <a class="card" href="06-lower-third.html" target="_blank"><div class="thumb"><iframe src="06-lower-third.html" loading="eager" scrolling="no" tabindex="-1"></iframe></div><div class="caption"><span class="no">06</span><span class="name">Lower-third</span><span class="arrow">↗</span></div></a>
+      <a class="card" href="07-surlignage.html" target="_blank"><div class="thumb"><iframe src="07-surlignage.html" loading="eager" scrolling="no" tabindex="-1"></iframe></div><div class="caption"><span class="no">07</span><span class="name">Surlignage</span><span class="arrow">↗</span></div></a>
+      <a class="card" href="08-chapitre.html" target="_blank"><div class="thumb"><iframe src="08-chapitre.html" loading="eager" scrolling="no" tabindex="-1"></iframe></div><div class="caption"><span class="no">08</span><span class="name">Carte de chapitre</span><span class="arrow">↗</span></div></a>
+      <a class="card" href="09-fin.html" target="_blank"><div class="thumb"><iframe src="09-fin.html" loading="eager" scrolling="no" tabindex="-1"></iframe></div><div class="caption"><span class="no">09</span><span class="name">Écran de fin</span><span class="arrow">↗</span></div></a>
+    </div>
+
+    <footer>
+      <span class="k">Walletiz · Lookbook identité visuelle</span>
+      <span class="k">Source des tokens · src/design.ts</span>
+    </footer>
+  </div>
+</body>
+</html>

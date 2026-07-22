@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>01 — Grosse stat · Walletiz</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  .stage { display: grid; grid-template-columns: 1fr auto; align-items: center; }
+
+  .left { max-width: 980px; }
+  .left .accent-kicker { margin-bottom: var(--sp-lg); }
+
+  .bignum {
+    font-family: var(--font-titres);
+    font-weight: var(--w-bold);
+    font-size: 420px;
+    line-height: 0.82;
+    letter-spacing: var(--ls-tight);
+    color: var(--blanc-casse);
+    position: relative;
+    display: inline-block;
+  }
+  .bignum .plus { color: var(--bordeaux-lueur); }
+  .bignum .unit { font-size: var(--fs-display); color: var(--bordeaux); vertical-align: super; }
+  .underbar { width: 340px; height: 8px; background: var(--grad-accent-bordeaux); border-radius: var(--r-pill); margin: var(--sp-lg) 0 var(--sp-xl); box-shadow: 0 0 40px var(--bordeaux-lueur); }
+
+  .caption-line { font-family: var(--font-titres); font-weight: var(--w-semibold); font-size: var(--fs-h2); line-height: var(--lh-snug); }
+  .caption-line b { color: var(--bordeaux-lueur); font-weight: var(--w-bold); }
+  .sub { color: var(--gris-brume); font-size: var(--fs-lead); margin-top: var(--sp-md); max-width: 900px; }
+
+  /* colonne droite : mini contexte data */
+  .side { width: 320px; display: flex; flex-direction: column; gap: var(--sp-lg); border-left: 1px solid var(--lisere); padding-left: var(--sp-xl); }
+  .side .row .k { font-family: var(--font-labels); font-size: var(--fs-kicker); letter-spacing: var(--ls-kicker); text-transform: uppercase; color: var(--gris-estompe); }
+  .side .row .v { font-family: var(--font-titres); font-weight: var(--w-bold); font-size: var(--fs-h3); margin-top: var(--sp-xs); }
+  .side .row .v.pos { color: var(--succes); }
+  .side .row .v.info { color: var(--info); }
+</style>
+</head>
+<body class="scene">
+  <div class="viewport"><div class="board">
+    <div class="chrome">
+      <div class="chrome-top">
+        <div class="brandline"><span class="dot"></span><span class="wordmark">WALLETIZ</span><span class="sep">/</span><span class="kicker">Grosse stat</span></div>
+        <div class="pagenum">01 <span>/ 09</span></div>
+      </div>
+      <div class="chrome-bottom">
+        <div class="kicker">Source · Cohorte commerçants Walletiz</div>
+        <div class="kicker">2024–2025</div>
+      </div>
+    </div>
+    <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+
+    <div class="stage">
+      <div class="left">
+        <span class="accent-kicker">Taux de clients récurrents</span>
+        <div class="bignum"><span class="plus">+</span>37<span class="unit">%</span></div>
+        <div class="underbar"></div>
+        <div class="caption-line">de <b>clients qui reviennent</b><br/>après une campagne push ciblée.</div>
+        <div class="sub">Quand la relance tombe au bon moment, le client repasse la porte. Walletiz déclenche l'envoi automatiquement.</div>
+      </div>
+
+      <div class="side">
+        <div class="row"><div class="k">Ouverture push</div><div class="v info">68 %</div></div>
+        <div class="row"><div class="k">Panier moyen</div><div class="v pos">+14 %</div></div>
+        <div class="row"><div class="k">Sans appli à installer</div><div class="v">0</div></div>
+      </div>
+    </div>
+  </div></div>
+</body>
+</html>

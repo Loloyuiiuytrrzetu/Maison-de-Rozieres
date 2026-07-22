@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>05 — Récap · Walletiz</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  .stage { display: grid; grid-template-rows: auto 1fr; gap: var(--sp-xl); }
+  .head { display: flex; align-items: flex-end; justify-content: space-between; }
+  .head h1 { font-family: var(--font-titres); font-weight: var(--w-bold); font-size: var(--fs-h1); letter-spacing: var(--ls-tight); line-height: var(--lh-tight); margin-top: var(--sp-md); }
+  .head .count { font-family: var(--font-labels); font-size: var(--fs-lead); color: var(--gris-estompe); letter-spacing: var(--ls-kicker); }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-lg); }
+  .card {
+    background: var(--ardoise);
+    border: 1px solid var(--lisere);
+    border-radius: var(--r-lg);
+    padding: var(--sp-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-md);
+    position: relative;
+    overflow: hidden;
+  }
+  .card .idx { font-family: var(--font-labels); font-size: var(--fs-kicker); letter-spacing: var(--ls-kicker); color: var(--bordeaux-lueur); }
+  .card .ico { width: 72px; height: 72px; border-radius: var(--r-md); display: grid; place-items: center; background: var(--brume-froide); }
+  .card .ico svg { width: 38px; height: 38px; }
+  .card h2 { font-family: var(--font-titres); font-weight: var(--w-bold); font-size: var(--fs-h3); line-height: var(--lh-snug); }
+  .card p { color: var(--gris-brume); font-size: var(--fs-body); line-height: var(--lh-relaxed); }
+  .card .foot { margin-top: auto; font-family: var(--font-labels); font-size: var(--fs-caption); letter-spacing: var(--ls-kicker); text-transform: uppercase; color: var(--gris-estompe); border-top: 1px solid var(--lisere); padding-top: var(--sp-md); }
+  .card::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--grad-accent-bordeaux); }
+</style>
+</head>
+<body class="scene">
+  <div class="viewport"><div class="board">
+    <div class="chrome">
+      <div class="chrome-top">
+        <div class="brandline"><span class="dot"></span><span class="wordmark">WALLETIZ</span><span class="sep">/</span><span class="kicker">Récapitulatif</span></div>
+        <div class="pagenum">05 <span>/ 09</span></div>
+      </div>
+      <div class="chrome-bottom">
+        <div class="kicker">Ce que Walletiz apporte</div>
+        <div class="kicker">En bref</div>
+      </div>
+    </div>
+    <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+
+    <div class="stage">
+      <div class="head">
+        <div>
+          <span class="accent-kicker">Récapitulatif</span>
+          <h1>Trois leviers, un seul outil.</h1>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <div class="idx">01</div>
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="1.8"><path d="M4 8a8 8 0 0116 0v5l2 3H2l2-3V8z"/><path d="M9 20a3 3 0 006 0"/></svg></div>
+          <h2>Campagnes & push</h2>
+          <p>Relancez vos clients au bon moment avec des notifications ciblées, sans qu'ils installent la moindre appli.</p>
+          <div class="foot">Notification · Géociblage</div>
+        </div>
+        <div class="card">
+          <div class="idx">02</div>
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--succes)" stroke-width="1.8"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
+          <h2>Statistiques client</h2>
+          <p>Clients récurrents, panier moyen, fréquence de visite : vous pilotez enfin à la donnée, pas à l'intuition.</p>
+          <div class="foot">Tableau de bord · Cohortes</div>
+        </div>
+        <div class="card">
+          <div class="idx">03</div>
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--bordeaux-lueur)" stroke-width="1.8"><path d="M12 21s-8-4.5-8-11a5 5 0 019-3 5 5 0 019 3c0 6.5-8 11-8 11z"/></svg></div>
+          <h2>Fidélisation durable</h2>
+          <p>La carte vit dans le Wallet du téléphone. Le client la garde, revient, et devient un habitué.</p>
+          <div class="foot">Apple · Google Wallet</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</body>
+</html>

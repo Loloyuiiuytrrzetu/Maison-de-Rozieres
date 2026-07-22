@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>08 — Carte de chapitre · Walletiz</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  .stage { display: grid; grid-template-columns: 1fr 900px; align-items: center; }
+
+  .left { align-self: center; }
+  .left .accent-kicker { margin-bottom: var(--sp-lg); }
+  .left .chapno { font-family: var(--font-labels); font-size: var(--fs-lead); letter-spacing: var(--ls-kicker); color: var(--gris-estompe); text-transform: uppercase; }
+  .left h1 { font-family: var(--font-titres); font-weight: var(--w-bold); font-size: var(--fs-h1); line-height: var(--lh-tight); letter-spacing: var(--ls-tight); margin: var(--sp-sm) 0 var(--sp-lg); }
+  .left p { color: var(--gris-brume); font-size: var(--fs-body); max-width: 720px; line-height: var(--lh-relaxed); }
+
+  .toc { display: flex; flex-direction: column; gap: var(--sp-sm); margin-top: var(--sp-lg); }
+  .toc .row { display: flex; align-items: center; gap: var(--sp-md); font-family: var(--font-labels); font-size: var(--fs-label); letter-spacing: var(--ls-kicker); text-transform: uppercase; }
+  .toc .row .no { color: var(--gris-estompe); }
+  .toc .row.active .no { color: var(--bordeaux-lueur); }
+  .toc .row.active .t { color: var(--blanc-casse); }
+  .toc .row .t { color: var(--gris-estompe); }
+  .toc .row .bar { flex: 1; height: 1px; background: var(--lisere); }
+  .toc .row.active .bar { background: var(--grad-accent-bordeaux); height: 2px; }
+
+  /* Numéral géant en filigrane bordeaux, façon générique de série. */
+  .numeral {
+    justify-self: end;
+    font-family: var(--font-titres);
+    font-weight: var(--w-bold);
+    font-size: 640px;
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    color: transparent;
+    -webkit-text-stroke: 3px var(--bordeaux);
+    text-stroke: 3px var(--bordeaux);
+    opacity: .9;
+    position: relative;
+  }
+  .numeral::after {
+    content: "01";
+    position: absolute; inset: 0;
+    color: transparent;
+    background: var(--grad-lueur-bordeaux);
+    -webkit-background-clip: text; background-clip: text;
+    opacity: .5;
+  }
+</style>
+</head>
+<body class="scene">
+  <div class="viewport"><div class="board">
+    <div class="chrome">
+      <div class="chrome-top">
+        <div class="brandline"><span class="dot"></span><span class="wordmark">WALLETIZ</span><span class="sep">/</span><span class="kicker">Carte de chapitre</span></div>
+        <div class="pagenum">08 <span>/ 09</span></div>
+      </div>
+      <div class="chrome-bottom">
+        <div class="kicker">Sommaire du film</div>
+        <div class="kicker">Chapitre 01</div>
+      </div>
+    </div>
+    <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+
+    <div class="stage">
+      <div class="left">
+        <span class="accent-kicker">Chapitre 01</span>
+        <div class="chapno">Partie une</div>
+        <h1>Ce que Walletiz<br/>change vraiment.</h1>
+        <p>Avant les fonctionnalités, une promesse : ne plus jamais perdre le contact avec un client qui a poussé votre porte.</p>
+        <div class="toc">
+          <div class="row active"><span class="no">01</span><span class="t">Ce que ça change</span><span class="bar"></span></div>
+          <div class="row"><span class="no">02</span><span class="t">Campagnes & push</span><span class="bar"></span></div>
+          <div class="row"><span class="no">03</span><span class="t">Statistiques client</span><span class="bar"></span></div>
+        </div>
+      </div>
+      <div class="numeral">01</div>
+    </div>
+  </div></div>
+</body>
+</html>

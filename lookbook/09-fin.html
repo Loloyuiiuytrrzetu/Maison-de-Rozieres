@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>09 — Écran de fin · Walletiz</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  .stage { display: grid; place-items: center; text-align: center; }
+  .center { display: flex; flex-direction: column; align-items: center; gap: var(--sp-lg); }
+
+  .logo { display: flex; align-items: center; gap: var(--sp-md); }
+  .logo .mark { width: 88px; height: 88px; border-radius: var(--r-md); background: var(--grad-accent-bordeaux); display: grid; place-items: center; box-shadow: 0 0 60px rgba(168,29,69,.5); }
+  .logo .mark span { font-family: var(--font-titres); font-weight: var(--w-bold); font-size: var(--fs-h2); color: var(--blanc-casse); }
+  .logo .word { font-family: var(--font-titres); font-weight: var(--w-bold); font-size: 120px; letter-spacing: var(--ls-tight); }
+
+  .tagline { font-family: var(--font-corps); font-size: var(--fs-h3); color: var(--gris-brume); max-width: 1100px; line-height: var(--lh-snug); }
+  .tagline b { color: var(--bordeaux-lueur); font-weight: var(--w-semibold); }
+
+  .cta {
+    margin-top: var(--sp-md);
+    display: inline-flex; align-items: center; gap: var(--sp-md);
+    font-family: var(--font-labels); font-size: var(--fs-label); letter-spacing: var(--ls-kicker); text-transform: uppercase;
+    background: var(--grad-accent-bordeaux); color: var(--blanc-casse);
+    padding: var(--sp-md) var(--sp-xl); border-radius: var(--r-pill);
+    box-shadow: 0 20px 60px rgba(110,18,48,.5);
+  }
+
+  .handles { display: flex; gap: var(--sp-xl); margin-top: var(--sp-lg); }
+  .handles .h { font-family: var(--font-labels); font-size: var(--fs-kicker); letter-spacing: var(--ls-kicker); text-transform: uppercase; color: var(--gris-estompe); }
+  .handles .h b { color: var(--gris-brume); font-weight: var(--w-medium); }
+
+  .hr { width: 120px; height: 3px; background: var(--grad-accent-bordeaux); border-radius: var(--r-pill); }
+</style>
+</head>
+<body class="scene">
+  <div class="viewport"><div class="board">
+    <div class="chrome">
+      <div class="chrome-top">
+        <div class="brandline"><span class="dot"></span><span class="wordmark">WALLETIZ</span><span class="sep">/</span><span class="kicker">Écran de fin</span></div>
+        <div class="pagenum">09 <span>/ 09</span></div>
+      </div>
+      <div class="chrome-bottom">
+        <div class="kicker">Merci</div>
+        <div class="kicker">Fin</div>
+      </div>
+    </div>
+    <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+
+    <div class="stage">
+      <div class="center">
+        <div class="logo">
+          <div class="mark"><span>W</span></div>
+          <div class="word">Walletiz</div>
+        </div>
+        <div class="hr"></div>
+        <div class="tagline">Gardez le contact. Faites <b>revenir vos clients</b>.<br/>La fidélité, directement dans leur Wallet.</div>
+        <div class="cta">Essayer gratuitement <span>→</span></div>
+        <div class="handles">
+          <div class="h"><b>walletiz.app</b></div>
+          <div class="h">@walletiz</div>
+          <div class="h">hello@walletiz.app</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</body>
+</html>

@@ -39,13 +39,21 @@ npx remotion render src/index.ts LogoReveal out/logo.gif --codec=gif
 
 Les sorties vont dans `out/` (ignoré par git).
 
+## Identité visuelle
+
+- Charte : `src/design.ts` (tokens typés) + `CHARTE.md` (version lisible).
+- **Lookbook** : `lookbook/index.html` — 10 archétypes de scènes (1280×720) pour valider
+  la direction artistique avant toute animation. Ouvrez `lookbook/index.html` dans un navigateur.
+
 ## Structure
 
 ```
 remotion.config.ts     # Config de rendu
+src/design.ts          # Charte graphique (design tokens)
 src/index.ts           # Point d'entrée
 src/Root.tsx           # Catalogue des compositions
 src/compositions/      # Une animation = un fichier
+lookbook/              # Planches HTML de validation d'identité
 ```
 
 ## Créer une nouvelle animation

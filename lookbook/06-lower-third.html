@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>06 — Lower-third · Walletiz</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  /* Simule un plan vidéo : le lower-third s'y superpose. */
+  .stage { inset: 0; }
+  .plate {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 30% 35%, rgba(58,183,240,.10), transparent 45%),
+      radial-gradient(circle at 72% 60%, rgba(214,72,107,.12), transparent 45%),
+      var(--nuit-froide);
+  }
+  .frame-note {
+    position: absolute; top: var(--sp-safe); left: var(--sp-safe);
+    font-family: var(--font-labels); font-size: var(--fs-caption);
+    letter-spacing: var(--ls-kicker); text-transform: uppercase; color: var(--gris-estompe);
+    border: 1px solid var(--lisere); border-radius: var(--r-sm); padding: var(--sp-xs) var(--sp-md);
+  }
+  .rec { position: absolute; top: var(--sp-safe); right: var(--sp-safe); display: flex; align-items: center; gap: var(--sp-sm); font-family: var(--font-labels); font-size: var(--fs-caption); letter-spacing: var(--ls-kicker); color: var(--gris-brume); }
+  .rec .blob { width: 14px; height: 14px; border-radius: var(--r-pill); background: var(--alerte); box-shadow: 0 0 16px var(--alerte); }
+
+  .lower {
+    position: absolute; left: var(--sp-safe); bottom: 150px;
+    display: flex; align-items: stretch;
+  }
+  .lower .accentbar { width: 10px; border-radius: var(--r-pill); background: var(--grad-accent-bordeaux); box-shadow: 0 0 30px var(--bordeaux-lueur); }
+  .lower .panel {
+    background: linear-gradient(90deg, rgba(17,26,37,.96) 0%, rgba(17,26,37,.72) 100%);
+    border: 1px solid var(--lisere); border-left: none;
+    border-radius: 0 var(--r-lg) var(--r-lg) 0;
+    padding: var(--sp-lg) var(--sp-xxl) var(--sp-lg) var(--sp-lg);
+    backdrop-filter: blur(4px);
+  }
+  .lower .role { font-family: var(--font-labels); font-size: var(--fs-kicker); letter-spacing: var(--ls-kicker); text-transform: uppercase; color: var(--bordeaux-lueur); margin-bottom: var(--sp-sm); }
+  .lower .name { font-family: var(--font-titres); font-weight: var(--w-bold); font-size: var(--fs-h2); line-height: var(--lh-tight); }
+  .lower .sub { font-family: var(--font-corps); font-size: var(--fs-body); color: var(--gris-brume); margin-top: var(--sp-xs); }
+
+  .ticker {
+    position: absolute; left: 0; right: 0; bottom: 60px;
+    display: flex; align-items: center; gap: var(--sp-lg);
+    padding: var(--sp-sm) var(--sp-safe);
+    border-top: 1px solid var(--lisere); border-bottom: 1px solid var(--lisere);
+    background: rgba(10,15,22,.6);
+  }
+  .ticker .tag { font-family: var(--font-labels); font-size: var(--fs-caption); letter-spacing: var(--ls-kicker); text-transform: uppercase; background: var(--grad-accent-bordeaux); color: var(--blanc-casse); padding: var(--sp-xs) var(--sp-md); border-radius: var(--r-sm); }
+  .ticker .txt { font-family: var(--font-corps); font-size: var(--fs-body); color: var(--gris-brume); }
+</style>
+</head>
+<body class="scene">
+  <div class="viewport"><div class="board">
+    <div class="chrome">
+      <div class="chrome-top">
+        <div class="brandline"><span class="dot"></span><span class="wordmark">WALLETIZ</span><span class="sep">/</span><span class="kicker">Lower-third</span></div>
+        <div class="pagenum">06 <span>/ 09</span></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="plate"></div>
+      <div class="frame-note">Plan caméra · figuratif</div>
+      <div class="rec"><span class="blob"></span>REC 00:14:22</div>
+
+      <div class="lower">
+        <div class="accentbar"></div>
+        <div class="panel">
+          <div class="role">Fondatrice · Walletiz</div>
+          <div class="name">Camille Rozières</div>
+          <div class="sub">« Un commerçant ne devrait jamais perdre le contact avec un client. »</div>
+        </div>
+      </div>
+
+      <div class="ticker">
+        <span class="tag">À la une</span>
+        <span class="txt">Walletiz équipe déjà 1 200 commerces de proximité en France.</span>
+      </div>
+    </div>
+  </div></div>
+</body>
+</html>

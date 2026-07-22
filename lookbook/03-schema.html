@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>03 — Schéma · Walletiz</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  .stage { display: grid; grid-template-rows: auto 1fr; gap: var(--sp-xl); }
+  .head h1 { font-family: var(--font-titres); font-weight: var(--w-bold); font-size: var(--fs-h1); letter-spacing: var(--ls-tight); line-height: var(--lh-tight); margin-top: var(--sp-md); }
+
+  .flow { position: relative; display: grid; grid-template-columns: 1fr 1.2fr 1fr; align-items: center; gap: var(--sp-xxl); }
+
+  .node {
+    background: var(--ardoise);
+    border: 1px solid var(--lisere);
+    border-radius: var(--r-lg);
+    padding: var(--sp-xl);
+    position: relative;
+    z-index: 2;
+  }
+  .node .ico { width: 64px; height: 64px; border-radius: var(--r-md); display: grid; place-items: center; background: var(--brume-froide); margin-bottom: var(--sp-md); }
+  .node .ico svg { width: 34px; height: 34px; }
+  .node .nlabel { font-family: var(--font-labels); font-size: var(--fs-kicker); letter-spacing: var(--ls-kicker); text-transform: uppercase; color: var(--gris-estompe); }
+  .node .nname { font-family: var(--font-titres); font-weight: var(--w-bold); font-size: var(--fs-h3); margin-top: var(--sp-xs); }
+  .node .ndesc { color: var(--gris-brume); font-size: var(--fs-body); margin-top: var(--sp-sm); }
+
+  .node.core { background: var(--grad-accent-bordeaux); border: none; box-shadow: 0 30px 80px rgba(110,18,48,.5); }
+  .node.core .ico { background: rgba(255,255,255,.15); }
+  .node.core .nlabel { color: rgba(255,255,255,.75); }
+
+  .conn { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+
+  .pill { position: absolute; z-index: 3; display: inline-flex; align-items: center; gap: var(--sp-xs); padding: var(--sp-xs) var(--sp-md); border-radius: var(--r-pill); font-family: var(--font-labels); font-size: var(--fs-caption); letter-spacing: var(--ls-kicker); text-transform: uppercase; background: var(--nuit-froide); border: 1px solid var(--lisere); }
+  .pill.push { top: 20%; left: 40%; color: var(--info); }
+  .pill.stats { bottom: 18%; left: 40%; color: var(--succes); }
+  .pill.reward { top: 46%; right: 21%; color: var(--bordeaux-lueur); }
+</style>
+</head>
+<body class="scene">
+  <div class="viewport"><div class="board">
+    <div class="chrome">
+      <div class="chrome-top">
+        <div class="brandline"><span class="dot"></span><span class="wordmark">WALLETIZ</span><span class="sep">/</span><span class="kicker">Schéma</span></div>
+        <div class="pagenum">03 <span>/ 09</span></div>
+      </div>
+      <div class="chrome-bottom">
+        <div class="kicker">Boucle de fidélisation</div>
+        <div class="kicker">Push · Data · Retour</div>
+      </div>
+    </div>
+    <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+
+    <div class="stage">
+      <div class="head">
+        <span class="accent-kicker">Comment ça marche</span>
+        <h1>Une boucle qui ramène le client.</h1>
+      </div>
+
+      <div class="flow">
+        <svg class="conn" viewBox="0 0 1680 600" preserveAspectRatio="none">
+          <defs>
+            <marker id="arrow" markerWidth="12" markerHeight="12" refX="8" refY="6" orient="auto">
+              <path d="M2,2 L10,6 L2,10" fill="none" stroke="#26364A" stroke-width="2"/>
+            </marker>
+          </defs>
+          <path d="M430,300 H640" stroke="#26364A" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M1040,300 H1250" stroke="#26364A" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+          <path d="M1420,430 C1420,560 260,560 260,430" stroke="#6E1230" stroke-width="3" stroke-dasharray="10 8" fill="none" marker-end="url(#arrow)"/>
+        </svg>
+
+        <div class="node">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blanc-casse)" stroke-width="1.8"><path d="M3 21h18M6 21V8l6-4 6 4v13M9 21v-6h6v6"/></svg></div>
+          <div class="nlabel">Acteur</div>
+          <div class="nname">Le commerçant</div>
+          <div class="ndesc">Crée une campagne en deux clics.</div>
+        </div>
+
+        <div class="node core">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blanc-casse)" stroke-width="1.8"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h4"/></svg></div>
+          <div class="nlabel">Plateforme</div>
+          <div class="nname">Walletiz</div>
+          <div class="ndesc">Envoie le push, mesure, apprend, recommence.</div>
+        </div>
+
+        <div class="node">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blanc-casse)" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+          <div class="nlabel">Bénéficiaire</div>
+          <div class="nname">Le client</div>
+          <div class="ndesc">Reçoit l'offre, revient en boutique.</div>
+        </div>
+
+        <span class="pill push">↑ Notification push</span>
+        <span class="pill stats">↓ Statistiques</span>
+        <span class="pill reward">↺ Il revient</span>
+      </div>
+    </div>
+  </div></div>
+</body>
+</html>

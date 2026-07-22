@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>04 — Jauge · Walletiz</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  .stage { display: grid; grid-template-columns: 1fr 760px; align-items: center; gap: var(--sp-xxl); }
+
+  .left .accent-kicker { margin-bottom: var(--sp-lg); }
+  .left h1 { font-family: var(--font-titres); font-weight: var(--w-bold); font-size: var(--fs-h1); letter-spacing: var(--ls-tight); line-height: var(--lh-tight); }
+  .left p { color: var(--gris-brume); font-size: var(--fs-lead); margin-top: var(--sp-lg); max-width: 640px; }
+  .legend { display: flex; gap: var(--sp-xl); margin-top: var(--sp-xl); }
+  .legend .item { display: flex; align-items: center; gap: var(--sp-sm); font-family: var(--font-labels); font-size: var(--fs-kicker); letter-spacing: var(--ls-kicker); text-transform: uppercase; color: var(--gris-estompe); }
+  .legend .swatch { width: 20px; height: 20px; border-radius: var(--r-sm); }
+
+  .gauge { position: relative; display: grid; place-items: center; }
+  .gauge .center { position: absolute; text-align: center; }
+  .gauge .score { font-family: var(--font-titres); font-weight: var(--w-bold); font-size: 220px; line-height: 1; letter-spacing: var(--ls-tight); }
+  .gauge .score .max { font-size: var(--fs-h2); color: var(--gris-estompe); }
+  .gauge .tag { font-family: var(--font-labels); font-size: var(--fs-label); letter-spacing: var(--ls-kicker); text-transform: uppercase; color: var(--bordeaux-lueur); margin-top: var(--sp-sm); }
+</style>
+</head>
+<body class="scene">
+  <div class="viewport"><div class="board">
+    <div class="chrome">
+      <div class="chrome-top">
+        <div class="brandline"><span class="dot"></span><span class="wordmark">WALLETIZ</span><span class="sep">/</span><span class="kicker">Jauge</span></div>
+        <div class="pagenum">04 <span>/ 09</span></div>
+      </div>
+      <div class="chrome-bottom">
+        <div class="kicker">Score d'engagement client</div>
+        <div class="kicker">/ 100</div>
+      </div>
+    </div>
+    <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+
+    <div class="stage">
+      <div class="left">
+        <span class="accent-kicker">Indice d'engagement</span>
+        <h1>Vous savez enfin où vous en êtes.</h1>
+        <p>Walletiz agrège fréquence de visite, ouverture des push et retours en boutique en un seul indice suivi dans le temps.</p>
+        <div class="legend">
+          <div class="item"><span class="swatch" style="background:var(--grad-accent-bordeaux)"></span>Atteint</div>
+          <div class="item"><span class="swatch" style="background:var(--lisere)"></span>Restant</div>
+        </div>
+      </div>
+
+      <div class="gauge">
+        <svg width="620" height="620" viewBox="0 0 620 620">
+          <circle cx="310" cy="310" r="250" fill="none" stroke="var(--lisere)" stroke-width="40" />
+          <circle cx="310" cy="310" r="250" fill="none" stroke="url(#gaugeGrad)" stroke-width="40"
+                  stroke-linecap="round"
+                  stroke-dasharray="1570.8"
+                  stroke-dashoffset="282.7"
+                  transform="rotate(-90 310 310)" />
+          <defs>
+            <linearGradient id="gaugeGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#A81D45" />
+              <stop offset="100%" stop-color="#D6486B" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="center">
+          <div class="score">82<span class="max">/100</span></div>
+          <div class="tag">Très engagé</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</body>
+</html>

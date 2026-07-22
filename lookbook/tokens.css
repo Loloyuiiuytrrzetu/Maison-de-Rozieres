@@ -1,0 +1,226 @@
+/* ==========================================================================
+   TOKENS.CSS — miroir CSS de src/design.ts (source de vérité).
+   Les planches du lookbook n'utilisent QUE ces variables.
+   Aucune couleur ni police n'est inventée ailleurs.
+   ========================================================================== */
+
+/* Polices de la charte (repli système déjà prévu dans les piles). */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* --- Couleurs : fonds froids --- */
+  --nuit-froide: #0A0F16;
+  --ardoise: #111A25;
+  --brume-froide: #1A2634;
+  --lisere: #26364A;
+
+  /* --- Accent principal : bordeaux --- */
+  --bordeaux: #A81D45;
+  --bordeaux-profond: #6E1230;
+  --bordeaux-lueur: #D6486B;
+
+  /* --- Textes --- */
+  --blanc-casse: #F3F6FA;
+  --gris-brume: #A2B4C6;
+  --gris-estompe: #63768A;
+
+  /* --- Signaux --- */
+  --succes: #3ED598;
+  --info: #3AB7F0;
+  --attention: #F4A73B;
+  --alerte: #FF4D4D;
+
+  /* --- Utilitaires --- */
+  --blanc-pur: #FFFFFF;
+  --noir: #000000;
+
+  /* --- Dégradés nommés --- */
+  --grad-fond-scene: linear-gradient(160deg, var(--ardoise) 0%, var(--nuit-froide) 60%);
+  --grad-accent-bordeaux: linear-gradient(120deg, var(--bordeaux) 0%, var(--bordeaux-profond) 100%);
+  --grad-lueur-bordeaux: radial-gradient(circle, #D6486B55 0%, transparent 70%);
+
+  /* --- Typographie : familles --- */
+  --font-titres: 'Space Grotesk', 'Arial Narrow', system-ui, sans-serif;
+  --font-corps: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-labels: 'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  /* --- Graisses --- */
+  --w-normal: 400;
+  --w-medium: 500;
+  --w-semibold: 600;
+  --w-bold: 700;
+
+  /* --- Échelle de tailles (px, calibrée 1080p) --- */
+  --fs-display: 180px;
+  --fs-h1: 104px;
+  --fs-h2: 68px;
+  --fs-h3: 46px;
+  --fs-lead: 34px;
+  --fs-body: 26px;
+  --fs-label: 20px;
+  --fs-kicker: 18px;
+  --fs-caption: 15px;
+
+  /* --- Interlignage / espacement lettres --- */
+  --lh-tight: 1.05;
+  --lh-snug: 1.2;
+  --lh-relaxed: 1.5;
+  --ls-tight: -0.02em;
+  --ls-normal: 0em;
+  --ls-kicker: 0.18em;
+
+  /* --- Espacement --- */
+  --sp-xs: 8px;
+  --sp-sm: 16px;
+  --sp-md: 24px;
+  --sp-lg: 40px;
+  --sp-xl: 64px;
+  --sp-xxl: 96px;
+  --sp-safe: 120px;
+
+  /* --- Rayons --- */
+  --r-sm: 8px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-pill: 999px;
+}
+
+/* ==========================================================================
+   Socle d'affichage : board 1920×1080 mis à l'échelle en 1280×720.
+   (On design à pleine résolution, on prévisualise réduit — approche studio.)
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--noir);
+  min-height: 100%;
+}
+
+body.scene {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+}
+
+.viewport {
+  width: 1280px;
+  height: 720px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.6);
+}
+
+.board {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  transform: scale(calc(1280 / 1920));
+  transform-origin: top left;
+  background: var(--grad-fond-scene);
+  color: var(--blanc-casse);
+  font-family: var(--font-corps);
+  overflow: hidden;
+}
+
+/* Texture froide très discrète + lueur bordeaux d'ambiance (profondeur studio). */
+.board::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--lisere) 1px, transparent 1px),
+    linear-gradient(90deg, var(--lisere) 1px, transparent 1px);
+  background-size: 96px 96px;
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+.board::after {
+  content: "";
+  position: absolute;
+  width: 1100px;
+  height: 1100px;
+  right: -300px;
+  top: -400px;
+  background: var(--grad-lueur-bordeaux);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* --- Chrome persistant (habillage broadcast) --- */
+.chrome { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
+
+.chrome-top, .chrome-bottom {
+  position: absolute;
+  left: var(--sp-xl);
+  right: var(--sp-xl);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.chrome-top { top: var(--sp-lg); }
+.chrome-bottom { bottom: var(--sp-lg); }
+
+.brandline { display: flex; align-items: center; gap: var(--sp-sm); }
+.brandline .dot {
+  width: 12px; height: 12px; border-radius: var(--r-pill);
+  background: var(--bordeaux);
+  box-shadow: 0 0 18px var(--bordeaux-lueur);
+}
+.wordmark {
+  font-family: var(--font-titres);
+  font-weight: var(--w-bold);
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-kicker);
+  color: var(--blanc-casse);
+}
+.kicker {
+  font-family: var(--font-labels);
+  font-weight: var(--w-medium);
+  font-size: var(--fs-kicker);
+  letter-spacing: var(--ls-kicker);
+  text-transform: uppercase;
+  color: var(--gris-estompe);
+}
+.sep { color: var(--lisere); font-family: var(--font-labels); }
+.pagenum {
+  font-family: var(--font-labels);
+  font-size: var(--fs-label);
+  color: var(--blanc-casse);
+  letter-spacing: var(--ls-kicker);
+}
+.pagenum span { color: var(--gris-estompe); }
+
+/* Filets d'angle (coins) pour la rigueur de cadrage. */
+.tick { position: absolute; z-index: 5; width: 26px; height: 26px; border: 2px solid var(--lisere); }
+.tick.tl { top: var(--sp-lg); left: var(--sp-lg); border-right: 0; border-bottom: 0; }
+.tick.tr { top: var(--sp-lg); right: var(--sp-lg); border-left: 0; border-bottom: 0; }
+.tick.bl { bottom: var(--sp-lg); left: var(--sp-lg); border-right: 0; border-top: 0; }
+.tick.br { bottom: var(--sp-lg); right: var(--sp-lg); border-left: 0; border-top: 0; }
+
+/* Zone utile (safe area) où vit le contenu de chaque planche. */
+.stage {
+  position: absolute;
+  inset: var(--sp-safe);
+  z-index: 2;
+}
+
+/* Pastille d'accent réutilisable (kicker souligné bordeaux). */
+.accent-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  font-family: var(--font-labels);
+  font-size: var(--fs-kicker);
+  letter-spacing: var(--ls-kicker);
+  text-transform: uppercase;
+  color: var(--bordeaux-lueur);
+}
+.accent-kicker::before {
+  content: "";
+  width: 40px; height: 3px;
+  background: var(--grad-accent-bordeaux);
+}

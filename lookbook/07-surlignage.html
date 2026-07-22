@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>07 — Surlignage · Walletiz</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  .stage { display: flex; flex-direction: column; justify-content: center; }
+  .accent-kicker { margin-bottom: var(--sp-xl); }
+
+  .quote {
+    font-family: var(--font-titres);
+    font-weight: var(--w-bold);
+    font-size: 96px;
+    line-height: 1.14;
+    letter-spacing: var(--ls-tight);
+    color: var(--gris-brume);
+    max-width: 1500px;
+  }
+  .quote .lead-word { color: var(--blanc-casse); }
+
+  /* Surlignage bordeaux « marqueur » derrière le mot-clé. */
+  .mark {
+    color: var(--blanc-casse);
+    position: relative;
+    white-space: nowrap;
+    padding: 0 var(--sp-sm);
+  }
+  .mark::before {
+    content: "";
+    position: absolute; left: 0; right: 0; bottom: 6px;
+    height: 60%;
+    background: var(--grad-accent-bordeaux);
+    border-radius: var(--r-sm);
+    z-index: -1;
+    box-shadow: 0 0 40px rgba(168,29,69,.5);
+  }
+
+  /* Variante soulignement animable (trait qui se dessine). */
+  .underline {
+    color: var(--blanc-casse);
+    position: relative;
+    padding-bottom: 6px;
+  }
+  .underline::after {
+    content: "";
+    position: absolute; left: 0; bottom: -4px; height: 6px; width: 100%;
+    background: var(--grad-accent-bordeaux);
+    border-radius: var(--r-pill);
+  }
+
+  .foot { display: flex; gap: var(--sp-lg); margin-top: var(--sp-xxl); }
+  .foot .chip { font-family: var(--font-labels); font-size: var(--fs-kicker); letter-spacing: var(--ls-kicker); text-transform: uppercase; color: var(--gris-estompe); border: 1px solid var(--lisere); border-radius: var(--r-pill); padding: var(--sp-sm) var(--sp-lg); }
+  .foot .chip b { color: var(--bordeaux-lueur); }
+</style>
+</head>
+<body class="scene">
+  <div class="viewport"><div class="board">
+    <div class="chrome">
+      <div class="chrome-top">
+        <div class="brandline"><span class="dot"></span><span class="wordmark">WALLETIZ</span><span class="sep">/</span><span class="kicker">Surlignage</span></div>
+        <div class="pagenum">07 <span>/ 09</span></div>
+      </div>
+      <div class="chrome-bottom">
+        <div class="kicker">Mise en avant du mot-clé</div>
+        <div class="kicker">Kinetic type</div>
+      </div>
+    </div>
+    <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+
+    <div class="stage">
+      <span class="accent-kicker">L'idée en une phrase</span>
+      <div class="quote">
+        <span class="lead-word">Vos clients reviennent</span>
+        <span class="mark">deux fois plus souvent</span>
+        quand vous les relancez
+        <span class="underline">au bon moment</span>.
+      </div>
+      <div class="foot">
+        <div class="chip">Ouverture push <b>68 %</b></div>
+        <div class="chip">Zéro appli à installer</div>
+        <div class="chip">Mise en place <b>&lt; 10 min</b></div>
+      </div>
+    </div>
+  </div></div>
+</body>
+</html>
