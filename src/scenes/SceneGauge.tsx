@@ -3,6 +3,7 @@ import React from "react";
 import { z } from "zod";
 import { design } from "../design";
 import { Frame } from "../components/Frame";
+import { SfxTrack } from "../components/Sfx";
 import { AccentKicker } from "../components/AccentKicker";
 import { AnimatedText } from "../components/AnimatedText";
 import { GaugeArc } from "../components/GaugeArc";
@@ -27,6 +28,7 @@ export const SceneGauge: React.FC<z.infer<typeof sceneGaugeSchema>> = ({
 }) => {
   return (
     <Frame section="Preuve" index="05" footerLeft="Indice d'engagement" footerRight="/ 100">
+      <SfxTrack cues={[{ name: "whoosh", volume: 0.5 }, { name: "riser", at: 2, volume: 0.35 }, { name: "pop", at: 14, volume: 0.45 }]} />
       <div
         style={{
           width: "100%",

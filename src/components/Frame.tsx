@@ -1,11 +1,13 @@
 /**
  * Frame — l'habillage broadcast commun à toutes les scènes.
- * Fond froid + texture + lueur bordeaux, chrome (wordmark, section, pagination),
- * filets d'angle, zone utile (safe area). Reproduit le lookbook, piloté par les tokens.
+ * Fond froid ANIMÉ (grille qui dérive, halo qui respire, balayage lumineux),
+ * chrome (wordmark, section, pagination), filets d'angle, zone utile (safe area).
+ * Le contenu reçoit une caméra continue (léger zoom + dérive) → jamais statique.
  */
 import React from "react";
-import { AbsoluteFill } from "remotion";
+import { AbsoluteFill, useCurrentFrame, interpolate } from "remotion";
 import { design } from "../design";
+import { useCamera, usePulse } from "../motion";
 
 const { palette, gradients, fonts, fontWeights, textScale, spacing, radius, typography } =
   design;
@@ -44,23 +46,36 @@ export const Frame: React.FC<{
   footerRight?: string;
   children: React.ReactNode;
 }> = ({ section, index, total = "09", footerLeft, footerRight, children }) => {
+  const frame = useCurrentFrame();
+  const camera = useCamera();
+  const pulse = usePulse(0.22);
+
+  // Dérive lente de la grille et du halo.
+  const gridShift = (frame * 0.25) % 96;
+  const lueurScale = interpolate(pulse, [0, 1], [0.92, 1.08]);
+  const lueurOpacity = interpolate(pulse, [0, 1], [0.22, 0.45]);
+  // Balayage lumineux diagonal qui traverse lentement la scène.
+  const sweepX = interpolate((frame % 260) / 260, [0, 1], [-600, 2400]);
+
   return (
     <AbsoluteFill
       style={{
         background: gradients.fondScene,
         color: palette.blancCasse,
         fontFamily: fonts.corps,
+        overflow: "hidden",
       }}
     >
-      {/* Texture froide très discrète */}
+      {/* Texture froide qui dérive */}
       <AbsoluteFill
         style={{
           backgroundImage: `linear-gradient(${palette.lisere} 1px, transparent 1px), linear-gradient(90deg, ${palette.lisere} 1px, transparent 1px)`,
           backgroundSize: "96px 96px",
+          backgroundPosition: `${gridShift}px ${gridShift}px`,
           opacity: 0.05,
         }}
       />
-      {/* Lueur bordeaux d'ambiance */}
+      {/* Halo bordeaux qui respire */}
       <div
         style={{
           position: "absolute",
@@ -69,7 +84,22 @@ export const Frame: React.FC<{
           right: -300,
           top: -400,
           background: gradients.lueurBordeaux,
-          opacity: 0.35,
+          opacity: lueurOpacity,
+          transform: `scale(${lueurScale})`,
+        }}
+      />
+      {/* Balayage lumineux diagonal */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          left: sweepX,
+          width: 500,
+          background:
+            "linear-gradient(105deg, transparent, rgba(214,72,107,0.10), transparent)",
+          transform: "skewX(-12deg)",
+          pointerEvents: "none",
         }}
       />
 
@@ -92,7 +122,7 @@ export const Frame: React.FC<{
               height: 12,
               borderRadius: radius.pill,
               background: palette.bordeaux,
-              boxShadow: `0 0 18px ${palette.bordeauxLueur}`,
+              boxShadow: `0 0 ${interpolate(pulse, [0, 1], [12, 26])}px ${palette.bordeauxLueur}`,
             }}
           />
           <span
@@ -140,8 +170,12 @@ export const Frame: React.FC<{
         </div>
       )}
 
-      {/* Zone utile */}
-      <AbsoluteFill style={{ padding: spacing.safe }}>{children}</AbsoluteFill>
+      {/* Zone utile — avec caméra continue */}
+      <AbsoluteFill style={{ padding: spacing.safe }}>
+        <div style={{ width: "100%", height: "100%", transform: camera.transform }}>
+          {children}
+        </div>
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 };

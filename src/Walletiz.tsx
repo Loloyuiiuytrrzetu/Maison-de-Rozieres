@@ -5,7 +5,10 @@
 import React from "react";
 import { AbsoluteFill } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
+import type { TransitionPresentation } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
+import { slide } from "@remotion/transitions/slide";
+import { wipe } from "@remotion/transitions/wipe";
 import { design } from "./design";
 import { sceneContent, sceneSeconds, sec, TRANSITION_FRAMES } from "./content";
 
@@ -37,6 +40,19 @@ const scenes = [
 export const walletizDurationInFrames =
   scenes.reduce((acc, s) => acc + sec(s.dur), 0) - (scenes.length - 1) * TRANSITION_FRAMES;
 
+// Transitions variées entre scènes (dynamise le montage).
+const transitions: TransitionPresentation<Record<string, unknown>>[] = [
+  slide({ direction: "from-bottom" }),
+  wipe({ direction: "from-left" }),
+  fade(),
+  slide({ direction: "from-right" }),
+  wipe({ direction: "from-bottom" }),
+  slide({ direction: "from-left" }),
+  fade(),
+  wipe({ direction: "from-right" }),
+  slide({ direction: "from-bottom" }),
+];
+
 export const Walletiz: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: design.palette.nuitFroide }}>
@@ -48,7 +64,7 @@ export const Walletiz: React.FC = () => {
             </TransitionSeries.Sequence>
             {i < scenes.length - 1 && (
               <TransitionSeries.Transition
-                presentation={fade()}
+                presentation={transitions[i]}
                 timing={linearTiming({ durationInFrames: TRANSITION_FRAMES })}
               />
             )}

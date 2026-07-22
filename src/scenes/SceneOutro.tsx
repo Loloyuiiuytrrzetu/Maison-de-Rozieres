@@ -5,6 +5,7 @@ import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { design } from "../design";
 import { progress } from "../motion";
 import { Frame } from "../components/Frame";
+import { SfxTrack } from "../components/Sfx";
 import { AnimatedText } from "../components/AnimatedText";
 
 const { palette, gradients, fonts, fontWeights, textScale, spacing, radius, typography } =
@@ -38,6 +39,7 @@ export const SceneOutro: React.FC<z.infer<typeof sceneOutroSchema>> = ({
 
   return (
     <Frame section="Écran de fin" index="09" footerLeft="Merci" footerRight="Fin">
+      <SfxTrack cues={[{ name: "whoosh", volume: 0.5 }, { name: "impact", at: 2, volume: 0.55 }, { name: "chime", at: 8, volume: 0.6 }]} />
       <div
         style={{
           width: "100%",

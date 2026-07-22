@@ -5,6 +5,7 @@ import { useCurrentFrame, useVideoConfig } from "remotion";
 import { design } from "../design";
 import { progress } from "../motion";
 import { Frame } from "../components/Frame";
+import { SfxTrack } from "../components/Sfx";
 import { AccentKicker } from "../components/AccentKicker";
 import { AnimatedText } from "../components/AnimatedText";
 import { AnimatedNumber } from "../components/AnimatedNumber";
@@ -53,6 +54,7 @@ export const SceneStat: React.FC<z.infer<typeof sceneStatSchema>> = ({
 
   return (
     <Frame section="Preuve" index="03" footerLeft="Impact du push" footerRight="2024–2025">
+      <SfxTrack cues={[{ name: "whoosh", volume: 0.5 }, { name: "riser", at: 0, volume: 0.4 }, { name: "impact", at: 6, volume: 0.7 }]} />
       <div
         style={{
           width: "100%",
@@ -67,7 +69,9 @@ export const SceneStat: React.FC<z.infer<typeof sceneStatSchema>> = ({
             <AccentKicker label={kicker} />
           </AnimatedText>
 
-          <div
+          <AnimatedText
+            kind="slamIn"
+            delay={4}
             style={{
               fontFamily: fonts.titres,
               fontWeight: fontWeights.bold,
@@ -81,7 +85,7 @@ export const SceneStat: React.FC<z.infer<typeof sceneStatSchema>> = ({
             <span style={{ fontSize: textScale.display, color: palette.bordeaux, verticalAlign: "super" }}>
               {unit}
             </span>
-          </div>
+          </AnimatedText>
 
           <div
             style={{

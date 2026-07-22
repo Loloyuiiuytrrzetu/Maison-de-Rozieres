@@ -3,6 +3,7 @@ import React from "react";
 import { z } from "zod";
 import { design } from "../design";
 import { Frame } from "../components/Frame";
+import { SfxTrack } from "../components/Sfx";
 import { AccentKicker } from "../components/AccentKicker";
 import { AnimatedText } from "../components/AnimatedText";
 import { DiagramNode } from "../components/DiagramNode";
@@ -45,6 +46,7 @@ const Pill: React.FC<{
 export const SceneDiagram: React.FC<z.infer<typeof sceneDiagramSchema>> = ({ kicker, title }) => {
   return (
     <Frame section="Schéma" index="07" footerLeft="Boucle de fidélisation" footerRight="Push · Data · Retour">
+      <SfxTrack cues={[{ name: "whoosh", volume: 0.5 }, { name: "pop", at: 14, volume: 0.45 }, { name: "pop", at: 20, volume: 0.45 }, { name: "pop", at: 26, volume: 0.45 }]} />
       <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column" }}>
         <AnimatedText kind="fade" delay={2} style={{ marginBottom: spacing.sm }}>
           <AccentKicker label={kicker} />

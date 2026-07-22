@@ -5,6 +5,7 @@ import { useCurrentFrame, useVideoConfig } from "remotion";
 import { design } from "../design";
 import { progress } from "../motion";
 import { Frame } from "../components/Frame";
+import { SfxTrack } from "../components/Sfx";
 import { AccentKicker } from "../components/AccentKicker";
 import { AnimatedText } from "../components/AnimatedText";
 
@@ -29,6 +30,7 @@ export const SceneHighlight: React.FC<z.infer<typeof sceneHighlightSchema>> = ({
 
   return (
     <Frame section="Ouverture" index="00" footerLeft="Le problème" footerRight="Kinetic type">
+      <SfxTrack cues={[{ name: "whoosh", volume: 0.5 }, { name: "pop", at: 18, volume: 0.5 }]} />
       <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center" }}>
         <AnimatedText kind="fade" delay={2} style={{ marginBottom: spacing.xl }}>
           <AccentKicker label={kicker} />

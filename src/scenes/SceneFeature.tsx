@@ -3,6 +3,7 @@ import React from "react";
 import { z } from "zod";
 import { design } from "../design";
 import { Frame } from "../components/Frame";
+import { SfxTrack } from "../components/Sfx";
 import { AccentKicker } from "../components/AccentKicker";
 import { AnimatedText } from "../components/AnimatedText";
 import { FeatureCard } from "../components/FeatureCard";
@@ -39,6 +40,7 @@ export const SceneFeature: React.FC<z.infer<typeof sceneFeatureSchema>> = ({
 }) => {
   return (
     <Frame section={section} index={index} footerLeft={kicker} footerRight="Pilier">
+      <SfxTrack cues={[{ name: "whoosh", volume: 0.5 }, { name: "pop", at: 14, volume: 0.5 }]} />
       <div
         style={{
           width: "100%",
@@ -54,7 +56,7 @@ export const SceneFeature: React.FC<z.infer<typeof sceneFeatureSchema>> = ({
             <AccentKicker label={kicker} />
           </AnimatedText>
           <AnimatedText
-            kind="fadeUp"
+            kind="flyLeft"
             delay={8}
             style={{
               fontFamily: fonts.titres,
@@ -91,6 +93,7 @@ export const SceneFeature: React.FC<z.infer<typeof sceneFeatureSchema>> = ({
             accent={accent}
             delay={14}
             featured
+            floatPhase={1.2}
           />
         </div>
       </div>

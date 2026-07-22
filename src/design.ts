@@ -208,11 +208,15 @@ export const durations = {
  */
 export const springs = {
   /** RÔLE : PUNCHY — rebond marqué, l'entrée signature de la marque. */
-  punchy: { damping: 12, mass: 0.7, stiffness: 140 },
+  punchy: { damping: 11, mass: 0.9, stiffness: 150 },
   /** RÔLE : DOUX — rebond léger, pour les titres. */
-  doux: { damping: 18, mass: 0.9, stiffness: 120 },
+  doux: { damping: 16, mass: 0.9, stiffness: 120 },
   /** RÔLE : FERME — arrivée nette sans dépassement (barres, wipes). */
   ferme: { damping: 200 },
+  /** RÔLE : BOUNCE — fort dépassement élastique (cartes, pops signature). */
+  bounce: { damping: 8, mass: 1.1, stiffness: 140 },
+  /** RÔLE : SLAM — arrivée lourde qui « claque » (grands chiffres, impacts). */
+  slam: { damping: 13, mass: 1.4, stiffness: 220 },
 } as const;
 
 /**
@@ -233,10 +237,16 @@ export const easings = {
  * via useCurrentFrame + spring/interpolate (voir SKILL.md).
  */
 export const entrances = {
-  /** RÔLE : monte + apparaît. Déplacement Y de +40px → 0, opacité 0 → 1. */
-  fadeUp: { fromY: 40, spring: "doux", duration: durations.base },
-  /** RÔLE : zoom rebond. Échelle 0.8 → 1 avec dépassement, opacité 0 → 1. */
-  popIn: { fromScale: 0.82, spring: "punchy", duration: durations.base },
+  /** RÔLE : monte + apparaît avec rebond. Déplacement Y de +70px → 0. */
+  fadeUp: { fromY: 70, spring: "punchy", duration: durations.base },
+  /** RÔLE : zoom rebond élastique. Échelle 0.6 → 1 avec fort dépassement. */
+  popIn: { fromScale: 0.6, spring: "bounce", duration: durations.base },
+  /** RÔLE : « slam » — arrive de +120px en claquant (impacts, grands chiffres). */
+  slamIn: { fromY: 120, spring: "slam", duration: durations.base },
+  /** RÔLE : vol latéral depuis la gauche (+90px → 0) avec rebond. */
+  flyLeft: { fromX: -90, spring: "punchy", duration: durations.base },
+  /** RÔLE : vol latéral depuis la droite (-90px → 0) avec rebond. */
+  flyRight: { fromX: 90, spring: "punchy", duration: durations.base },
   /** RÔLE : balayage horizontal (barres, soulignés). Largeur 0 → 100%. */
   wipeX: { spring: "ferme", duration: durations.slow },
   /** RÔLE : fondu simple. Opacité 0 → 1, sans déplacement. */

@@ -3,6 +3,7 @@ import React from "react";
 import { z } from "zod";
 import { design } from "../design";
 import { Frame } from "../components/Frame";
+import { SfxTrack } from "../components/Sfx";
 import { AccentKicker } from "../components/AccentKicker";
 import { AnimatedText } from "../components/AnimatedText";
 import { Bar } from "../components/Bar";
@@ -38,13 +39,14 @@ export const SceneCompare: React.FC<z.infer<typeof sceneCompareSchema>> = ({
 
   return (
     <Frame section="Comparatif" index="06" footerLeft="Visites répétées · 30 jours" footerRight="Base 100">
+      <SfxTrack cues={[{ name: "whoosh", volume: 0.5 }, { name: "pop", at: 16, volume: 0.5 }, { name: "impact", at: 22, volume: 0.6 }]} />
       <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column" }}>
         <AnimatedText kind="fade" delay={2} style={{ marginBottom: spacing.sm }}>
           <AccentKicker label={kicker} />
         </AnimatedText>
         <AnimatedText
-          kind="fadeUp"
-          delay={8}
+          kind="slamIn"
+          delay={6}
           style={{
             fontFamily: fonts.titres,
             fontWeight: fontWeights.bold,

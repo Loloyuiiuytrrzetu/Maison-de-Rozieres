@@ -1,4 +1,4 @@
-/** Barre de comparatif qui pousse depuis le bas (spring "ferme"). */
+/** Barre de comparatif qui pousse depuis le bas avec dépassement élastique. */
 import React from "react";
 import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { design } from "../design";
@@ -14,9 +14,11 @@ export const Bar: React.FC<{
 }> = ({ targetHeight, value, variant, delay = 0 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const p = progress(frame, fps, "ferme", delay);
-  const h = interpolate(p, [0, 1], [0, targetHeight]);
   const isAfter = variant === "after";
+  // La barre "après" rebondit (bounce), la barre "avant" arrive net (ferme).
+  const p = progress(frame, fps, isAfter ? "bounce" : "ferme", delay);
+  const h = interpolate(p, [0, 1], [0, targetHeight]);
+  const valPop = interpolate(p, [0.5, 0.75, 1], [0, 1.15, 1], { extrapolateLeft: "clamp" });
 
   return (
     <div style={{ position: "relative", width: 150 }}>
@@ -31,7 +33,8 @@ export const Bar: React.FC<{
           fontWeight: fontWeights.bold,
           fontSize: textScale.h3,
           color: isAfter ? palette.bordeauxLueur : palette.grisBrume,
-          opacity: p,
+          opacity: interpolate(p, [0.4, 0.6], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }),
+          transform: `scale(${valPop})`,
         }}
       >
         {value}
@@ -42,7 +45,7 @@ export const Bar: React.FC<{
           borderRadius: `${radius.md}px ${radius.md}px 0 0`,
           background: isAfter ? gradients.accentBordeaux : palette.brumeFroide,
           border: isAfter ? "none" : `1px solid ${palette.lisere}`,
-          boxShadow: isAfter ? "0 0 60px rgba(214,72,107,.35)" : "none",
+          boxShadow: isAfter ? "0 0 60px rgba(214,72,107,.4)" : "none",
         }}
       />
     </div>

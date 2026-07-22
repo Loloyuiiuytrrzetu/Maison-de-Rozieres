@@ -5,6 +5,7 @@ import { useCurrentFrame, useVideoConfig } from "remotion";
 import { design } from "../design";
 import { progress } from "../motion";
 import { Frame } from "../components/Frame";
+import { SfxTrack } from "../components/Sfx";
 import { AccentKicker } from "../components/AccentKicker";
 import { AnimatedText } from "../components/AnimatedText";
 
@@ -28,6 +29,7 @@ export const SceneTitle: React.FC<z.infer<typeof sceneTitleSchema>> = ({
 
   return (
     <Frame section="Promesse" index="01" footerLeft="La promesse" footerRight="Sans appli">
+      <SfxTrack cues={[{ name: "whoosh", volume: 0.5 }, { name: "impact", at: 6, volume: 0.6 }, { name: "pop", at: 22, volume: 0.4 }]} />
       <div
         style={{
           width: "100%",
@@ -42,8 +44,8 @@ export const SceneTitle: React.FC<z.infer<typeof sceneTitleSchema>> = ({
         </AnimatedText>
 
         <AnimatedText
-          kind="fadeUp"
-          delay={8}
+          kind="slamIn"
+          delay={6}
           style={{
             fontFamily: fonts.titres,
             fontWeight: fontWeights.bold,

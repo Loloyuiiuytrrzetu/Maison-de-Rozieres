@@ -1,7 +1,8 @@
-/** Carte "levier" (récap / mise en avant). Apparition popIn, accent bordeaux à gauche. */
+/** Carte "levier". Entrée en rebond (bounce) + flottement continu + liseré pulsé. */
 import React from "react";
+import { useCurrentFrame, useVideoConfig, interpolate } from "remotion";
 import { design } from "../design";
-import { AnimatedText } from "./AnimatedText";
+import { entrance, useFloat, usePulse } from "../motion";
 import { Icon, type IconKey } from "./icons";
 
 const { palette, gradients, fonts, fontWeights, textScale, spacing, radius, typography } =
@@ -22,11 +23,27 @@ export const FeatureCard: React.FC<{
   accent?: keyof typeof signalColor;
   delay?: number;
   featured?: boolean;
-}> = ({ idx, icon, title, desc, footer, accent = "bordeaux", delay = 0, featured = false }) => {
+  floatPhase?: number;
+}> = ({
+  idx,
+  icon,
+  title,
+  desc,
+  footer,
+  accent = "bordeaux",
+  delay = 0,
+  featured = false,
+  floatPhase = 0,
+}) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const e = entrance(frame, fps, "popIn", delay);
+  const floatY = useFloat(8, 0.32, floatPhase);
+  const pulse = usePulse(0.35, floatPhase);
+  const accentCol = signalColor[accent];
+
   return (
-    <AnimatedText
-      kind="popIn"
-      delay={delay}
+    <div
       style={{
         flex: 1,
         display: "flex",
@@ -39,9 +56,12 @@ export const FeatureCard: React.FC<{
         position: "relative",
         overflow: "hidden",
         height: "100%",
+        opacity: e.opacity,
+        transform: `${e.transform} translateY(${floatY}px)`,
+        boxShadow: `0 20px 60px rgba(0,0,0,0.35), 0 0 ${interpolate(pulse, [0, 1], [0, 26])}px rgba(214,72,107,0.18)`,
       }}
     >
-      {/* Barre d'accent gauche */}
+      {/* Barre d'accent gauche qui brille */}
       <div
         style={{
           position: "absolute",
@@ -50,6 +70,7 @@ export const FeatureCard: React.FC<{
           bottom: 0,
           width: 4,
           background: gradients.accentBordeaux,
+          boxShadow: `0 0 ${interpolate(pulse, [0, 1], [6, 20])}px ${palette.bordeauxLueur}`,
         }}
       />
       <div
@@ -70,9 +91,10 @@ export const FeatureCard: React.FC<{
           background: palette.brumeFroide,
           display: "grid",
           placeItems: "center",
+          transform: `scale(${interpolate(pulse, [0, 1], [1, 1.06])})`,
         }}
       >
-        <Icon name={icon} color={signalColor[accent]} size={38} />
+        <Icon name={icon} color={accentCol} size={38} />
       </div>
       <div
         style={{
@@ -107,6 +129,6 @@ export const FeatureCard: React.FC<{
       >
         {footer}
       </div>
-    </AnimatedText>
+    </div>
   );
 };
