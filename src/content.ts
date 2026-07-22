@@ -119,22 +119,26 @@ export const sceneContent = {
   },
 };
 
-/** Durées de chaque scène, en secondes (calées sur script.md). */
+/**
+ * Durées de chaque scène, en secondes — calées sur la voix off (public/vo/vo.wav).
+ * Chaque durée ≈ la durée parlée de la phrase de la scène (+ compensation du fondu),
+ * pour que la narration continue reste synchro avec les visuels. Version narrée serrée.
+ */
 export const sceneSeconds = {
-  highlight: 6,
-  title: 7,
-  feature02: 9,
-  stat: 7,
-  feature04: 9,
-  gauge: 7,
-  compare: 8,
-  diagram: 9,
-  recap: 6,
-  outro: 6,
+  highlight: 2.3,
+  title: 2.0,
+  feature02: 2.6,
+  stat: 3.4,
+  feature04: 2.0,
+  gauge: 2.3,
+  compare: 2.0,
+  diagram: 2.6,
+  recap: 1.8,
+  outro: 4.3,
 } as const;
 
 /** Conversion secondes → frames. */
 export const sec = (s: number): number => Math.round(s * FPS);
 
 /** Durée du fondu entre deux scènes (frames). */
-export const TRANSITION_FRAMES = 15;
+export const TRANSITION_FRAMES = 10;

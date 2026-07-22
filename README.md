@@ -49,6 +49,15 @@ npx remotion render src/index.ts 09-Outro out/outro.gif --codec=gif
 
 Les sorties vont dans `out/` (ignoré par git).
 
+## Son
+
+- **Bruitages** : `scripts/generate-sfx.mjs` synthétise `public/sfx/*.wav` (whoosh, impact,
+  pop, riser, tick, chime). Câblés par scène via `src/components/Sfx.tsx`.
+- **Voix off** : `public/vo/vo.wav` (narration française, générée en TTS). Piste continue
+  ajoutée dans `src/Walletiz.tsx`. Les durées de scènes (`src/content.ts`) sont calées sur
+  la voix → version narrée serrée (~22 s). Pour un montage plus long sans voix, rallonger
+  `sceneSeconds` dans `content.ts`.
+
 ## Identité visuelle
 
 - Charte : `src/design.ts` (tokens typés) + `CHARTE.md` (version lisible).

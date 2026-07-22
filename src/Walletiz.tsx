@@ -3,7 +3,7 @@
  * Durée totale calculée depuis content.ts (voir walletizDurationInFrames).
  */
 import React from "react";
-import { AbsoluteFill } from "remotion";
+import { AbsoluteFill, Audio, staticFile } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import type { TransitionPresentation } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
@@ -56,6 +56,8 @@ const transitions: TransitionPresentation<Record<string, unknown>>[] = [
 export const Walletiz: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: design.palette.nuitFroide }}>
+      {/* Voix off continue (narration française, voix Hugo) */}
+      <Audio src={staticFile("vo/vo.wav")} volume={1} />
       <TransitionSeries>
         {scenes.map((s, i) => (
           <React.Fragment key={s.key}>
