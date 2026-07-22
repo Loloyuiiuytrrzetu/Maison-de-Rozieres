@@ -1,0 +1,18 @@
+# Dépendances
+node_modules/
+
+# Sorties de rendu Remotion
+out/
+.remotion/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Divers
+.DS_Store
+*.local
+.env
+.env.*
+!.env.example

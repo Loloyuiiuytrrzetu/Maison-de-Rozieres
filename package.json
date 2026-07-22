@@ -1,0 +1,29 @@
+{
+  "name": "maison-de-rozieres",
+  "version": "1.0.0",
+  "description": "Animations vidéo Maison de Rozières, propulsées par Remotion",
+  "private": true,
+  "scripts": {
+    "dev": "remotion studio",
+    "studio": "remotion studio",
+    "render": "remotion render",
+    "render:main": "remotion render Main out/main.mp4",
+    "still": "remotion still",
+    "upgrade": "remotion upgrade",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.496",
+    "@remotion/google-fonts": "4.0.496",
+    "@remotion/shapes": "4.0.496",
+    "@remotion/transitions": "4.0.496",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.496"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.0",
+    "@types/react-dom": "19.2.0",
+    "typescript": "5.9.2"
+  }
+}
