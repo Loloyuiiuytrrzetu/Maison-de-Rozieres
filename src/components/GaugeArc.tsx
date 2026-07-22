@@ -1,0 +1,83 @@
+/** Jauge circulaire : l'arc bordeaux se dessine jusqu'à `value`/100. */
+import React from "react";
+import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
+import { design } from "../design";
+import { progress } from "../motion";
+import { AnimatedNumber } from "./AnimatedNumber";
+
+const { palette, fonts, fontWeights, textScale, typography } = design;
+
+export const GaugeArc: React.FC<{
+  value: number;
+  tag: string;
+  delay?: number;
+}> = ({ value, tag, delay = 0 }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const p = progress(frame, fps, "doux", delay);
+
+  const r = 250;
+  const circumference = 2 * Math.PI * r;
+  const filled = interpolate(p, [0, 1], [0, value / 100]);
+  const dashoffset = circumference * (1 - filled);
+
+  return (
+    <div style={{ position: "relative", display: "grid", placeItems: "center" }}>
+      <svg width={620} height={620} viewBox="0 0 620 620">
+        <circle
+          cx={310}
+          cy={310}
+          r={r}
+          fill="none"
+          stroke={palette.lisere}
+          strokeWidth={40}
+        />
+        <circle
+          cx={310}
+          cy={310}
+          r={r}
+          fill="none"
+          stroke="url(#gaugeGrad)"
+          strokeWidth={40}
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          strokeDashoffset={dashoffset}
+          transform="rotate(-90 310 310)"
+        />
+        <defs>
+          <linearGradient id="gaugeGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor={palette.bordeaux} />
+            <stop offset="100%" stopColor={palette.bordeauxLueur} />
+          </linearGradient>
+        </defs>
+      </svg>
+      <div style={{ position: "absolute", textAlign: "center" }}>
+        <div
+          style={{
+            fontFamily: fonts.titres,
+            fontWeight: fontWeights.bold,
+            fontSize: 220,
+            lineHeight: 1,
+            letterSpacing: typography.letterSpacing.tight,
+          }}
+        >
+          <AnimatedNumber value={value} delay={delay} />
+          <span style={{ fontSize: textScale.h2, color: palette.grisEstompe }}>/100</span>
+        </div>
+        <div
+          style={{
+            fontFamily: fonts.labels,
+            fontSize: textScale.label,
+            letterSpacing: typography.letterSpacing.kicker,
+            textTransform: "uppercase",
+            color: palette.bordeauxLueur,
+            marginTop: 8,
+            opacity: p,
+          }}
+        >
+          {tag}
+        </div>
+      </div>
+    </div>
+  );
+};

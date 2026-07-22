@@ -7,7 +7,7 @@
     "dev": "remotion studio",
     "studio": "remotion studio",
     "render": "remotion render",
-    "render:main": "remotion render Main out/main.mp4",
+    "render:video": "remotion render Walletiz out/walletiz.mp4",
     "still": "remotion still",
     "upgrade": "remotion upgrade",
     "lint": "tsc --noEmit"

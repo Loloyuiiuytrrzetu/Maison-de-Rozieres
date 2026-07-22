@@ -12,14 +12,20 @@ et fonctionnel.
 ## Structure du projet
 
 ```
-remotion.config.ts        # Config de rendu (format, qualité, concurrence)
-src/index.ts              # Point d'entrée : registerRoot(RemotionRoot)
-src/Root.tsx              # Liste des <Composition /> (le catalogue du Studio)
-src/compositions/         # Une animation = un composant React ici
-  ├─ Main.tsx             # Enchaîne TitleCard + LogoReveal avec un fondu
-  ├─ TitleCard.tsx        # Carte de titre paramétrable (schéma Zod)
-  └─ LogoReveal.tsx       # Révélation du monogramme « MR »
+remotion.config.ts     # Config de rendu (format, qualité, concurrence)
+script.md              # Script de la vidéo (VO + texte écran)
+src/index.ts           # Point d'entrée : registerRoot(RemotionRoot)
+src/Root.tsx           # Liste des <Composition /> (le catalogue du Studio)
+src/design.ts          # Charte graphique (tokens) — source de vérité
+src/motion.ts          # Helpers d'animation (spring/entrance/stagger) dérivés de la charte
+src/content.ts         # Textes + durées des scènes (source unique)
+src/Walletiz.tsx       # Composition maître (TransitionSeries des 9 scènes)
+src/components/         # Primitives réutilisables (Frame, FeatureCard, GaugeArc, Bar…)
+src/scenes/            # Une scène animée = un fichier (SceneStat, SceneGauge…)
 ```
+
+**Toujours** partir de `design.ts` (couleurs/typo/tailles) et `motion.ts` (animations) —
+ne jamais coder une valeur en dur. Réutiliser les primitives de `src/components/`.
 
 ## Commandes
 

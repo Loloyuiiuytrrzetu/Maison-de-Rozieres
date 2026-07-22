@@ -14,27 +14,37 @@ props des compositions.
 
 ## Compositions incluses
 
-| ID                   | Description                                 | Format    | Durée |
-| -------------------- | ------------------------------------------- | --------- | ----- |
-| `Main`               | Carte de titre + révélation du logo (fondu) | 1920×1080 | 10 s  |
-| `TitleCard`          | Carte de titre paramétrable                 | 1920×1080 | 5 s   |
-| `LogoReveal`         | Révélation du monogramme « MR »             | 1920×1080 | 4 s   |
-| `TitleCard-Vertical` | Carte de titre format réseaux sociaux       | 1080×1920 | 5 s   |
+Vidéo de présentation Walletiz (script dans `script.md`) : 9 scènes enchaînées + chaque
+scène rendable à l'unité (props + schéma Zod éditables dans le Studio). Format 1920×1080, 30 fps.
+
+| ID                 | Scène / archétype            | Durée |
+| ------------------ | ---------------------------- | ----- |
+| `Walletiz`         | **Vidéo complète** (9 scènes)| 69,5 s|
+| `00-Highlight`     | Ouverture — surlignage       | 6 s   |
+| `01-Title`         | Ce que Walletiz propose      | 7 s   |
+| `02-Feature-Push`  | Pilier — campagnes & push    | 9 s   |
+| `03-Stat`          | Grosse stat (+37 %)          | 7 s   |
+| `04-Feature-Stats` | Pilier — statistiques client | 9 s   |
+| `05-Gauge`         | Jauge d'engagement (82/100)  | 7 s   |
+| `06-Compare`       | Comparatif en barres         | 8 s   |
+| `07-Diagram`       | Schéma de la boucle          | 9 s   |
+| `08-Recap`         | Récapitulatif (3 leviers)    | 6 s   |
+| `09-Outro`         | Écran de fin / CTA           | 6 s   |
 
 ## Rendre une vidéo
 
 ```bash
-# mp4 (défaut)
-npx remotion render src/index.ts Main out/main.mp4
+# la vidéo complète (raccourci)
+npm run render:video
 
-# raccourci
-npm run render:main
+# une scène précise
+npx remotion render src/index.ts 03-Stat out/stat.mp4
 
-# image fixe
-npx remotion still src/index.ts TitleCard out/title.png
+# image fixe d'une scène
+npx remotion still src/index.ts 05-Gauge out/gauge.png
 
 # gif
-npx remotion render src/index.ts LogoReveal out/logo.gif --codec=gif
+npx remotion render src/index.ts 09-Outro out/outro.gif --codec=gif
 ```
 
 Les sorties vont dans `out/` (ignoré par git).
@@ -49,17 +59,21 @@ Les sorties vont dans `out/` (ignoré par git).
 
 ```
 remotion.config.ts     # Config de rendu
+script.md              # Script de la vidéo (VO + texte écran par section)
 src/design.ts          # Charte graphique (design tokens)
-src/index.ts           # Point d'entrée
+src/motion.ts          # Helpers d'animation dérivés de la charte
+src/content.ts         # Textes + durées des scènes (source unique)
+src/Walletiz.tsx       # Composition maître (enchaîne les 9 scènes)
 src/Root.tsx           # Catalogue des compositions
-src/compositions/      # Une animation = un fichier
+src/components/         # Primitives réutilisables (Frame, cartes, jauge, barres…)
+src/scenes/            # Une scène animée = un fichier
 lookbook/              # Planches HTML de validation d'identité
 ```
 
 ## Créer une nouvelle animation
 
-1. Ajouter un composant dans `src/compositions/`.
-2. L'enregistrer via une `<Composition />` dans `src/Root.tsx`.
+1. Réutiliser les primitives de `src/components/` (elles lisent `design.ts`).
+2. Créer une scène dans `src/scenes/`, l'enregistrer via `<Composition />` dans `src/Root.tsx`.
 3. Prévisualiser avec `npm run dev`, puis rendre.
 
 Guide détaillé et conventions : voir le skill **`.claude/skills/remotion/SKILL.md`**
