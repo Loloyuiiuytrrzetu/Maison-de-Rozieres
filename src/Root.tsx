@@ -3,6 +3,7 @@ import { Composition } from "remotion";
 import { FPS } from "./design";
 import { sceneContent, sceneSeconds, sec } from "./content";
 import { Walletiz, walletizDurationInFrames } from "./Walletiz";
+import { CityStory, cityStoryDurationInFrames } from "./scenes/CityStory";
 
 import { SceneHighlight, sceneHighlightSchema } from "./scenes/SceneHighlight";
 import { SceneTitle, sceneTitleSchema } from "./scenes/SceneTitle";
@@ -31,6 +32,16 @@ export const RemotionRoot: React.FC = () => {
         id="Walletiz"
         component={Walletiz}
         durationInFrames={walletizDurationInFrames}
+        fps={FPS}
+        width={W}
+        height={H}
+      />
+
+      {/* Séquence narrative (ville → commerces → push → QR) */}
+      <Composition
+        id="CityStory"
+        component={CityStory}
+        durationInFrames={cityStoryDurationInFrames}
         fps={FPS}
         width={W}
         height={H}
