@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Walletiz — Lien d'avis Google</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --card: #1e293b;
+        --accent: #4f46e5;
+        --accent-hover: #4338ca;
+        --text: #f1f5f9;
+        --muted: #94a3b8;
+        --border: #334155;
+        --ok: #22c55e;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        padding: 24px 16px;
+      }
+      .wrap { width: 100%; max-width: 480px; }
+      h1 { font-size: 1.5rem; margin: 0 0 4px; }
+      .sub { color: var(--muted); margin: 0 0 24px; font-size: 0.95rem; }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+      }
+      label { display: block; font-size: 0.85rem; color: var(--muted); margin: 12px 0 6px; }
+      input {
+        width: 100%;
+        padding: 14px;
+        font-size: 1rem;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: #0b1220;
+        color: var(--text);
+      }
+      input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+      button {
+        width: 100%;
+        margin-top: 18px;
+        padding: 14px;
+        font-size: 1rem;
+        font-weight: 600;
+        border: 0;
+        border-radius: 10px;
+        background: var(--accent);
+        color: white;
+        cursor: pointer;
+      }
+      button:hover { background: var(--accent-hover); }
+      button:disabled { opacity: 0.6; cursor: default; }
+      .msg { margin-top: 16px; font-size: 0.9rem; }
+      .msg.error { color: #f87171; }
+      .result {
+        margin-top: 18px;
+        padding: 16px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: #0b1220;
+      }
+      .result h3 { margin: 0 0 4px; font-size: 1.05rem; }
+      .result .addr { color: var(--muted); font-size: 0.85rem; margin: 0 0 14px; }
+      .actions { display: flex; flex-direction: column; gap: 10px; }
+      .btn-link {
+        display: block;
+        text-align: center;
+        text-decoration: none;
+        padding: 13px;
+        border-radius: 10px;
+        font-weight: 600;
+      }
+      .btn-open { background: var(--ok); color: #052e16; }
+      .btn-copy { background: transparent; color: var(--text); border: 1px solid var(--border); }
+      .others { margin-top: 16px; }
+      .others summary { color: var(--muted); cursor: pointer; font-size: 0.85rem; }
+      .other-item {
+        padding: 12px 0;
+        border-top: 1px solid var(--border);
+        font-size: 0.9rem;
+      }
+      .other-item a { color: #818cf8; }
+      .toast {
+        position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+        background: var(--ok); color: #052e16; padding: 10px 18px; border-radius: 999px;
+        font-weight: 600; font-size: 0.9rem; opacity: 0; transition: opacity 0.2s;
+      }
+      .toast.show { opacity: 1; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Lien d'avis Google</h1>
+      <p class="sub">Walletiz · usage interne — trouve le commerce et génère le lien direct « laisser un avis ».</p>
+
+      <div class="card">
+        <form id="form">
+          <label for="nom">Nom du commerce</label>
+          <input id="nom" name="nom" placeholder="Ex : Boulangerie Dupont" autocomplete="off" required />
+
+          <label for="ville">Ville</label>
+          <input id="ville" name="ville" placeholder="Ex : Lyon" autocomplete="off" required />
+
+          <button id="submit" type="submit">Générer le lien</button>
+        </form>
+
+        <div id="msg" class="msg"></div>
+        <div id="output"></div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast">Lien copié ✓</div>
+
+    <script>
+      const form = document.getElementById("form");
+      const submitBtn = document.getElementById("submit");
+      const msg = document.getElementById("msg");
+      const output = document.getElementById("output");
+      const toast = document.getElementById("toast");
+
+      function showToast(text) {
+        toast.textContent = text;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 1600);
+      }
+
+      async function copy(text) {
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast("Lien copié ✓");
+        } catch {
+          showToast("Impossible de copier");
+        }
+      }
+      // Expose pour les boutons générés dynamiquement.
+      window.__copy = copy;
+
+      function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, (c) => ({
+          "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+        }[c]));
+      }
+
+      function render(data) {
+        const best = data.best;
+        const others = data.results.slice(1);
+
+        let html = `
+          <div class="result">
+            <h3>${escapeHtml(best.nom)}</h3>
+            <p class="addr">${escapeHtml(best.adresse)}</p>
+            <div class="actions">
+              <a class="btn-link btn-open" href="${best.reviewLink}" target="_blank" rel="noopener">
+                Ouvrir la fenêtre d'avis
+              </a>
+              <button class="btn-link btn-copy" type="button" onclick="window.__copy('${best.reviewLink}')">
+                Copier le lien
+              </button>
+            </div>
+          </div>`;
+
+        if (others.length) {
+          html += `<details class="others"><summary>Ce n'est pas le bon ? Voir ${others.length} autre(s) résultat(s)</summary>`;
+          for (const o of others) {
+            html += `
+              <div class="other-item">
+                <strong>${escapeHtml(o.nom)}</strong><br />
+                <span class="addr">${escapeHtml(o.adresse)}</span><br />
+                <a href="${o.reviewLink}" target="_blank" rel="noopener">Ouvrir l'avis</a>
+                &nbsp;·&nbsp;
+                <a href="#" onclick="window.__copy('${o.reviewLink}');return false;">Copier</a>
+              </div>`;
+          }
+          html += `</details>`;
+        }
+        output.innerHTML = html;
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        msg.textContent = "";
+        msg.className = "msg";
+        output.innerHTML = "";
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Recherche…";
+
+        const nom = document.getElementById("nom").value.trim();
+        const ville = document.getElementById("ville").value.trim();
+
+        try {
+          const res = await fetch("/api/place", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nom, ville }),
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            msg.textContent = data.error || "Erreur inconnue.";
+            msg.className = "msg error";
+          } else {
+            render(data);
+          }
+        } catch (err) {
+          msg.textContent = "Problème de connexion : " + err.message;
+          msg.className = "msg error";
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Générer le lien";
+        }
+      });
+    </script>
+  </body>
+</html>

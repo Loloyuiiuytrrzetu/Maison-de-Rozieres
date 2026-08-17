@@ -1,0 +1,13 @@
+{
+  "name": "walletiz-review-link",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Génère un lien direct d'avis Google à partir d'un nom de commerce + ville (usage interne Walletiz).",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "vercel dev"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
