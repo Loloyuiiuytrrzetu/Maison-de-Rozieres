@@ -14,43 +14,34 @@
         --muted: #94a3b8;
         --border: #334155;
         --ok: #22c55e;
-        --called: #7f1d1d;
         --called-border: #ef4444;
       }
       * { box-sizing: border-box; }
       body {
         margin: 0;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        padding: 20px 14px 60px;
+        background: var(--bg); color: var(--text); min-height: 100vh;
+        display: flex; justify-content: center; padding: 20px 14px 60px;
       }
       .wrap { width: 100%; max-width: 560px; }
       h1 { font-size: 1.4rem; margin: 0 0 4px; }
       .sub { color: var(--muted); margin: 0 0 18px; font-size: 0.9rem; }
 
-      /* Onglets */
-      .tabs { display: flex; gap: 8px; margin-bottom: 18px; }
+      .tabs { display: flex; gap: 6px; margin-bottom: 18px; }
       .tab {
-        flex: 1; padding: 12px; border-radius: 10px; border: 1px solid var(--border);
-        background: var(--card); color: var(--muted); font-weight: 600; font-size: 0.95rem;
+        flex: 1; padding: 11px 6px; border-radius: 10px; border: 1px solid var(--border);
+        background: var(--card); color: var(--muted); font-weight: 600; font-size: 0.85rem;
         cursor: pointer; text-align: center;
       }
       .tab.active { background: var(--accent); color: white; border-color: var(--accent); }
 
-      .card {
-        background: var(--card); border: 1px solid var(--border);
-        border-radius: 16px; padding: 18px;
-      }
+      .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 18px; }
       label { display: block; font-size: 0.82rem; color: var(--muted); margin: 12px 0 6px; }
-      input {
+      input, select {
         width: 100%; padding: 13px; font-size: 1rem; border-radius: 10px;
         border: 1px solid var(--border); background: #0b1220; color: var(--text);
       }
-      input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+      input:focus, select:focus { outline: 2px solid var(--accent); border-color: transparent; }
       button.primary {
         width: 100%; margin-top: 16px; padding: 14px; font-size: 1rem; font-weight: 600;
         border: 0; border-radius: 10px; background: var(--accent); color: white; cursor: pointer;
@@ -59,55 +50,37 @@
       button.primary:disabled { opacity: 0.6; cursor: default; }
       .msg { margin-top: 14px; font-size: 0.9rem; }
       .msg.error { color: #f87171; }
-
+      .hint { font-size: 0.8rem; color: var(--muted); margin-top: 10px; }
       .hidden { display: none; }
 
       /* Mode avis */
-      .result {
-        margin-top: 16px; padding: 15px; border: 1px solid var(--border);
-        border-radius: 12px; background: #0b1220;
-      }
+      .result { margin-top: 16px; padding: 15px; border: 1px solid var(--border); border-radius: 12px; background: #0b1220; }
       .result h3 { margin: 0 0 4px; font-size: 1.05rem; }
       .result .addr { color: var(--muted); font-size: 0.85rem; margin: 0 0 12px; }
       .actions { display: flex; flex-direction: column; gap: 10px; }
-      .btn-link {
-        display: block; text-align: center; text-decoration: none; padding: 12px;
-        border-radius: 10px; font-weight: 600;
-      }
+      .btn-link { display: block; text-align: center; text-decoration: none; padding: 12px; border-radius: 10px; font-weight: 600; }
       .btn-open { background: var(--ok); color: #052e16; }
       .btn-copy { background: transparent; color: var(--text); border: 1px solid var(--border); cursor: pointer; }
 
-      /* Mode prospection */
-      .counter { margin: 14px 0 8px; font-size: 0.9rem; color: var(--muted); display: flex; justify-content: space-between; align-items: center; }
+      /* Listes prospection / feed */
+      .counter { margin: 14px 0 8px; font-size: 0.9rem; color: var(--muted); display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
       .toolbar { display: flex; gap: 8px; align-items: center; }
-      .chip {
-        font-size: 0.78rem; padding: 6px 10px; border-radius: 999px;
-        border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer;
-      }
+      .chip { font-size: 0.78rem; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; }
       .chip.on { background: var(--accent); color: white; border-color: var(--accent); }
-      .biz {
-        margin-top: 10px; padding: 14px; border: 1px solid var(--border);
-        border-left: 4px solid var(--border); border-radius: 12px; background: #0b1220;
-      }
+      .biz { margin-top: 10px; padding: 14px; border: 1px solid var(--border); border-left: 4px solid var(--border); border-radius: 12px; background: #0b1220; }
       .biz.called { background: #1a0f14; border-left-color: var(--called-border); }
       .biz-head { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
       .biz h4 { margin: 0 0 3px; font-size: 1rem; }
-      .biz .addr { color: var(--muted); font-size: 0.8rem; margin: 0 0 10px; }
+      .biz .addr { color: var(--muted); font-size: 0.8rem; margin: 0 0 8px; }
+      .cat-tag { display: inline-block; font-size: 0.72rem; color: #c7d2fe; background: rgba(79,70,229,0.2); padding: 2px 8px; border-radius: 999px; margin-bottom: 8px; text-transform: capitalize; }
       .biz-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-      .biz a.call {
-        text-decoration: none; background: var(--ok); color: #052e16; font-weight: 700;
-        padding: 10px 14px; border-radius: 10px; font-size: 0.9rem;
-      }
-      .biz a.site {
-        text-decoration: none; color: #818cf8; border: 1px solid var(--border);
-        padding: 10px 12px; border-radius: 10px; font-size: 0.85rem;
-      }
-      .biz a.avis {
-        text-decoration: none; color: var(--text); border: 1px solid var(--border);
-        padding: 10px 12px; border-radius: 10px; font-size: 0.85rem;
-      }
+      .biz a.call { text-decoration: none; background: var(--ok); color: #052e16; font-weight: 700; padding: 10px 14px; border-radius: 10px; font-size: 0.9rem; }
+      .biz a.site { text-decoration: none; color: #818cf8; border: 1px solid var(--border); padding: 10px 12px; border-radius: 10px; font-size: 0.85rem; }
+      .biz a.avis { text-decoration: none; color: var(--text); border: 1px solid var(--border); padding: 10px 12px; border-radius: 10px; font-size: 0.85rem; }
       .no-site { color: var(--muted); font-size: 0.8rem; border: 1px dashed var(--border); padding: 9px 12px; border-radius: 10px; }
       .no-tel { color: #f87171; font-size: 0.82rem; }
+      .call-toggle { border: 1px solid var(--border); background: transparent; color: var(--muted); border-radius: 10px; padding: 8px 12px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
+      .biz.called .call-toggle { background: var(--called-border); color: white; border-color: var(--called-border); }
 
       .status { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 0 0 10px; }
       .badge { font-size: 0.78rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
@@ -121,17 +94,8 @@
       .hours-details ul { margin: 8px 0 0; padding-left: 18px; }
       .hours-details li { font-size: 0.8rem; color: var(--muted); margin: 2px 0; }
       .hours-details li.is-today { color: var(--text); font-weight: 600; }
-      .call-toggle {
-        border: 1px solid var(--border); background: transparent; color: var(--muted);
-        border-radius: 10px; padding: 8px 12px; font-size: 0.85rem; cursor: pointer; white-space: nowrap;
-      }
-      .biz.called .call-toggle { background: var(--called-border); color: white; border-color: var(--called-border); }
 
-      .toast {
-        position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-        background: var(--ok); color: #052e16; padding: 10px 18px; border-radius: 999px;
-        font-weight: 600; font-size: 0.9rem; opacity: 0; transition: opacity 0.2s; pointer-events: none;
-      }
+      .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ok); color: #052e16; padding: 10px 18px; border-radius: 999px; font-weight: 600; font-size: 0.9rem; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
       .toast.show { opacity: 1; }
     </style>
   </head>
@@ -141,8 +105,9 @@
       <p class="sub">Outil interne — avis Google & prospection.</p>
 
       <div class="tabs">
-        <div class="tab active" id="tab-avis" onclick="switchMode('avis')">⭐ Lien d'avis</div>
+        <div class="tab active" id="tab-avis" onclick="switchMode('avis')">⭐ Avis</div>
         <div class="tab" id="tab-pros" onclick="switchMode('pros')">📞 Prospection</div>
+        <div class="tab" id="tab-feed" onclick="switchMode('feed')">🎯 Sans site</div>
       </div>
 
       <!-- ============ MODE AVIS ============ -->
@@ -163,20 +128,38 @@
         <form id="form-pros">
           <label for="metier">Métier / type de commerce</label>
           <input id="metier" placeholder="Ex : coiffeur, institut de beauté" autocomplete="off" required />
-          <label for="zone">Zone</label>
-          <input id="zone" value="Guadeloupe" autocomplete="off" />
+          <label for="zone-select-pros">Zone</label>
+          <select id="zone-select-pros" onchange="onZoneSelect('pros')"></select>
+          <input id="zone-pros" class="hidden" placeholder="Tape une ville / zone" autocomplete="off" style="margin-top:8px" />
           <button class="primary" type="submit" id="btn-pros">Rechercher</button>
         </form>
         <div id="msg-pros" class="msg"></div>
-
-        <div id="counter" class="counter hidden">
-          <span id="counter-text"></span>
+        <div id="counter-pros" class="counter hidden">
+          <span id="counter-text-pros"></span>
           <span class="toolbar">
-            <button type="button" class="chip on" id="chip-sort" onclick="toggleSort()">Appelés en haut</button>
-            <button type="button" class="chip" id="chip-hide" onclick="toggleHideCalled()">Masquer appelés</button>
+            <button type="button" class="chip on" id="chip-sort-pros">Appelés en haut</button>
+            <button type="button" class="chip" id="chip-hide-pros">Masquer appelés</button>
           </span>
         </div>
         <div id="out-pros"></div>
+      </div>
+
+      <!-- ============ MODE SANS SITE (feed du jour) ============ -->
+      <div id="mode-feed" class="card hidden">
+        <p style="margin:0 0 4px;font-weight:600">🎯 Opportunités du jour</p>
+        <p class="hint" style="margin-top:0">Commerces <b>sans site web</b> et <b>ouverts maintenant</b>. La liste change chaque jour. Quand tu appelles quelqu'un, coche « Appelé » — il disparaît de la liste.</p>
+        <label for="zone-select-feed">Zone</label>
+        <select id="zone-select-feed" onchange="onZoneSelect('feed')"></select>
+        <input id="zone-feed" class="hidden" placeholder="Tape une ville / zone" autocomplete="off" style="margin-top:8px" />
+        <button class="primary" type="button" id="btn-feed">Charger la liste du jour</button>
+        <div id="msg-feed" class="msg"></div>
+        <div id="counter-feed" class="counter hidden">
+          <span id="counter-text-feed"></span>
+          <span class="toolbar">
+            <button type="button" class="chip on" id="chip-hide-feed">Masquer appelés</button>
+          </span>
+        </div>
+        <div id="out-feed"></div>
       </div>
     </div>
 
@@ -184,37 +167,114 @@
 
     <script>
       /* ---------- Utilitaires ---------- */
+      const ZONES = ["Guadeloupe", "Martinique", "Guyane", "La Réunion", "Mayotte", "France", "Autre…"];
       const toast = document.getElementById("toast");
-      function showToast(t) {
-        toast.textContent = t; toast.classList.add("show");
-        setTimeout(() => toast.classList.remove("show"), 1500);
-      }
+      function showToast(t) { toast.textContent = t; toast.classList.add("show"); setTimeout(() => toast.classList.remove("show"), 1500); }
       function esc(s) {
-        return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({
-          "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
-        }[c]));
+        return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
       }
-      async function copy(text) {
-        try { await navigator.clipboard.writeText(text); showToast("Lien copié ✓"); }
-        catch { showToast("Copie impossible"); }
-      }
+      async function copy(text) { try { await navigator.clipboard.writeText(text); showToast("Lien copié ✓"); } catch { showToast("Copie impossible"); } }
       window.__copy = copy;
+      function todayIndex() { return (new Date().getDay() + 6) % 7; }
+
+      /* ---------- Zones (menus déroulants) ---------- */
+      function fillZoneSelect(id) {
+        const sel = document.getElementById(id);
+        sel.innerHTML = ZONES.map((z) => `<option value="${esc(z)}">${esc(z)}</option>`).join("");
+      }
+      fillZoneSelect("zone-select-pros");
+      fillZoneSelect("zone-select-feed");
+      function onZoneSelect(kind) {
+        const sel = document.getElementById(`zone-select-${kind}`);
+        const txt = document.getElementById(`zone-${kind}`);
+        txt.classList.toggle("hidden", sel.value !== "Autre…");
+        if (sel.value === "Autre…") txt.focus();
+      }
+      function resolvedZone(kind) {
+        const sel = document.getElementById(`zone-select-${kind}`);
+        if (sel.value === "Autre…") return (document.getElementById(`zone-${kind}`).value.trim() || "Guadeloupe");
+        return sel.value;
+      }
 
       /* ---------- Onglets ---------- */
       function switchMode(mode) {
-        const avis = mode === "avis";
-        document.getElementById("mode-avis").classList.toggle("hidden", !avis);
-        document.getElementById("mode-pros").classList.toggle("hidden", avis);
-        document.getElementById("tab-avis").classList.toggle("active", avis);
-        document.getElementById("tab-pros").classList.toggle("active", !avis);
+        for (const m of ["avis", "pros", "feed"]) {
+          document.getElementById("mode-" + m).classList.toggle("hidden", m !== mode);
+          document.getElementById("tab-" + m).classList.toggle("active", m === mode);
+        }
+      }
+
+      /* ---------- Suivi des « déjà appelés » ---------- */
+      const STORE_KEY = "pixcard_called";
+      function loadCalled() { try { return JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); } catch { return {}; } }
+      function saveCalled(o) { try { localStorage.setItem(STORE_KEY, JSON.stringify(o)); } catch {} }
+      let called = loadCalled();
+      function isCalled(id) { return !!called[id]; }
+      function toggleCalled(id) {
+        if (called[id]) delete called[id]; else called[id] = true;
+        saveCalled(called);
+        renderPros(); renderFeed();
+      }
+      window.__toggleCalled = toggleCalled;
+
+      /* ---------- Rendu partagé d'une fiche commerce ---------- */
+      function statusHtml(b) {
+        let badge;
+        if (b.businessStatus === "CLOSED_PERMANENTLY") badge = `<span class="badge perm">Fermé définitivement</span>`;
+        else if (b.businessStatus === "CLOSED_TEMPORARILY") badge = `<span class="badge perm">Fermé temporairement</span>`;
+        else if (b.openNow === true) badge = `<span class="badge open">🟢 Ouvert</span>`;
+        else if (b.openNow === false) badge = `<span class="badge closed">🔴 Fermé</span>`;
+        else badge = `<span class="badge unknown">Horaires inconnus</span>`;
+
+        let today = "", details = "";
+        if (Array.isArray(b.hours) && b.hours.length) {
+          const ti = todayIndex();
+          const line = b.hours[ti] || "";
+          const th = line.includes(":") ? line.slice(line.indexOf(":") + 1).trim() : line;
+          today = `<span class="today">Aujourd'hui : ${esc(th)}</span>`;
+          details = `<details class="hours-details"><summary>Voir la semaine</summary><ul>` +
+            b.hours.map((h, i) => `<li class="${i === ti ? "is-today" : ""}">${esc(h)}</li>`).join("") + `</ul></details>`;
+        }
+        return `<div class="status">${badge}${today}</div>${details}`;
+      }
+
+      function bizCardHtml(b) {
+        const done = isCalled(b.placeId);
+        const tel = b.telephone
+          ? `<a class="call" href="${esc(b.telLink)}">📞 ${esc(b.telephone)}</a>`
+          : `<span class="no-tel">Pas de numéro</span>`;
+        const site = b.website
+          ? `<a class="site" href="${esc(b.website)}" target="_blank" rel="noopener">🌐 Site</a>`
+          : `<span class="no-site">Pas de site</span>`;
+        const cat = b.categorie ? `<div class="cat-tag">${esc(b.categorie)}</div>` : "";
+        return `
+          <div class="biz ${done ? "called" : ""}">
+            <div class="biz-head">
+              <div>
+                <h4>${esc(b.nom)}</h4>
+                ${cat}
+                <p class="addr">${esc(b.adresse)}</p>
+              </div>
+              <button class="call-toggle" type="button" onclick="window.__toggleCalled('${esc(b.placeId)}')">
+                ${done ? "✓ Appelé" : "Appelé ?"}
+              </button>
+            </div>
+            ${statusHtml(b)}
+            <div class="biz-row">${tel}${site}<a class="avis" href="${b.reviewLink}" target="_blank" rel="noopener">⭐ Avis</a></div>
+          </div>`;
+      }
+
+      function sortByCalled(results, calledTop) {
+        return results.map((b, i) => ({ b, i })).sort((x, y) => {
+          const cx = isCalled(x.b.placeId) ? 1 : 0, cy = isCalled(y.b.placeId) ? 1 : 0;
+          if (cx !== cy) return calledTop ? cy - cx : cx - cy;
+          return x.i - y.i;
+        }).map((o) => o.b);
       }
 
       /* ================= MODE AVIS ================= */
-      const formAvis = document.getElementById("form-avis");
-      const btnAvis = document.getElementById("btn-avis");
-      const msgAvis = document.getElementById("msg-avis");
-      const outAvis = document.getElementById("out-avis");
-
+      const formAvis = document.getElementById("form-avis"), btnAvis = document.getElementById("btn-avis");
+      const msgAvis = document.getElementById("msg-avis"), outAvis = document.getElementById("out-avis");
       formAvis.addEventListener("submit", async (e) => {
         e.preventDefault();
         msgAvis.textContent = ""; msgAvis.className = "msg"; outAvis.innerHTML = "";
@@ -222,31 +282,21 @@
         try {
           const res = await fetch("/api/place", {
             method: "POST", headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              nom: document.getElementById("nom").value.trim(),
-              ville: document.getElementById("ville").value.trim(),
-            }),
+            body: JSON.stringify({ nom: document.getElementById("nom").value.trim(), ville: document.getElementById("ville").value.trim() }),
           });
           const data = await res.json();
           if (!res.ok) { msgAvis.textContent = data.error || "Erreur."; msgAvis.className = "msg error"; }
           else renderAvis(data);
-        } catch (err) {
-          msgAvis.textContent = "Problème de connexion : " + err.message; msgAvis.className = "msg error";
-        } finally { btnAvis.disabled = false; btnAvis.textContent = "Générer le lien d'avis"; }
+        } catch (err) { msgAvis.textContent = "Problème de connexion : " + err.message; msgAvis.className = "msg error"; }
+        finally { btnAvis.disabled = false; btnAvis.textContent = "Générer le lien d'avis"; }
       });
-
       function renderAvis(data) {
-        const b = data.best;
-        const others = data.results.slice(1);
-        let html = `
-          <div class="result">
-            <h3>${esc(b.nom)}</h3>
-            <p class="addr">${esc(b.adresse)}</p>
-            <div class="actions">
-              <a class="btn-link btn-open" href="${b.reviewLink}" target="_blank" rel="noopener">Ouvrir la fenêtre d'avis</a>
-              <button class="btn-link btn-copy" type="button" onclick="window.__copy('${b.reviewLink}')">Copier le lien</button>
-            </div>
-          </div>`;
+        const b = data.best, others = data.results.slice(1);
+        let html = `<div class="result"><h3>${esc(b.nom)}</h3><p class="addr">${esc(b.adresse)}</p>
+          <div class="actions">
+            <a class="btn-link btn-open" href="${b.reviewLink}" target="_blank" rel="noopener">Ouvrir la fenêtre d'avis</a>
+            <button class="btn-link btn-copy" type="button" onclick="window.__copy('${b.reviewLink}')">Copier le lien</button>
+          </div></div>`;
         if (others.length) {
           html += `<details style="margin-top:14px"><summary style="color:var(--muted);cursor:pointer;font-size:0.85rem">Pas le bon ? Voir ${others.length} autre(s)</summary>`;
           for (const o of others) {
@@ -262,156 +312,82 @@
       }
 
       /* ================= MODE PROSPECTION ================= */
-      const formPros = document.getElementById("form-pros");
-      const btnPros = document.getElementById("btn-pros");
-      const msgPros = document.getElementById("msg-pros");
-      const outPros = document.getElementById("out-pros");
-      const counter = document.getElementById("counter");
-      const counterText = document.getElementById("counter-text");
-      const chipHide = document.getElementById("chip-hide");
+      const formPros = document.getElementById("form-pros"), btnPros = document.getElementById("btn-pros");
+      const msgPros = document.getElementById("msg-pros"), outPros = document.getElementById("out-pros");
+      const counterPros = document.getElementById("counter-pros"), counterTextPros = document.getElementById("counter-text-pros");
+      const chipSortPros = document.getElementById("chip-sort-pros"), chipHidePros = document.getElementById("chip-hide-pros");
+      let prosResults = [], prosHide = false, prosCalledTop = true;
 
-      let currentResults = [];
-      let hideCalled = false;
-      let calledTop = true; // appelés regroupés en haut (sinon en bas)
-
-      // Suivi des « déjà appelés » — mémorisé dans le navigateur.
-      const STORE_KEY = "pixcard_called";
-      function loadCalled() {
-        try { return JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); } catch { return {}; }
-      }
-      function saveCalled(obj) {
-        try { localStorage.setItem(STORE_KEY, JSON.stringify(obj)); } catch {}
-      }
-      let called = loadCalled();
-
-      function isCalled(id) { return !!called[id]; }
-      function toggleCalled(id) {
-        if (called[id]) delete called[id]; else called[id] = true;
-        saveCalled(called);
-        renderPros();
-      }
-      window.__toggleCalled = toggleCalled;
-
-      function toggleHideCalled() {
-        hideCalled = !hideCalled;
-        chipHide.classList.toggle("on", hideCalled);
-        renderPros();
-      }
-
-      const chipSort = document.getElementById("chip-sort");
-      function toggleSort() {
-        calledTop = !calledTop;
-        chipSort.classList.toggle("on", calledTop);
-        chipSort.textContent = calledTop ? "Appelés en haut" : "Appelés en bas";
-        renderPros();
-      }
-
-      // Renvoie l'index (0=lundi … 6=dimanche) du jour actuel, côté client
-      // (donc dans le fuseau de l'utilisateur).
-      function todayIndex() {
-        return (new Date().getDay() + 6) % 7; // getDay: 0=dimanche
-      }
+      chipSortPros.onclick = () => { prosCalledTop = !prosCalledTop; chipSortPros.classList.toggle("on", prosCalledTop); chipSortPros.textContent = prosCalledTop ? "Appelés en haut" : "Appelés en bas"; renderPros(); };
+      chipHidePros.onclick = () => { prosHide = !prosHide; chipHidePros.classList.toggle("on", prosHide); renderPros(); };
 
       formPros.addEventListener("submit", async (e) => {
         e.preventDefault();
-        msgPros.textContent = ""; msgPros.className = "msg"; outPros.innerHTML = "";
-        counter.classList.add("hidden");
+        msgPros.textContent = ""; msgPros.className = "msg"; outPros.innerHTML = ""; counterPros.classList.add("hidden");
         btnPros.disabled = true; btnPros.textContent = "Recherche…";
         try {
           const res = await fetch("/api/search", {
             method: "POST", headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              metier: document.getElementById("metier").value.trim(),
-              zone: document.getElementById("zone").value.trim() || "Guadeloupe",
-            }),
+            body: JSON.stringify({ metier: document.getElementById("metier").value.trim(), zone: resolvedZone("pros") }),
           });
           const data = await res.json();
           if (!res.ok) { msgPros.textContent = data.error || "Erreur."; msgPros.className = "msg error"; }
-          else {
-            currentResults = data.results || [];
-            if (currentResults.length === 0) { msgPros.textContent = "Aucun résultat."; msgPros.className = "msg error"; }
-            renderPros();
-          }
-        } catch (err) {
-          msgPros.textContent = "Problème de connexion : " + err.message; msgPros.className = "msg error";
-        } finally { btnPros.disabled = false; btnPros.textContent = "Rechercher"; }
+          else { prosResults = data.results || []; if (!prosResults.length) { msgPros.textContent = "Aucun résultat."; msgPros.className = "msg error"; } renderPros(); }
+        } catch (err) { msgPros.textContent = "Problème de connexion : " + err.message; msgPros.className = "msg error"; }
+        finally { btnPros.disabled = false; btnPros.textContent = "Rechercher"; }
       });
 
-      function statusHtml(b) {
-        // Badge Ouvert / Fermé + horaires du jour + détail semaine.
-        let badge = "";
-        if (b.businessStatus === "CLOSED_PERMANENTLY") {
-          badge = `<span class="badge perm">Fermé définitivement</span>`;
-        } else if (b.businessStatus === "CLOSED_TEMPORARILY") {
-          badge = `<span class="badge perm">Fermé temporairement</span>`;
-        } else if (b.openNow === true) {
-          badge = `<span class="badge open">🟢 Ouvert</span>`;
-        } else if (b.openNow === false) {
-          badge = `<span class="badge closed">🔴 Fermé</span>`;
-        } else {
-          badge = `<span class="badge unknown">Horaires inconnus</span>`;
-        }
-
-        let today = "";
-        let details = "";
-        if (Array.isArray(b.hours) && b.hours.length) {
-          const ti = todayIndex();
-          const line = b.hours[ti] || "";
-          // On enlève le nom du jour au début (avant les deux-points).
-          const todayHours = line.includes(":") ? line.slice(line.indexOf(":") + 1).trim() : line;
-          today = `<span class="today">Aujourd'hui : ${esc(todayHours)}</span>`;
-          details = `<details class="hours-details"><summary>Voir la semaine</summary><ul>` +
-            b.hours.map((h, i) => `<li class="${i === ti ? "is-today" : ""}">${esc(h)}</li>`).join("") +
-            `</ul></details>`;
-        }
-        return `<div class="status">${badge}${today}</div>${details}`;
+      function renderPros() {
+        if (!prosResults.length) { counterPros.classList.add("hidden"); outPros.innerHTML = ""; return; }
+        const nb = prosResults.filter((b) => isCalled(b.placeId)).length;
+        counterPros.classList.remove("hidden");
+        counterTextPros.textContent = `${prosResults.length} résultats · ${nb} appelé(s)`;
+        const list = sortByCalled(prosResults, prosCalledTop);
+        let html = "";
+        for (const b of list) { if (prosHide && isCalled(b.placeId)) continue; html += bizCardHtml(b); }
+        outPros.innerHTML = html || `<p class="sub">Tous les résultats sont masqués (déjà appelés).</p>`;
       }
 
-      function renderPros() {
-        if (currentResults.length === 0) { counter.classList.add("hidden"); outPros.innerHTML = ""; return; }
-        const nbCalled = currentResults.filter((b) => isCalled(b.placeId)).length;
-        counter.classList.remove("hidden");
-        counterText.textContent = `${currentResults.length} résultats · ${nbCalled} appelé(s)`;
+      /* ================= MODE SANS SITE (feed) ================= */
+      const btnFeed = document.getElementById("btn-feed");
+      const msgFeed = document.getElementById("msg-feed"), outFeed = document.getElementById("out-feed");
+      const counterFeed = document.getElementById("counter-feed"), counterTextFeed = document.getElementById("counter-text-feed");
+      const chipHideFeed = document.getElementById("chip-hide-feed");
+      let feedResults = [], feedHide = true; // par défaut on masque les appelés
 
-        // Tri stable : on regroupe les appelés (en haut ou en bas), en gardant
-        // l'ordre de Google à l'intérieur de chaque groupe.
-        const list = currentResults.map((b, i) => ({ b, i })).sort((x, y) => {
-          const cx = isCalled(x.b.placeId) ? 1 : 0;
-          const cy = isCalled(y.b.placeId) ? 1 : 0;
-          if (cx !== cy) return calledTop ? cy - cx : cx - cy;
-          return x.i - y.i;
-        }).map((o) => o.b);
+      chipHideFeed.classList.toggle("on", feedHide);
+      chipHideFeed.onclick = () => { feedHide = !feedHide; chipHideFeed.classList.toggle("on", feedHide); renderFeed(); };
 
+      btnFeed.addEventListener("click", async () => {
+        msgFeed.textContent = ""; msgFeed.className = "msg"; outFeed.innerHTML = ""; counterFeed.classList.add("hidden");
+        btnFeed.disabled = true; btnFeed.textContent = "Chargement…";
+        try {
+          const res = await fetch("/api/feed", {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ zone: resolvedZone("feed") }),
+          });
+          const data = await res.json();
+          if (!res.ok) { msgFeed.textContent = data.error || "Erreur."; msgFeed.className = "msg error"; }
+          else {
+            feedResults = data.results || [];
+            if (!feedResults.length) { msgFeed.textContent = "Aucune opportunité ouverte trouvée pour l'instant. Réessaie plus tard ou change de zone."; msgFeed.className = "msg"; }
+            renderFeed();
+          }
+        } catch (err) { msgFeed.textContent = "Problème de connexion : " + err.message; msgFeed.className = "msg error"; }
+        finally { btnFeed.disabled = false; btnFeed.textContent = "Charger la liste du jour"; }
+      });
+
+      function renderFeed() {
+        if (!feedResults.length) { counterFeed.classList.add("hidden"); return; }
+        const nb = feedResults.filter((b) => isCalled(b.placeId)).length;
+        const reste = feedResults.length - nb;
+        counterFeed.classList.remove("hidden");
+        counterTextFeed.textContent = `${reste} à appeler · ${nb} fait(s)`;
+        // Les appelés vont en bas (ordre du feed déjà mélangé par le serveur).
+        const list = sortByCalled(feedResults, false);
         let html = "";
-        for (const b of list) {
-          const done = isCalled(b.placeId);
-          if (hideCalled && done) continue;
-          const tel = b.telephone
-            ? `<a class="call" href="${esc(b.telLink)}">📞 ${esc(b.telephone)}</a>`
-            : `<span class="no-tel">Pas de numéro</span>`;
-          const site = b.website
-            ? `<a class="site" href="${esc(b.website)}" target="_blank" rel="noopener">🌐 Site</a>`
-            : `<span class="no-site">Pas de site</span>`;
-          html += `
-            <div class="biz ${done ? "called" : ""}">
-              <div class="biz-head">
-                <div>
-                  <h4>${esc(b.nom)}</h4>
-                  <p class="addr">${esc(b.adresse)}</p>
-                </div>
-                <button class="call-toggle" type="button" onclick="window.__toggleCalled('${esc(b.placeId)}')">
-                  ${done ? "✓ Appelé" : "Appelé ?"}
-                </button>
-              </div>
-              ${statusHtml(b)}
-              <div class="biz-row">
-                ${tel}
-                ${site}
-                <a class="avis" href="${b.reviewLink}" target="_blank" rel="noopener">⭐ Avis</a>
-              </div>
-            </div>`;
-        }
-        outPros.innerHTML = html || `<p class="sub">Tous les résultats sont masqués (déjà appelés).</p>`;
+        for (const b of list) { if (feedHide && isCalled(b.placeId)) continue; html += bizCardHtml(b); }
+        outFeed.innerHTML = html || `<p class="sub">Tout est fait pour aujourd'hui 🎉 Reviens demain pour une nouvelle liste.</p>`;
       }
     </script>
   </body>
