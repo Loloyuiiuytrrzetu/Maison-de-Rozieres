@@ -108,6 +108,19 @@
       }
       .no-site { color: var(--muted); font-size: 0.8rem; border: 1px dashed var(--border); padding: 9px 12px; border-radius: 10px; }
       .no-tel { color: #f87171; font-size: 0.82rem; }
+
+      .status { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 0 0 10px; }
+      .badge { font-size: 0.78rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+      .badge.open { background: rgba(34,197,94,0.15); color: #4ade80; }
+      .badge.closed { background: rgba(239,68,68,0.15); color: #f87171; }
+      .badge.unknown { background: rgba(148,163,184,0.15); color: var(--muted); }
+      .badge.perm { background: rgba(239,68,68,0.15); color: #f87171; }
+      .today { font-size: 0.8rem; color: var(--muted); }
+      .hours-details { margin-top: 8px; }
+      .hours-details summary { color: var(--muted); font-size: 0.78rem; cursor: pointer; }
+      .hours-details ul { margin: 8px 0 0; padding-left: 18px; }
+      .hours-details li { font-size: 0.8rem; color: var(--muted); margin: 2px 0; }
+      .hours-details li.is-today { color: var(--text); font-weight: 600; }
       .call-toggle {
         border: 1px solid var(--border); background: transparent; color: var(--muted);
         border-radius: 10px; padding: 8px 12px; font-size: 0.85rem; cursor: pointer; white-space: nowrap;
@@ -159,6 +172,7 @@
         <div id="counter" class="counter hidden">
           <span id="counter-text"></span>
           <span class="toolbar">
+            <button type="button" class="chip on" id="chip-sort" onclick="toggleSort()">Appelés en haut</button>
             <button type="button" class="chip" id="chip-hide" onclick="toggleHideCalled()">Masquer appelés</button>
           </span>
         </div>
@@ -258,6 +272,7 @@
 
       let currentResults = [];
       let hideCalled = false;
+      let calledTop = true; // appelés regroupés en haut (sinon en bas)
 
       // Suivi des « déjà appelés » — mémorisé dans le navigateur.
       const STORE_KEY = "pixcard_called";
@@ -281,6 +296,20 @@
         hideCalled = !hideCalled;
         chipHide.classList.toggle("on", hideCalled);
         renderPros();
+      }
+
+      const chipSort = document.getElementById("chip-sort");
+      function toggleSort() {
+        calledTop = !calledTop;
+        chipSort.classList.toggle("on", calledTop);
+        chipSort.textContent = calledTop ? "Appelés en haut" : "Appelés en bas";
+        renderPros();
+      }
+
+      // Renvoie l'index (0=lundi … 6=dimanche) du jour actuel, côté client
+      // (donc dans le fuseau de l'utilisateur).
+      function todayIndex() {
+        return (new Date().getDay() + 6) % 7; // getDay: 0=dimanche
       }
 
       formPros.addEventListener("submit", async (e) => {
@@ -308,14 +337,53 @@
         } finally { btnPros.disabled = false; btnPros.textContent = "Rechercher"; }
       });
 
+      function statusHtml(b) {
+        // Badge Ouvert / Fermé + horaires du jour + détail semaine.
+        let badge = "";
+        if (b.businessStatus === "CLOSED_PERMANENTLY") {
+          badge = `<span class="badge perm">Fermé définitivement</span>`;
+        } else if (b.businessStatus === "CLOSED_TEMPORARILY") {
+          badge = `<span class="badge perm">Fermé temporairement</span>`;
+        } else if (b.openNow === true) {
+          badge = `<span class="badge open">🟢 Ouvert</span>`;
+        } else if (b.openNow === false) {
+          badge = `<span class="badge closed">🔴 Fermé</span>`;
+        } else {
+          badge = `<span class="badge unknown">Horaires inconnus</span>`;
+        }
+
+        let today = "";
+        let details = "";
+        if (Array.isArray(b.hours) && b.hours.length) {
+          const ti = todayIndex();
+          const line = b.hours[ti] || "";
+          // On enlève le nom du jour au début (avant les deux-points).
+          const todayHours = line.includes(":") ? line.slice(line.indexOf(":") + 1).trim() : line;
+          today = `<span class="today">Aujourd'hui : ${esc(todayHours)}</span>`;
+          details = `<details class="hours-details"><summary>Voir la semaine</summary><ul>` +
+            b.hours.map((h, i) => `<li class="${i === ti ? "is-today" : ""}">${esc(h)}</li>`).join("") +
+            `</ul></details>`;
+        }
+        return `<div class="status">${badge}${today}</div>${details}`;
+      }
+
       function renderPros() {
         if (currentResults.length === 0) { counter.classList.add("hidden"); outPros.innerHTML = ""; return; }
         const nbCalled = currentResults.filter((b) => isCalled(b.placeId)).length;
         counter.classList.remove("hidden");
         counterText.textContent = `${currentResults.length} résultats · ${nbCalled} appelé(s)`;
 
+        // Tri stable : on regroupe les appelés (en haut ou en bas), en gardant
+        // l'ordre de Google à l'intérieur de chaque groupe.
+        const list = currentResults.map((b, i) => ({ b, i })).sort((x, y) => {
+          const cx = isCalled(x.b.placeId) ? 1 : 0;
+          const cy = isCalled(y.b.placeId) ? 1 : 0;
+          if (cx !== cy) return calledTop ? cy - cx : cx - cy;
+          return x.i - y.i;
+        }).map((o) => o.b);
+
         let html = "";
-        for (const b of currentResults) {
+        for (const b of list) {
           const done = isCalled(b.placeId);
           if (hideCalled && done) continue;
           const tel = b.telephone
@@ -335,6 +403,7 @@
                   ${done ? "✓ Appelé" : "Appelé ?"}
                 </button>
               </div>
+              ${statusHtml(b)}
               <div class="biz-row">
                 ${tel}
                 ${site}

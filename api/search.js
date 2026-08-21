@@ -60,7 +60,7 @@ module.exports = async (req, res) => {
         headers: {
           "Content-Type": "application/json",
           "X-Goog-Api-Key": apiKey,
-          // On demande aussi téléphone + site web (+ token de page suivante).
+          // On demande téléphone, site web, horaires + statut (+ token de page).
           "X-Goog-FieldMask": [
             "places.id",
             "places.displayName",
@@ -68,6 +68,9 @@ module.exports = async (req, res) => {
             "places.internationalPhoneNumber",
             "places.nationalPhoneNumber",
             "places.websiteUri",
+            "places.businessStatus",
+            "places.currentOpeningHours",
+            "places.regularOpeningHours",
             "nextPageToken",
           ].join(","),
         },
@@ -87,6 +90,13 @@ module.exports = async (req, res) => {
       const places = (data && data.places) || [];
       for (const p of places) {
         const tel = p.internationalPhoneNumber || p.nationalPhoneNumber || "";
+        // Statut horaires : on privilégie currentOpeningHours (tient compte
+        // des horaires exceptionnels), sinon regularOpeningHours.
+        const oh = p.currentOpeningHours || p.regularOpeningHours || null;
+        let openNow = null;
+        if (oh && typeof oh.openNow === "boolean") openNow = oh.openNow;
+        const hours = (oh && oh.weekdayDescriptions) || null; // 7 lignes (lundi→dimanche)
+
         all.push({
           placeId: p.id,
           nom: p.displayName ? p.displayName.text : "",
@@ -95,6 +105,9 @@ module.exports = async (req, res) => {
           // Numéro « propre » pour le lien tel: (on garde le + et les chiffres).
           telLink: tel ? "tel:" + tel.replace(/[^0-9+]/g, "") : "",
           website: p.websiteUri || "",
+          businessStatus: p.businessStatus || "",
+          openNow, // true / false / null (horaires inconnus)
+          hours, // tableau des horaires de la semaine, ou null
           reviewLink: `https://search.google.com/local/writereview?placeid=${encodeURIComponent(
             p.id
           )}`,
