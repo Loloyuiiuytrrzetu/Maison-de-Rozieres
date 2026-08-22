@@ -15,7 +15,7 @@ const CATEGORIES = [
   "onglerie", "spa", "salon de massage", "pizzeria", "restaurant",
   "snack", "food truck", "boulangerie", "pâtisserie", "fleuriste",
   "garage automobile", "carrosserie", "salon de tatouage", "bar",
-  "boucherie", "poissonnerie", "pressing", "cordonnerie",
+  "pressing", "cordonnerie",
   "toilettage canin", "photographe", "salle de sport", "esthéticienne",
   "traiteur", "auto-école", "opticien", "bijouterie",
 ];
