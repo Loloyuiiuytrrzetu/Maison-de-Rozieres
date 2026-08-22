@@ -97,6 +97,31 @@
 
       .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ok); color: #052e16; padding: 10px 18px; border-radius: 999px; font-weight: 600; font-size: 0.9rem; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
       .toast.show { opacity: 1; }
+
+      /* Facture — lignes de prestation */
+      .line-row { display: grid; grid-template-columns: 1fr 60px 90px 32px; gap: 6px; margin-bottom: 8px; align-items: center; }
+      .line-row input { padding: 10px; font-size: 0.9rem; }
+      .line-del { background: transparent; border: 1px solid var(--border); color: #f87171; border-radius: 8px; padding: 8px; cursor: pointer; }
+      .line-head { display: grid; grid-template-columns: 1fr 60px 90px 32px; gap: 6px; font-size: 0.72rem; color: var(--muted); margin-bottom: 4px; }
+
+      /* Facture — aperçu papier (fond blanc, sert au PDF) */
+      #invoice { background: #ffffff; color: #111827; border-radius: 8px; padding: 28px; font-size: 13px; line-height: 1.5; }
+      #invoice * { color: #111827; }
+      #invoice .inv-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
+      #invoice .inv-logo { max-width: 120px; max-height: 80px; object-fit: contain; }
+      #invoice h2 { margin: 0 0 4px; font-size: 22px; color: #111827; }
+      #invoice .inv-meta { text-align: right; font-size: 12px; color: #374151; }
+      #invoice .inv-parties { display: flex; justify-content: space-between; gap: 16px; margin: 18px 0; }
+      #invoice .inv-block { font-size: 12px; }
+      #invoice .inv-block .t { font-weight: 700; margin-bottom: 4px; }
+      #invoice table { width: 100%; border-collapse: collapse; margin: 14px 0; }
+      #invoice th { text-align: left; background: #f3f4f6; padding: 8px; font-size: 11px; text-transform: uppercase; color: #374151; }
+      #invoice td { padding: 8px; border-bottom: 1px solid #e5e7eb; font-size: 12px; }
+      #invoice td.num, #invoice th.num { text-align: right; }
+      #invoice .inv-totals { margin-top: 10px; width: 100%; }
+      #invoice .inv-totals td { border: none; padding: 4px 8px; }
+      #invoice .inv-totals .grand { font-size: 15px; font-weight: 800; border-top: 2px solid #111827; }
+      #invoice .inv-legal { margin-top: 22px; font-size: 10.5px; color: #6b7280; border-top: 1px solid #e5e7eb; padding-top: 10px; }
     </style>
   </head>
   <body>
@@ -108,6 +133,7 @@
         <div class="tab active" id="tab-avis" onclick="switchMode('avis')">⭐ Avis</div>
         <div class="tab" id="tab-pros" onclick="switchMode('pros')">📞 Prospection</div>
         <div class="tab" id="tab-feed" onclick="switchMode('feed')">🎯 Sans site</div>
+        <div class="tab" id="tab-facture" onclick="switchMode('facture')">🧾 Facture</div>
       </div>
 
       <!-- ============ MODE AVIS ============ -->
@@ -163,8 +189,71 @@
       </div>
     </div>
 
+      <!-- ============ MODE FACTURE ============ -->
+      <div id="mode-facture" class="card hidden">
+        <details id="issuer-box" open>
+          <summary style="cursor:pointer;font-weight:600;margin-bottom:6px">🏢 Mon entreprise (mémorisé)</summary>
+          <label>Logo (optionnel)</label>
+          <input type="file" id="f-logo" accept="image/*" />
+          <label>Nom de l'entreprise</label>
+          <input id="f-company" placeholder="Ex : Walletiz" autocomplete="off" />
+          <label>N° SIRET</label>
+          <input id="f-siret" placeholder="14 chiffres" autocomplete="off" inputmode="numeric" />
+          <label>Adresse e-mail</label>
+          <input id="f-email" type="email" placeholder="contact@monentreprise.fr" autocomplete="off" />
+          <label>Adresse (optionnel)</label>
+          <input id="f-address" placeholder="Rue, ville, code postal" autocomplete="off" />
+          <label>Téléphone (optionnel)</label>
+          <input id="f-phone" placeholder="0690 00 00 00" autocomplete="off" />
+          <label style="display:flex;align-items:center;gap:8px;margin-top:12px">
+            <input type="checkbox" id="f-micro" style="width:auto" checked />
+            <span style="font-size:0.85rem;color:var(--text)">Micro-entreprise (TVA non applicable, art. 293 B du CGI)</span>
+          </label>
+          <div id="tva-rate-wrap" class="hidden">
+            <label>Taux de TVA (%)</label>
+            <input id="f-tva" type="number" value="20" min="0" step="0.1" style="width:auto" />
+          </div>
+        </details>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:18px 0" />
+
+        <label>N° de facture</label>
+        <input id="f-number" autocomplete="off" />
+        <label>Date de la facture</label>
+        <input id="f-date" type="date" />
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:18px 0" />
+
+        <p style="font-weight:600;margin:0 0 6px">👤 Client</p>
+        <label>Nom et prénom du client</label>
+        <input id="f-client-name" placeholder="Ex : Jean Dupont" autocomplete="off" />
+        <label>Adresse du client (optionnel)</label>
+        <input id="f-client-address" placeholder="Rue, ville, code postal" autocomplete="off" />
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:18px 0" />
+
+        <p style="font-weight:600;margin:0 0 6px">🧰 Prestations</p>
+        <div id="f-lines"></div>
+        <button type="button" class="chip" style="margin-top:8px" onclick="addLine()">+ Ajouter une prestation</button>
+
+        <div id="f-total-preview" style="margin-top:14px;font-size:1.05rem;font-weight:700;text-align:right"></div>
+
+        <label style="margin-top:16px">Note / description (optionnel)</label>
+        <input id="f-note" placeholder="Ex : Merci de votre confiance" autocomplete="off" />
+
+        <button class="primary" type="button" id="btn-facture" onclick="downloadInvoice()">📄 Télécharger la facture (PDF)</button>
+        <p class="hint" id="f-msg"></p>
+
+        <!-- Aperçu imprimable (sert à générer le PDF) -->
+        <div id="invoice-preview-wrap" style="margin-top:20px">
+          <p class="hint">Aperçu :</p>
+          <div id="invoice"></div>
+        </div>
+      </div>
+
     <div id="toast" class="toast"></div>
 
+    <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.3/dist/html2pdf.bundle.min.js"></script>
     <script>
       /* ---------- Utilitaires ---------- */
       const ZONES = ["Guadeloupe", "Martinique", "Guyane", "La Réunion", "Mayotte", "France", "Autre…"];
@@ -198,7 +287,7 @@
 
       /* ---------- Onglets ---------- */
       function switchMode(mode) {
-        for (const m of ["avis", "pros", "feed"]) {
+        for (const m of ["avis", "pros", "feed", "facture"]) {
           document.getElementById("mode-" + m).classList.toggle("hidden", m !== mode);
           document.getElementById("tab-" + m).classList.toggle("active", m === mode);
         }
@@ -389,6 +478,238 @@
         for (const b of list) { if (feedHide && isCalled(b.placeId)) continue; html += bizCardHtml(b); }
         outFeed.innerHTML = html || `<p class="sub">Tout est fait pour aujourd'hui 🎉 Reviens demain pour une nouvelle liste.</p>`;
       }
+
+      /* ================= MODE FACTURE ================= */
+      const ISSUER_KEY = "pixcard_issuer";
+      const SEQ_KEY = "pixcard_invoice_seq";
+      const fLogoInput = document.getElementById("f-logo");
+      let logoDataUrl = ""; // logo en base64 (mémorisé)
+
+      // Champs de l'émetteur à mémoriser.
+      const issuerFields = {
+        company: "f-company", siret: "f-siret", email: "f-email",
+        address: "f-address", phone: "f-phone",
+      };
+
+      function loadIssuer() {
+        let d = {};
+        try { d = JSON.parse(localStorage.getItem(ISSUER_KEY) || "{}"); } catch {}
+        for (const k in issuerFields) if (d[k]) document.getElementById(issuerFields[k]).value = d[k];
+        if (typeof d.micro === "boolean") document.getElementById("f-micro").checked = d.micro;
+        if (d.tva != null) document.getElementById("f-tva").value = d.tva;
+        if (d.logo) { logoDataUrl = d.logo; }
+        updateTvaVisibility();
+      }
+      function saveIssuer() {
+        const d = {};
+        for (const k in issuerFields) d[k] = document.getElementById(issuerFields[k]).value.trim();
+        d.micro = document.getElementById("f-micro").checked;
+        d.tva = document.getElementById("f-tva").value;
+        d.logo = logoDataUrl;
+        try { localStorage.setItem(ISSUER_KEY, JSON.stringify(d)); } catch {}
+      }
+      // Sauvegarde auto + aperçu à chaque frappe.
+      for (const k in issuerFields) {
+        document.getElementById(issuerFields[k]).addEventListener("input", () => { saveIssuer(); renderInvoice(); });
+      }
+      document.getElementById("f-micro").addEventListener("change", () => { updateTvaVisibility(); saveIssuer(); renderInvoice(); });
+      document.getElementById("f-tva").addEventListener("input", () => { saveIssuer(); renderInvoice(); });
+      document.getElementById("f-client-name").addEventListener("input", renderInvoice);
+      document.getElementById("f-client-address").addEventListener("input", renderInvoice);
+      document.getElementById("f-number").addEventListener("input", renderInvoice);
+      document.getElementById("f-date").addEventListener("input", renderInvoice);
+      document.getElementById("f-note").addEventListener("input", renderInvoice);
+
+      function updateTvaVisibility() {
+        const micro = document.getElementById("f-micro").checked;
+        document.getElementById("tva-rate-wrap").classList.toggle("hidden", micro);
+      }
+
+      fLogoInput.addEventListener("change", () => {
+        const file = fLogoInput.files && fLogoInput.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => { logoDataUrl = reader.result; saveIssuer(); renderInvoice(); };
+        reader.readAsDataURL(file);
+      });
+
+      /* --- Lignes de prestation --- */
+      function addLine(desc, qty, price) {
+        const wrap = document.getElementById("f-lines");
+        if (!wrap.querySelector(".line-head")) {
+          const head = document.createElement("div");
+          head.className = "line-head";
+          head.innerHTML = `<span>Prestation</span><span>Qté</span><span>Prix (€)</span><span></span>`;
+          wrap.appendChild(head);
+        }
+        const row = document.createElement("div");
+        row.className = "line-row";
+        row.innerHTML = `
+          <input class="l-desc" placeholder="Ex : Création site web" value="${esc(desc || "")}" />
+          <input class="l-qty" type="number" min="0" step="1" value="${qty != null ? esc(qty) : 1}" />
+          <input class="l-price" type="number" min="0" step="0.01" placeholder="0" value="${price != null ? esc(price) : ""}" />
+          <button type="button" class="line-del" title="Supprimer">✕</button>`;
+        row.querySelector(".line-del").onclick = () => { row.remove(); renderInvoice(); };
+        row.querySelectorAll("input").forEach((i) => i.addEventListener("input", renderInvoice));
+        wrap.appendChild(row);
+        renderInvoice();
+      }
+      window.addLine = addLine;
+
+      function getLines() {
+        const rows = document.querySelectorAll("#f-lines .line-row");
+        const lines = [];
+        rows.forEach((r) => {
+          const desc = r.querySelector(".l-desc").value.trim();
+          const qty = parseFloat(r.querySelector(".l-qty").value) || 0;
+          const price = parseFloat(r.querySelector(".l-price").value) || 0;
+          if (desc || price) lines.push({ desc, qty, price, total: qty * price });
+        });
+        return lines;
+      }
+
+      function euro(n) {
+        return (n || 0).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
+      }
+
+      function computeTotals(lines) {
+        const ht = lines.reduce((s, l) => s + l.total, 0);
+        const micro = document.getElementById("f-micro").checked;
+        const rate = micro ? 0 : (parseFloat(document.getElementById("f-tva").value) || 0);
+        const tva = ht * (rate / 100);
+        return { ht, rate, tva, ttc: ht + tva, micro };
+      }
+
+      /* --- Numéro auto & date par défaut --- */
+      function suggestNumber() {
+        const year = new Date().getFullYear();
+        let seq = 1;
+        try { seq = (parseInt(localStorage.getItem(SEQ_KEY), 10) || 0) + 1; } catch {}
+        return `${year}-${String(seq).padStart(4, "0")}`;
+      }
+      function bumpNumber() {
+        // Incrémente le compteur après un téléchargement réussi.
+        let seq = 1;
+        try { seq = (parseInt(localStorage.getItem(SEQ_KEY), 10) || 0) + 1; localStorage.setItem(SEQ_KEY, String(seq)); } catch {}
+      }
+
+      /* --- Aperçu de la facture --- */
+      function renderInvoice() {
+        const company = document.getElementById("f-company").value.trim();
+        const siret = document.getElementById("f-siret").value.trim();
+        const email = document.getElementById("f-email").value.trim();
+        const address = document.getElementById("f-address").value.trim();
+        const phone = document.getElementById("f-phone").value.trim();
+        const clientName = document.getElementById("f-client-name").value.trim();
+        const clientAddr = document.getElementById("f-client-address").value.trim();
+        const number = document.getElementById("f-number").value.trim();
+        const dateVal = document.getElementById("f-date").value;
+        const note = document.getElementById("f-note").value.trim();
+        const lines = getLines();
+        const t = computeTotals(lines);
+
+        const dateStr = dateVal
+          ? new Date(dateVal + "T00:00:00").toLocaleDateString("fr-FR")
+          : new Date().toLocaleDateString("fr-FR");
+
+        const rows = lines.map((l) => `
+          <tr>
+            <td>${esc(l.desc)}</td>
+            <td class="num">${l.qty}</td>
+            <td class="num">${euro(l.price)}</td>
+            <td class="num">${euro(l.total)}</td>
+          </tr>`).join("") || `<tr><td colspan="4" style="color:#9ca3af">Ajoute au moins une prestation…</td></tr>`;
+
+        let totalsRows = `<tr><td></td><td class="num">Total HT</td><td class="num">${euro(t.ht)}</td></tr>`;
+        if (!t.micro) {
+          totalsRows += `<tr><td></td><td class="num">TVA (${t.rate} %)</td><td class="num">${euro(t.tva)}</td></tr>`;
+        }
+        totalsRows += `<tr class="grand"><td></td><td class="num">Total ${t.micro ? "" : "TTC"}</td><td class="num">${euro(t.ttc)}</td></tr>`;
+
+        const legal = t.micro
+          ? "TVA non applicable, art. 293 B du CGI."
+          : "";
+        const penalites = "En cas de retard de paiement, une pénalité de 3 fois le taux d'intérêt légal sera appliquée, ainsi qu'une indemnité forfaitaire de 40 € pour frais de recouvrement (art. L441-10 et D441-5 du Code de commerce).";
+
+        document.getElementById("invoice").innerHTML = `
+          <div class="inv-top">
+            <div>
+              ${logoDataUrl ? `<img class="inv-logo" src="${logoDataUrl}" alt="logo" /><br/>` : ""}
+              <h2>${esc(company || "Votre entreprise")}</h2>
+              <div class="inv-block">
+                ${address ? esc(address) + "<br/>" : ""}
+                ${email ? "Email : " + esc(email) + "<br/>" : ""}
+                ${phone ? "Tél : " + esc(phone) + "<br/>" : ""}
+                ${siret ? "SIRET : " + esc(siret) : ""}
+              </div>
+            </div>
+            <div class="inv-meta">
+              <div style="font-size:18px;font-weight:800">FACTURE</div>
+              <div>N° ${esc(number || "—")}</div>
+              <div>Date : ${esc(dateStr)}</div>
+            </div>
+          </div>
+
+          <div class="inv-parties">
+            <div class="inv-block"><div class="t">Facturé à</div>
+              ${esc(clientName || "—")}${clientAddr ? "<br/>" + esc(clientAddr) : ""}
+            </div>
+          </div>
+
+          <table>
+            <thead><tr><th>Prestation</th><th class="num">Qté</th><th class="num">Prix unit.</th><th class="num">Total</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+
+          <table class="inv-totals"><tbody>${totalsRows}</tbody></table>
+
+          ${note ? `<p style="margin-top:14px">${esc(note)}</p>` : ""}
+
+          <div class="inv-legal">
+            ${legal ? esc(legal) + "<br/>" : ""}
+            ${penalites}
+          </div>`;
+
+        document.getElementById("f-total-preview").textContent = "Total : " + euro(t.ttc);
+      }
+
+      async function downloadInvoice() {
+        const lines = getLines();
+        const company = document.getElementById("f-company").value.trim();
+        const client = document.getElementById("f-client-name").value.trim();
+        const msg = document.getElementById("f-msg");
+        if (!company) { msg.textContent = "⚠️ Renseigne le nom de ton entreprise."; msg.style.color = "#f87171"; return; }
+        if (!client) { msg.textContent = "⚠️ Renseigne le nom du client."; msg.style.color = "#f87171"; return; }
+        if (!lines.length) { msg.textContent = "⚠️ Ajoute au moins une prestation."; msg.style.color = "#f87171"; return; }
+        msg.textContent = "Génération du PDF…"; msg.style.color = "var(--muted)";
+
+        renderInvoice();
+        const number = document.getElementById("f-number").value.trim() || "facture";
+        const el = document.getElementById("invoice");
+        try {
+          await html2pdf().set({
+            margin: 8,
+            filename: `Facture_${number}.pdf`,
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
+            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+          }).from(el).save();
+          bumpNumber();
+          document.getElementById("f-number").value = suggestNumber();
+          renderInvoice();
+          msg.textContent = "✅ Facture téléchargée."; msg.style.color = "var(--ok)";
+        } catch (err) {
+          msg.textContent = "Erreur PDF : " + err.message; msg.style.color = "#f87171";
+        }
+      }
+      window.downloadInvoice = downloadInvoice;
+
+      /* Initialisation du mode facture */
+      loadIssuer();
+      document.getElementById("f-number").value = suggestNumber();
+      document.getElementById("f-date").value = new Date().toISOString().slice(0, 10);
+      addLine(); // une première ligne vide
+      renderInvoice();
     </script>
   </body>
 </html>
