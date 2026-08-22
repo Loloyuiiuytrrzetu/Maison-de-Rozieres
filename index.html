@@ -580,17 +580,23 @@
         return { ht, rate, tva, ttc: ht + tva, micro };
       }
 
-      /* --- Numéro auto & date par défaut --- */
+      /* --- Numéro auto & date par défaut ---
+         La numérotation commence obligatoirement au-dessus de 30 :
+         la 1re facture est n° 31, puis 32, 33… (suite continue, sans trou). */
+      const MIN_SEQ = 30; // le prochain numéro sera donc au minimum 31
+      function nextSeq() {
+        let s = 0;
+        try { s = parseInt(localStorage.getItem(SEQ_KEY), 10) || 0; } catch {}
+        if (s < MIN_SEQ) s = MIN_SEQ;
+        return s + 1;
+      }
       function suggestNumber() {
         const year = new Date().getFullYear();
-        let seq = 1;
-        try { seq = (parseInt(localStorage.getItem(SEQ_KEY), 10) || 0) + 1; } catch {}
-        return `${year}-${String(seq).padStart(4, "0")}`;
+        return `${year}-${String(nextSeq()).padStart(4, "0")}`;
       }
       function bumpNumber() {
-        // Incrémente le compteur après un téléchargement réussi.
-        let seq = 1;
-        try { seq = (parseInt(localStorage.getItem(SEQ_KEY), 10) || 0) + 1; localStorage.setItem(SEQ_KEY, String(seq)); } catch {}
+        // Valide le numéro utilisé après un téléchargement réussi.
+        try { localStorage.setItem(SEQ_KEY, String(nextSeq())); } catch {}
       }
 
       /* --- Aperçu de la facture --- */
