@@ -101,8 +101,15 @@
       .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ok); color: #052e16; padding: 10px 18px; border-radius: 999px; font-weight: 600; font-size: 0.9rem; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
       .toast.show { opacity: 1; }
 
-      textarea { width: 100%; min-height: 320px; padding: 14px; font-size: 1rem; line-height: 1.5; border-radius: 10px; border: 1px solid var(--border); background: #0b1220; color: var(--text); resize: vertical; font-family: inherit; }
+      textarea { width: 100%; min-height: 380px; padding: 16px; font-size: 1.05rem; line-height: 1.6; border-radius: 12px; border: 1px solid var(--border); background: #0b1220; color: var(--text); resize: vertical; font-family: inherit; }
       textarea:focus { outline: 2px solid var(--accent); border-color: transparent; }
+
+      .note-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; background: #0b1220; margin-top: 8px; }
+      .note-item.active { border-color: var(--accent); }
+      .note-open { cursor: pointer; flex: 1; overflow: hidden; }
+      .note-title { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .note-date { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+      .note-del { background: transparent; border: 1px solid var(--border); color: #f87171; border-radius: 8px; padding: 8px 10px; cursor: pointer; }
     </style>
   </head>
   <body>
@@ -172,10 +179,18 @@
 
       <!-- ============ MODE TEXTE ============ -->
       <div id="mode-texte" class="card hidden">
-        <p style="font-weight:600;margin:0 0 4px">📝 Mon texte</p>
-        <p class="hint" style="margin-top:0">Écris ce que tu veux (script d'appel, phrases types…). C'est sauvegardé automatiquement sur cet appareil.</p>
-        <textarea id="notes" placeholder="Ex : Bonjour, je vous appelle car j'ai remarqué que vous n'avez pas de site internet…"></textarea>
-        <p class="hint" id="notes-status">Enregistré ✓</p>
+        <p style="font-weight:600;margin:0 0 4px">📝 Mes notes</p>
+        <p class="hint" style="margin-top:0">Écris une note puis <b>Enregistrer</b>. Elle apparaît dans la liste en bas — tu peux la rouvrir, la relire ou la supprimer quand tu veux.</p>
+        <textarea id="notes" placeholder="Écris ta note ici…&#10;&#10;Ex : Bonjour, je vous appelle car j'ai remarqué que vous n'avez pas de site internet…"></textarea>
+        <div style="display:flex;gap:8px;margin-top:12px;align-items:center">
+          <button class="primary" style="margin-top:0;flex:1" type="button" id="btn-note-save">💾 Enregistrer</button>
+          <button class="chip" type="button" id="btn-note-new">+ Nouvelle note</button>
+        </div>
+        <p class="hint" id="notes-status"></p>
+
+        <hr style="border:none;border-top:1px solid var(--border);margin:18px 0" />
+        <p style="font-weight:600;margin:0 0 6px">Notes enregistrées</p>
+        <div id="notes-list"></div>
       </div>
 
     <div id="toast" class="toast"></div>
@@ -411,20 +426,94 @@
         outFeed.innerHTML = html || `<p class="sub">Tout est fait pour aujourd'hui 🎉 Reviens demain pour une nouvelle liste.</p>`;
       }
 
-      /* ================= MODE TEXTE (bloc-notes) ================= */
-      const NOTES_KEY = "pixcard_notes";
+      /* ================= MODE TEXTE (carnet de notes) ================= */
+      const NOTES_KEY = "pixcard_notes_list";
+      const OLD_NOTE_KEY = "pixcard_notes"; // ancienne note unique (migration)
       const notesEl = document.getElementById("notes");
       const notesStatus = document.getElementById("notes-status");
-      try { notesEl.value = localStorage.getItem(NOTES_KEY) || ""; } catch {}
-      let notesTimer = null;
-      notesEl.addEventListener("input", () => {
-        notesStatus.textContent = "Enregistrement…";
-        clearTimeout(notesTimer);
-        notesTimer = setTimeout(() => {
-          try { localStorage.setItem(NOTES_KEY, notesEl.value); notesStatus.textContent = "Enregistré ✓"; }
-          catch { notesStatus.textContent = "Impossible d'enregistrer"; }
-        }, 300);
-      });
+      const notesList = document.getElementById("notes-list");
+      let notes = [];
+      let editingId = null;
+
+      function loadNotes() { try { return JSON.parse(localStorage.getItem(NOTES_KEY) || "[]"); } catch { return []; } }
+      function persistNotes() { try { localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); } catch {} }
+      notes = loadNotes();
+      // Migration : si une ancienne note unique existe, on l'importe.
+      try {
+        const old = localStorage.getItem(OLD_NOTE_KEY);
+        if (old && old.trim() && !notes.length) {
+          notes.push({ id: "n" + Date.now(), text: old, updatedAt: Date.now() });
+          persistNotes();
+        }
+        if (old) localStorage.removeItem(OLD_NOTE_KEY);
+      } catch {}
+
+      function noteTitle(t) {
+        const first = (String(t).trim().split("\n")[0] || "").trim();
+        return first ? first.slice(0, 60) : "(note vide)";
+      }
+      function fmtDate(ts) { try { return new Date(ts).toLocaleString("fr-FR"); } catch { return ""; } }
+
+      function renderNotesList() {
+        if (!notes.length) { notesList.innerHTML = `<p class="sub">Aucune note enregistrée pour l'instant.</p>`; return; }
+        const sorted = [...notes].sort((a, b) => b.updatedAt - a.updatedAt);
+        notesList.innerHTML = sorted.map((n) => `
+          <div class="note-item ${n.id === editingId ? "active" : ""}">
+            <div class="note-open" onclick="window.__openNote('${n.id}')">
+              <div class="note-title">${esc(noteTitle(n.text))}</div>
+              <div class="note-date">${esc(fmtDate(n.updatedAt))}</div>
+            </div>
+            <button class="note-del" type="button" onclick="window.__delNote('${n.id}')">✕</button>
+          </div>`).join("");
+      }
+
+      function saveCurrentNote() {
+        const text = notesEl.value;
+        if (!text.trim()) { notesStatus.textContent = "⚠️ Écris quelque chose avant d'enregistrer."; return; }
+        if (editingId) {
+          const n = notes.find((x) => x.id === editingId);
+          if (n) { n.text = text; n.updatedAt = Date.now(); }
+        } else {
+          const id = "n" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+          notes.push({ id, text, updatedAt: Date.now() });
+          editingId = id;
+        }
+        persistNotes();
+        renderNotesList();
+        notesStatus.textContent = "Enregistré ✓";
+      }
+
+      function newNote() {
+        editingId = null;
+        notesEl.value = "";
+        notesStatus.textContent = "";
+        renderNotesList();
+        notesEl.focus();
+      }
+
+      function openNote(id) {
+        const n = notes.find((x) => x.id === id);
+        if (!n) return;
+        editingId = id;
+        notesEl.value = n.text;
+        notesStatus.textContent = "Note ouverte — modifie puis Enregistrer.";
+        renderNotesList();
+        notesEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      window.__openNote = openNote;
+
+      function delNote(id) {
+        if (!confirm("Supprimer cette note ?")) return;
+        notes = notes.filter((x) => x.id !== id);
+        if (editingId === id) { editingId = null; notesEl.value = ""; }
+        persistNotes();
+        renderNotesList();
+      }
+      window.__delNote = delNote;
+
+      document.getElementById("btn-note-save").addEventListener("click", saveCurrentNote);
+      document.getElementById("btn-note-new").addEventListener("click", newNote);
+      renderNotesList();
     </script>
   </body>
 </html>
