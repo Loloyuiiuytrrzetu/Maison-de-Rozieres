@@ -100,6 +100,9 @@
 
       .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ok); color: #052e16; padding: 10px 18px; border-radius: 999px; font-weight: 600; font-size: 0.9rem; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
       .toast.show { opacity: 1; }
+
+      textarea { width: 100%; min-height: 320px; padding: 14px; font-size: 1rem; line-height: 1.5; border-radius: 10px; border: 1px solid var(--border); background: #0b1220; color: var(--text); resize: vertical; font-family: inherit; }
+      textarea:focus { outline: 2px solid var(--accent); border-color: transparent; }
     </style>
   </head>
   <body>
@@ -111,6 +114,7 @@
         <div class="tab active" id="tab-avis" onclick="switchMode('avis')">⭐ Avis</div>
         <div class="tab" id="tab-pros" onclick="switchMode('pros')">📞 Prospection</div>
         <div class="tab" id="tab-feed" onclick="switchMode('feed')">🎯 Sans site</div>
+        <div class="tab" id="tab-texte" onclick="switchMode('texte')">📝 Texte</div>
       </div>
 
       <!-- ============ MODE AVIS ============ -->
@@ -166,6 +170,14 @@
       </div>
     </div>
 
+      <!-- ============ MODE TEXTE ============ -->
+      <div id="mode-texte" class="card hidden">
+        <p style="font-weight:600;margin:0 0 4px">📝 Mon texte</p>
+        <p class="hint" style="margin-top:0">Écris ce que tu veux (script d'appel, phrases types…). C'est sauvegardé automatiquement sur cet appareil.</p>
+        <textarea id="notes" placeholder="Ex : Bonjour, je vous appelle car j'ai remarqué que vous n'avez pas de site internet…"></textarea>
+        <p class="hint" id="notes-status">Enregistré ✓</p>
+      </div>
+
     <div id="toast" class="toast"></div>
 
     <script>
@@ -201,7 +213,7 @@
 
       /* ---------- Onglets ---------- */
       function switchMode(mode) {
-        for (const m of ["avis", "pros", "feed"]) {
+        for (const m of ["avis", "pros", "feed", "texte"]) {
           document.getElementById("mode-" + m).classList.toggle("hidden", m !== mode);
           document.getElementById("tab-" + m).classList.toggle("active", m === mode);
         }
@@ -398,6 +410,21 @@
         for (const b of list) { if (feedHide && isCalled(b.placeId)) continue; html += bizCardHtml(b); }
         outFeed.innerHTML = html || `<p class="sub">Tout est fait pour aujourd'hui 🎉 Reviens demain pour une nouvelle liste.</p>`;
       }
+
+      /* ================= MODE TEXTE (bloc-notes) ================= */
+      const NOTES_KEY = "pixcard_notes";
+      const notesEl = document.getElementById("notes");
+      const notesStatus = document.getElementById("notes-status");
+      try { notesEl.value = localStorage.getItem(NOTES_KEY) || ""; } catch {}
+      let notesTimer = null;
+      notesEl.addEventListener("input", () => {
+        notesStatus.textContent = "Enregistrement…";
+        clearTimeout(notesTimer);
+        notesTimer = setTimeout(() => {
+          try { localStorage.setItem(NOTES_KEY, notesEl.value); notesStatus.textContent = "Enregistré ✓"; }
+          catch { notesStatus.textContent = "Impossible d'enregistrer"; }
+        }, 300);
+      });
     </script>
   </body>
 </html>
