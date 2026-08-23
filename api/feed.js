@@ -81,6 +81,7 @@ module.exports = async (req, res) => {
           "places.internationalPhoneNumber", "places.nationalPhoneNumber",
           "places.websiteUri", "places.businessStatus",
           "places.currentOpeningHours", "places.regularOpeningHours",
+          "places.googleMapsUri",
           "nextPageToken",
         ].join(","),
       },
@@ -127,6 +128,7 @@ module.exports = async (req, res) => {
             businessStatus: p.businessStatus || "",
             openNow, // true ou null
             hours: (oh && oh.weekdayDescriptions) || null,
+            googleUrl: p.googleMapsUri || `https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(p.id)}`,
             reviewLink: `https://search.google.com/local/writereview?placeid=${encodeURIComponent(p.id)}`,
           };
           (openNow === true ? open : unknown).push(item);

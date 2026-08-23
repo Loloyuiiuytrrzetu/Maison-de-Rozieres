@@ -71,6 +71,9 @@
       .biz.called { background: #1a0f14; border-left-color: var(--called-border); }
       .biz-head { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
       .biz h4 { margin: 0 0 3px; font-size: 1rem; }
+      .biz-name { color: var(--text); text-decoration: none; }
+      .biz-name:hover { text-decoration: underline; color: #a5b4fc; }
+      .biz a.gmaps { text-decoration: none; color: #34d399; border: 1px solid var(--border); padding: 10px 12px; border-radius: 10px; font-size: 0.85rem; }
       .biz .addr { color: var(--muted); font-size: 0.8rem; margin: 0 0 8px; }
       .cat-tag { display: inline-block; font-size: 0.72rem; color: #c7d2fe; background: rgba(79,70,229,0.2); padding: 2px 8px; border-radius: 999px; margin-bottom: 8px; text-transform: capitalize; }
       .biz-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
@@ -247,11 +250,17 @@
           ? `<a class="site" href="${esc(b.website)}" target="_blank" rel="noopener">🌐 Site</a>`
           : `<span class="no-site">Pas de site</span>`;
         const cat = b.categorie ? `<div class="cat-tag">${esc(b.categorie)}</div>` : "";
+        const nom = b.googleUrl
+          ? `<a class="biz-name" href="${esc(b.googleUrl)}" target="_blank" rel="noopener">${esc(b.nom)}</a>`
+          : esc(b.nom);
+        const gmaps = b.googleUrl
+          ? `<a class="gmaps" href="${esc(b.googleUrl)}" target="_blank" rel="noopener">📍 Google</a>`
+          : "";
         return `
           <div class="biz ${done ? "called" : ""}">
             <div class="biz-head">
               <div>
-                <h4>${esc(b.nom)}</h4>
+                <h4>${nom}</h4>
                 ${cat}
                 <p class="addr">${esc(b.adresse)}</p>
               </div>
@@ -260,7 +269,7 @@
               </button>
             </div>
             ${statusHtml(b)}
-            <div class="biz-row">${tel}${site}<a class="avis" href="${b.reviewLink}" target="_blank" rel="noopener">⭐ Avis</a></div>
+            <div class="biz-row">${tel}${site}${gmaps}<a class="avis" href="${b.reviewLink}" target="_blank" rel="noopener">⭐ Avis</a></div>
           </div>`;
       }
 

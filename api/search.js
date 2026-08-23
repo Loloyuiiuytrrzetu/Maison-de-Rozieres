@@ -71,6 +71,7 @@ module.exports = async (req, res) => {
             "places.businessStatus",
             "places.currentOpeningHours",
             "places.regularOpeningHours",
+            "places.googleMapsUri",
             "nextPageToken",
           ].join(","),
         },
@@ -108,6 +109,8 @@ module.exports = async (req, res) => {
           businessStatus: p.businessStatus || "",
           openNow, // true / false / null (horaires inconnus)
           hours, // tableau des horaires de la semaine, ou null
+          // Lien vers la fiche Google du commerce.
+          googleUrl: p.googleMapsUri || `https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(p.id)}`,
           reviewLink: `https://search.google.com/local/writereview?placeid=${encodeURIComponent(
             p.id
           )}`,
