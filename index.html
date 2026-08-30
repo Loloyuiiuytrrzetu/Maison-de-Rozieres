@@ -103,7 +103,7 @@
       .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ok); color: #052e16; padding: 10px 18px; border-radius: 999px; font-weight: 600; font-size: 0.9rem; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
       .toast.show { opacity: 1; }
 
-      textarea { width: 100%; min-height: 380px; padding: 16px; font-size: 1.05rem; line-height: 1.6; border-radius: 12px; border: 1px solid var(--border); background: #0b1220; color: var(--text); resize: vertical; font-family: inherit; }
+      textarea { width: 100%; min-height: 300px; padding: 18px; font-size: 1.1rem; line-height: 1.65; border-radius: 14px; border: 1px solid var(--border); background: #0b1220; color: var(--text); resize: none; overflow: hidden; font-family: inherit; -webkit-overflow-scrolling: touch; }
       textarea:focus { outline: 2px solid var(--accent); border-color: transparent; }
 
       .note-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; background: #0b1220; margin-top: 8px; }
@@ -183,7 +183,7 @@
       <div id="mode-texte" class="card hidden">
         <p style="font-weight:600;margin:0 0 4px">📝 Mes notes</p>
         <p class="hint" style="margin-top:0">Écris une note puis <b>Enregistrer</b>. Elle apparaît dans la liste en bas — tu peux la rouvrir, la relire ou la supprimer quand tu veux.</p>
-        <textarea id="notes" placeholder="Écris ta note ici…&#10;&#10;Ex : Bonjour, je vous appelle car j'ai remarqué que vous n'avez pas de site internet…"></textarea>
+        <textarea id="notes" placeholder="Écris ta note ici…"></textarea>
         <div style="display:flex;gap:8px;margin-top:12px;align-items:center">
           <button class="primary" style="margin-top:0;flex:1" type="button" id="btn-note-save">💾 Enregistrer</button>
           <button class="chip" type="button" id="btn-note-new">+ Nouvelle note</button>
@@ -450,6 +450,13 @@
         if (old) localStorage.removeItem(OLD_NOTE_KEY);
       } catch {}
 
+      // La zone de texte grandit avec le contenu (on voit tout, pas d'ascenseur).
+      function autoGrow() {
+        notesEl.style.height = "auto";
+        notesEl.style.height = Math.max(notesEl.scrollHeight, 300) + "px";
+      }
+      notesEl.addEventListener("input", autoGrow);
+
       function noteTitle(t) {
         const first = (String(t).trim().split("\n")[0] || "").trim();
         return first ? first.slice(0, 60) : "(note vide)";
@@ -489,6 +496,7 @@
         editingId = null;
         notesEl.value = "";
         notesStatus.textContent = "";
+        autoGrow();
         renderNotesList();
         notesEl.focus();
       }
@@ -499,6 +507,7 @@
         editingId = id;
         notesEl.value = n.text;
         notesStatus.textContent = "Note ouverte — modifie puis Enregistrer.";
+        autoGrow();
         renderNotesList();
         notesEl.scrollIntoView({ behavior: "smooth", block: "start" });
       }
@@ -516,6 +525,7 @@
       document.getElementById("btn-note-save").addEventListener("click", saveCurrentNote);
       document.getElementById("btn-note-new").addEventListener("click", newNote);
       renderNotesList();
+      autoGrow();
     </script>
   </body>
 </html>
