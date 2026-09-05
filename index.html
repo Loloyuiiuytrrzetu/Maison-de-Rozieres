@@ -29,9 +29,9 @@
       h1 { font-size: 1.4rem; margin: 0 0 4px; }
       .sub { color: var(--muted); margin: 0 0 18px; font-size: 0.9rem; }
 
-      .tabs { display: flex; gap: 6px; margin-bottom: 18px; }
+      .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
       .tab {
-        flex: 1 1 0; min-width: 0; padding: 11px 4px; border-radius: 10px; border: 1px solid var(--border);
+        flex: 1 1 84px; min-width: 0; padding: 11px 4px; border-radius: 10px; border: 1px solid var(--border);
         background: var(--card); color: var(--muted); font-weight: 600; font-size: 0.8rem;
         cursor: pointer; text-align: center; line-height: 1.2;
       }
@@ -103,6 +103,20 @@
       .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ok); color: #052e16; padding: 10px 18px; border-radius: 999px; font-weight: 600; font-size: 0.9rem; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
       .toast.show { opacity: 1; }
 
+      /* Planning */
+      .rdv { margin-top: 10px; padding: 14px; border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 12px; background: #0b1220; }
+      .rdv.ent { border-left-color: var(--ok); }
+      .rdv-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+      .rdv .when { font-size: 0.82rem; color: #a5b4fc; font-weight: 700; }
+      .rdv.ent .when { color: #86efac; }
+      .rdv h4 { margin: 4px 0 6px; font-size: 1.05rem; }
+      .rdv-badge { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+      .rdv-badge.rdv-t { background: rgba(59,130,246,0.18); color: #93c5fd; }
+      .rdv-badge.ent-t { background: rgba(34,197,94,0.18); color: #86efac; }
+      .rdv-loc { display: inline-block; margin-top: 10px; text-decoration: none; color: #34d399; border: 1px solid var(--border); padding: 9px 12px; border-radius: 10px; font-size: 0.85rem; }
+      .rdv-del { background: transparent; border: 1px solid var(--border); color: #f87171; border-radius: 8px; padding: 8px 10px; cursor: pointer; font-size: 0.85rem; }
+      .rdv-daysep { margin: 16px 0 4px; font-size: 0.8rem; color: var(--muted); font-weight: 700; text-transform: capitalize; }
+
       textarea { width: 100%; min-height: 300px; padding: 18px; font-size: 1.1rem; line-height: 1.65; border-radius: 14px; border: 1px solid var(--border); background: #0b1220; color: var(--text); resize: none; overflow: hidden; font-family: inherit; -webkit-overflow-scrolling: touch; }
       textarea:focus { outline: 2px solid var(--accent); border-color: transparent; }
 
@@ -123,6 +137,7 @@
         <div class="tab active" id="tab-avis" onclick="switchMode('avis')">⭐ Avis</div>
         <div class="tab" id="tab-pros" onclick="switchMode('pros')">📞 Prospection</div>
         <div class="tab" id="tab-feed" onclick="switchMode('feed')">🎯 Sans site</div>
+        <div class="tab" id="tab-planning" onclick="switchMode('planning')">📅 Planning</div>
         <div class="tab" id="tab-texte" onclick="switchMode('texte')">📝 Texte</div>
       </div>
 
@@ -178,6 +193,37 @@
         <div id="out-feed"></div>
       </div>
 
+      <!-- ============ MODE PLANNING ============ -->
+      <div id="mode-planning" class="card hidden">
+        <p style="font-weight:600;margin:0 0 4px">📅 Planning</p>
+        <p class="hint" style="margin-top:0">Ajoute un rendez-vous ou un entretien. Ils se rangent automatiquement par date et heure.</p>
+        <form id="form-rdv">
+          <label for="rdv-nom">Nom du client</label>
+          <input id="rdv-nom" placeholder="Ex : M. Jean Dupont" autocomplete="off" required />
+          <div style="display:flex;gap:8px">
+            <div style="flex:1">
+              <label for="rdv-date">Date</label>
+              <input id="rdv-date" type="date" required />
+            </div>
+            <div style="flex:1">
+              <label for="rdv-heure">Heure</label>
+              <input id="rdv-heure" type="time" required />
+            </div>
+          </div>
+          <label for="rdv-type">Type</label>
+          <select id="rdv-type">
+            <option value="Rendez-vous">Rendez-vous</option>
+            <option value="Entretien">Entretien</option>
+          </select>
+          <label for="rdv-loc">Lien de localisation (optionnel)</label>
+          <input id="rdv-loc" placeholder="Lien Google Maps, adresse ou coordonnées" autocomplete="off" />
+          <button class="primary" type="submit">+ Ajouter au planning</button>
+        </form>
+        <div id="msg-rdv" class="msg"></div>
+        <div id="rdv-count" class="counter hidden"><span id="rdv-count-text"></span></div>
+        <div id="out-rdv"></div>
+      </div>
+
       <!-- ============ MODE TEXTE ============ -->
       <div id="mode-texte" class="card hidden">
         <p style="font-weight:600;margin:0 0 4px">📝 Mes notes</p>
@@ -230,7 +276,7 @@
 
       /* ---------- Onglets ---------- */
       function switchMode(mode) {
-        for (const m of ["avis", "pros", "feed", "texte"]) {
+        for (const m of ["avis", "pros", "feed", "planning", "texte"]) {
           document.getElementById("mode-" + m).classList.toggle("hidden", m !== mode);
           document.getElementById("tab-" + m).classList.toggle("active", m === mode);
         }
@@ -427,6 +473,81 @@
         for (const b of list) { if (feedHide && isCalled(b.placeId)) continue; html += bizCardHtml(b); }
         outFeed.innerHTML = html || `<p class="sub">Tout est fait pour aujourd'hui 🎉 Reviens demain pour une nouvelle liste.</p>`;
       }
+
+      /* ================= MODE PLANNING (rendez-vous) ================= */
+      const RDV_KEY = "pixcard_rdv";
+      const formRdv = document.getElementById("form-rdv");
+      const msgRdv = document.getElementById("msg-rdv");
+      const outRdv = document.getElementById("out-rdv");
+      const rdvCount = document.getElementById("rdv-count");
+      const rdvCountText = document.getElementById("rdv-count-text");
+      let rdvs = [];
+      try { rdvs = JSON.parse(localStorage.getItem(RDV_KEY) || "[]"); } catch { rdvs = []; }
+      function saveRdv() { try { localStorage.setItem(RDV_KEY, JSON.stringify(rdvs)); } catch {} }
+
+      // Transforme ce que l'utilisateur tape en lien ouvrable.
+      function buildLocLink(v) {
+        v = (v || "").trim();
+        if (!v) return "";
+        if (/^https?:\/\//i.test(v)) return v; // déjà un lien
+        return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(v);
+      }
+
+      formRdv.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const nom = document.getElementById("rdv-nom").value.trim();
+        const date = document.getElementById("rdv-date").value;
+        const heure = document.getElementById("rdv-heure").value;
+        const type = document.getElementById("rdv-type").value;
+        const loc = document.getElementById("rdv-loc").value.trim();
+        if (!nom || !date || !heure) { msgRdv.textContent = "⚠️ Renseigne le nom, la date et l'heure."; msgRdv.className = "msg error"; return; }
+        rdvs.push({ id: "r" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), nom, date, heure, type, loc });
+        saveRdv();
+        formRdv.reset();
+        msgRdv.textContent = "✅ Ajouté au planning."; msgRdv.className = "msg";
+        renderRdv();
+      });
+
+      function delRdv(id) {
+        if (!confirm("Supprimer ce rendez-vous ?")) return;
+        rdvs = rdvs.filter((r) => r.id !== id);
+        saveRdv();
+        renderRdv();
+      }
+      window.__delRdv = delRdv;
+
+      function renderRdv() {
+        if (!rdvs.length) { rdvCount.classList.add("hidden"); outRdv.innerHTML = `<p class="sub" style="margin-top:14px">Aucun rendez-vous pour l'instant.</p>`; return; }
+        // Tri par date + heure croissant.
+        const sorted = [...rdvs].sort((a, b) => (a.date + a.heure).localeCompare(b.date + b.heure));
+        rdvCount.classList.remove("hidden");
+        rdvCountText.textContent = `Total : ${rdvs.length} rendez-vous`;
+
+        let html = "", lastDay = "";
+        for (const r of sorted) {
+          const d = new Date(r.date + "T" + (r.heure || "00:00"));
+          const jour = d.toLocaleDateString("fr-FR", { weekday: "long", day: "2-digit", month: "long", year: "numeric" });
+          if (jour !== lastDay) { html += `<div class="rdv-daysep">${esc(jour)}</div>`; lastDay = jour; }
+          const isEnt = r.type === "Entretien";
+          const loc = r.loc
+            ? `<div><a class="rdv-loc" href="${esc(buildLocLink(r.loc))}" target="_blank" rel="noopener">📍 Localisation</a></div>`
+            : "";
+          html += `
+            <div class="rdv ${isEnt ? "ent" : ""}">
+              <div class="rdv-head">
+                <div>
+                  <div class="when">🕒 ${esc(r.heure)}</div>
+                  <h4>${esc(r.nom)}</h4>
+                  <span class="rdv-badge ${isEnt ? "ent-t" : "rdv-t"}">${esc(r.type)}</span>
+                </div>
+                <button class="rdv-del" type="button" onclick="window.__delRdv('${r.id}')">✕</button>
+              </div>
+              ${loc}
+            </div>`;
+        }
+        outRdv.innerHTML = html;
+      }
+      renderRdv();
 
       /* ================= MODE TEXTE (carnet de notes) ================= */
       const NOTES_KEY = "pixcard_notes_list";
