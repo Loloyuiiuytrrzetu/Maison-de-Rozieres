@@ -302,7 +302,7 @@
       /* ---------- Suivi des « déjà appelés » ---------- */
       const STORE_KEY = "pixcard_called";
       function loadCalled() { try { return JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); } catch { return {}; } }
-      function saveCalled(o) { try { localStorage.setItem(STORE_KEY, JSON.stringify(o)); } catch {} }
+      function saveCalled(o) { try { localStorage.setItem(STORE_KEY, JSON.stringify(o)); } catch {} scheduleSync(); }
       let called = loadCalled();
       function isCalled(id) { return !!called[id]; }
       function toggleCalled(id) {
@@ -500,7 +500,7 @@
       const rdvCountText = document.getElementById("rdv-count-text");
       let rdvs = [];
       try { rdvs = JSON.parse(localStorage.getItem(RDV_KEY) || "[]"); } catch { rdvs = []; }
-      function saveRdv() { try { localStorage.setItem(RDV_KEY, JSON.stringify(rdvs)); } catch {} }
+      function saveRdv() { try { localStorage.setItem(RDV_KEY, JSON.stringify(rdvs)); } catch {} scheduleSync(); }
 
       // Transforme ce que l'utilisateur tape en lien ouvrable.
       function buildLocLink(v) {
@@ -575,7 +575,7 @@
       const partCountText = document.getElementById("part-count-text");
       let parts = [];
       try { parts = JSON.parse(localStorage.getItem(PART_KEY) || "[]"); } catch { parts = []; }
-      function savePart() { try { localStorage.setItem(PART_KEY, JSON.stringify(parts)); } catch {} }
+      function savePart() { try { localStorage.setItem(PART_KEY, JSON.stringify(parts)); } catch {} scheduleSync(); }
 
       formPart.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -626,7 +626,7 @@
       let editingId = null;
 
       function loadNotes() { try { return JSON.parse(localStorage.getItem(NOTES_KEY) || "[]"); } catch { return []; } }
-      function persistNotes() { try { localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); } catch {} }
+      function persistNotes() { try { localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); } catch {} scheduleSync(); }
       notes = loadNotes();
       // Migration : si une ancienne note unique existe, on l'importe.
       try {
@@ -714,6 +714,58 @@
       document.getElementById("btn-note-new").addEventListener("click", newNote);
       renderNotesList();
       autoGrow();
+
+      /* ================= SYNCHRONISATION CLOUD ================= */
+      // Un seul bloc de données partagé par tous les appareils.
+      let syncReady = false;   // true si la base est branchée
+      let syncTimer = null;
+
+      function collectState() {
+        return { notes, rdvs, parts, called, updatedAt: Date.now() };
+      }
+      function applyState(state) {
+        if (!state) return;
+        if (Array.isArray(state.notes)) { notes = state.notes; try { localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); } catch {} }
+        if (Array.isArray(state.rdvs)) { rdvs = state.rdvs; try { localStorage.setItem(RDV_KEY, JSON.stringify(rdvs)); } catch {} }
+        if (Array.isArray(state.parts)) { parts = state.parts; try { localStorage.setItem(PART_KEY, JSON.stringify(parts)); } catch {} }
+        if (state.called && typeof state.called === "object") { called = state.called; try { localStorage.setItem(STORE_KEY, JSON.stringify(called)); } catch {} }
+        // On rafraîchit tous les affichages.
+        renderRdv(); renderPart(); renderNotesList(); renderPros(); renderFeed();
+      }
+      function scheduleSync() {
+        if (!syncReady) return; // pas de base → on reste en local uniquement
+        clearTimeout(syncTimer);
+        syncTimer = setTimeout(pushState, 600);
+      }
+      async function pushState() {
+        try {
+          await fetch("/api/data", {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ data: collectState() }),
+          });
+        } catch {}
+      }
+      function hasLocalData() {
+        const s = collectState();
+        return (s.notes && s.notes.length) || (s.rdvs && s.rdvs.length) ||
+               (s.parts && s.parts.length) || (s.called && Object.keys(s.called).length);
+      }
+      async function pullState() {
+        try {
+          const r = await fetch("/api/data");
+          const j = await r.json();
+          if (!j || !j.configured) { syncReady = false; return; }
+          syncReady = true;
+          if (j.data) {
+            applyState(j.data); // le serveur fait foi
+          } else if (hasLocalData()) {
+            pushState(); // serveur vide + données locales → on initialise le serveur
+          }
+        } catch { syncReady = false; }
+      }
+      pullState();
+      // Re-synchronise quand on revient sur l'onglet (ex : changement sur un autre appareil).
+      document.addEventListener("visibilitychange", () => { if (!document.hidden) pullState(); });
     </script>
   </body>
 </html>
