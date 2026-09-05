@@ -138,6 +138,7 @@
         <div class="tab" id="tab-pros" onclick="switchMode('pros')">📞 Prospection</div>
         <div class="tab" id="tab-feed" onclick="switchMode('feed')">🎯 Sans site</div>
         <div class="tab" id="tab-planning" onclick="switchMode('planning')">📅 Planning</div>
+        <div class="tab" id="tab-particuliers" onclick="switchMode('particuliers')">👤 Particuliers</div>
         <div class="tab" id="tab-texte" onclick="switchMode('texte')">📝 Texte</div>
       </div>
 
@@ -224,6 +225,22 @@
         <div id="out-rdv"></div>
       </div>
 
+      <!-- ============ MODE PARTICULIERS ============ -->
+      <div id="mode-particuliers" class="card hidden">
+        <p style="font-weight:600;margin:0 0 4px">👤 Particuliers à appeler</p>
+        <p class="hint" style="margin-top:0">Ajoute un particulier (nom + numéro). Clique le numéro pour appeler, puis supprime quand c'est fait.</p>
+        <form id="form-part">
+          <label for="part-nom">Nom</label>
+          <input id="part-nom" placeholder="Ex : Mme Martin" autocomplete="off" required />
+          <label for="part-tel">Numéro</label>
+          <input id="part-tel" type="tel" placeholder="Ex : 0690 12 34 56" autocomplete="off" required />
+          <button class="primary" type="submit">+ Ajouter</button>
+        </form>
+        <div id="msg-part" class="msg"></div>
+        <div id="part-count" class="counter hidden"><span id="part-count-text"></span></div>
+        <div id="out-part"></div>
+      </div>
+
       <!-- ============ MODE TEXTE ============ -->
       <div id="mode-texte" class="card hidden">
         <p style="font-weight:600;margin:0 0 4px">📝 Mes notes</p>
@@ -276,7 +293,7 @@
 
       /* ---------- Onglets ---------- */
       function switchMode(mode) {
-        for (const m of ["avis", "pros", "feed", "planning", "texte"]) {
+        for (const m of ["avis", "pros", "feed", "planning", "particuliers", "texte"]) {
           document.getElementById("mode-" + m).classList.toggle("hidden", m !== mode);
           document.getElementById("tab-" + m).classList.toggle("active", m === mode);
         }
@@ -548,6 +565,56 @@
         outRdv.innerHTML = html;
       }
       renderRdv();
+
+      /* ================= MODE PARTICULIERS ================= */
+      const PART_KEY = "pixcard_particuliers";
+      const formPart = document.getElementById("form-part");
+      const msgPart = document.getElementById("msg-part");
+      const outPart = document.getElementById("out-part");
+      const partCount = document.getElementById("part-count");
+      const partCountText = document.getElementById("part-count-text");
+      let parts = [];
+      try { parts = JSON.parse(localStorage.getItem(PART_KEY) || "[]"); } catch { parts = []; }
+      function savePart() { try { localStorage.setItem(PART_KEY, JSON.stringify(parts)); } catch {} }
+
+      formPart.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const nom = document.getElementById("part-nom").value.trim();
+        const tel = document.getElementById("part-tel").value.trim();
+        if (!nom || !tel) { msgPart.textContent = "⚠️ Renseigne le nom et le numéro."; msgPart.className = "msg error"; return; }
+        parts.unshift({ id: "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), nom, tel });
+        savePart();
+        formPart.reset();
+        msgPart.textContent = ""; msgPart.className = "msg";
+        renderPart();
+      });
+
+      function delPart(id) {
+        parts = parts.filter((p) => p.id !== id);
+        savePart();
+        renderPart();
+      }
+      window.__delPart = delPart;
+
+      function renderPart() {
+        if (!parts.length) { partCount.classList.add("hidden"); outPart.innerHTML = `<p class="sub" style="margin-top:14px">Aucun particulier pour l'instant.</p>`; return; }
+        partCount.classList.remove("hidden");
+        partCountText.textContent = `${parts.length} à appeler`;
+        let html = "";
+        for (const p of parts) {
+          const telLink = "tel:" + p.tel.replace(/[^0-9+]/g, "");
+          html += `
+            <div class="biz">
+              <div class="biz-head">
+                <div><h4>${esc(p.nom)}</h4></div>
+                <button class="rdv-del" type="button" onclick="window.__delPart('${p.id}')">✕ Supprimer</button>
+              </div>
+              <div class="biz-row"><a class="call" href="${esc(telLink)}">📞 ${esc(p.tel)}</a></div>
+            </div>`;
+        }
+        outPart.innerHTML = html;
+      }
+      renderPart();
 
       /* ================= MODE TEXTE (carnet de notes) ================= */
       const NOTES_KEY = "pixcard_notes_list";
