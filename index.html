@@ -526,7 +526,6 @@
       });
 
       function delRdv(id) {
-        if (!confirm("Supprimer ce rendez-vous ?")) return;
         rdvs = rdvs.filter((r) => r.id !== id);
         saveRdv();
         renderRdv();
@@ -702,7 +701,6 @@
       window.__openNote = openNote;
 
       function delNote(id) {
-        if (!confirm("Supprimer cette note ?")) return;
         notes = notes.filter((x) => x.id !== id);
         if (editingId === id) { editingId = null; notesEl.value = ""; }
         persistNotes();
