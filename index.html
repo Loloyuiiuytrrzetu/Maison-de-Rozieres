@@ -104,6 +104,16 @@
       .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ok); color: #052e16; padding: 10px 18px; border-radius: 999px; font-weight: 600; font-size: 0.9rem; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
       .toast.show { opacity: 1; }
 
+      /* Écran de code d'accès */
+      #gate { position: fixed; inset: 0; z-index: 99999; background: var(--bg); display: flex; align-items: center; justify-content: center; padding: 24px; }
+      #gate .gate-box { width: 100%; max-width: 320px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px 22px; text-align: center; }
+      #gate .gate-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 6px; }
+      #gate .gate-sub { color: var(--muted); font-size: 0.9rem; margin: 0 0 18px; }
+      #gate input { width: 100%; padding: 14px; font-size: 1.3rem; text-align: center; letter-spacing: 6px; border-radius: 10px; border: 1px solid var(--border); background: #0b1220; color: var(--text); }
+      #gate input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+      #gate button { width: 100%; margin-top: 14px; padding: 14px; font-size: 1rem; font-weight: 600; border: 0; border-radius: 10px; background: var(--accent); color: #fff; cursor: pointer; }
+      #gate .gate-err { color: #f87171; font-size: 0.85rem; min-height: 18px; margin: 10px 0 0; }
+
       /* Planning */
       .rdv { margin-top: 10px; padding: 14px; border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 12px; background: #0b1220; }
       .rdv.ent { border-left-color: var(--ok); }
@@ -130,6 +140,31 @@
     </style>
   </head>
   <body>
+    <div id="gate">
+      <div class="gate-box">
+        <div class="gate-title">🔒 Accès Walletiz</div>
+        <p class="gate-sub">Entre le code pour accéder.</p>
+        <input id="gate-input" type="password" inputmode="numeric" autocomplete="off" placeholder="Code" />
+        <button id="gate-btn" type="button">Valider</button>
+        <p id="gate-err" class="gate-err"></p>
+      </div>
+    </div>
+    <script>
+      (function () {
+        var CODE = "4589";
+        var gate = document.getElementById("gate");
+        var input = document.getElementById("gate-input");
+        var err = document.getElementById("gate-err");
+        function unlock() {
+          if (input.value === CODE) { gate.parentNode.removeChild(gate); }
+          else { err.textContent = "Code incorrect"; input.value = ""; input.focus(); }
+        }
+        document.getElementById("gate-btn").addEventListener("click", unlock);
+        input.addEventListener("keydown", function (e) { if (e.key === "Enter") unlock(); });
+        setTimeout(function () { input.focus(); }, 100);
+      })();
+    </script>
+
     <div class="wrap">
       <h1>Walletiz</h1>
       <p class="sub">Outil interne — avis Google & prospection.</p>
