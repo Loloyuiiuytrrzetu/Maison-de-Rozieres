@@ -340,6 +340,13 @@
       function loadCalled() { try { return JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); } catch { return {}; } }
       function saveCalled(o) { try { localStorage.setItem(STORE_KEY, JSON.stringify(o)); } catch {} scheduleSync(); }
       let called = loadCalled();
+
+      // Suivi des suppressions (pour que la fusion ne ressuscite pas un élément effacé).
+      const DELETED_KEY = "pixcard_deleted";
+      function loadDeleted() { try { return JSON.parse(localStorage.getItem(DELETED_KEY) || "{}"); } catch { return {}; } }
+      function saveDeleted() { try { localStorage.setItem(DELETED_KEY, JSON.stringify(deleted)); } catch {} }
+      let deleted = loadDeleted();
+
       function isCalled(id) { return !!called[id]; }
       function toggleCalled(id) {
         if (called[id]) delete called[id]; else called[id] = true;
@@ -554,7 +561,7 @@
         const type = document.getElementById("rdv-type").value;
         const loc = document.getElementById("rdv-loc").value.trim();
         if (!nom || !date || !heure) { msgRdv.textContent = "⚠️ Renseigne le nom, la date et l'heure."; msgRdv.className = "msg error"; return; }
-        rdvs.push({ id: "r" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), nom, date, heure, type, loc });
+        rdvs.push({ id: "r" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), nom, date, heure, type, loc, updatedAt: Date.now() });
         saveRdv();
         formRdv.reset();
         msgRdv.textContent = "✅ Ajouté au planning."; msgRdv.className = "msg";
@@ -562,6 +569,7 @@
       });
 
       function delRdv(id) {
+        deleted[id] = Date.now(); saveDeleted();
         rdvs = rdvs.filter((r) => r.id !== id);
         saveRdv();
         renderRdv();
@@ -617,7 +625,7 @@
         const nom = document.getElementById("part-nom").value.trim();
         const tel = document.getElementById("part-tel").value.trim();
         if (!nom || !tel) { msgPart.textContent = "⚠️ Renseigne le nom et le numéro."; msgPart.className = "msg error"; return; }
-        parts.unshift({ id: "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), nom, tel });
+        parts.unshift({ id: "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), nom, tel, updatedAt: Date.now() });
         savePart();
         formPart.reset();
         msgPart.textContent = ""; msgPart.className = "msg";
@@ -625,6 +633,7 @@
       });
 
       function delPart(id) {
+        deleted[id] = Date.now(); saveDeleted();
         parts = parts.filter((p) => p.id !== id);
         savePart();
         renderPart();
@@ -737,6 +746,7 @@
       window.__openNote = openNote;
 
       function delNote(id) {
+        deleted[id] = Date.now(); saveDeleted();
         notes = notes.filter((x) => x.id !== id);
         if (editingId === id) { editingId = null; notesEl.value = ""; }
         persistNotes();
@@ -755,7 +765,33 @@
       let syncTimer = null;
 
       function collectState() {
-        return { notes, rdvs, parts, called, updatedAt: Date.now() };
+        return { notes, rdvs, parts, called, deleted, updatedAt: Date.now() };
+      }
+
+      // Fusionne deux listes par id : on garde la version la plus récente,
+      // et on retire tout élément marqué comme supprimé (tombstone).
+      function mergeArrById(a, b, delSet) {
+        const map = {};
+        for (const it of (a || [])) if (it && it.id) map[it.id] = it;
+        for (const it of (b || [])) {
+          if (!it || !it.id) continue;
+          const ex = map[it.id];
+          if (!ex) map[it.id] = it;
+          else map[it.id] = ((it.updatedAt || 0) >= (ex.updatedAt || 0)) ? it : ex;
+        }
+        return Object.keys(map).filter((id) => !delSet[id]).map((id) => map[id]);
+      }
+      function mergeStates(local, server) {
+        local = local || {}; server = server || {};
+        const delSet = Object.assign({}, local.deleted || {}, server.deleted || {});
+        return {
+          notes: mergeArrById(local.notes, server.notes, delSet),
+          rdvs: mergeArrById(local.rdvs, server.rdvs, delSet),
+          parts: mergeArrById(local.parts, server.parts, delSet),
+          called: Object.assign({}, server.called || {}, local.called || {}),
+          deleted: delSet,
+          updatedAt: Date.now(),
+        };
       }
       function applyState(state) {
         if (!state) return;
@@ -763,7 +799,7 @@
         if (Array.isArray(state.rdvs)) { rdvs = state.rdvs; try { localStorage.setItem(RDV_KEY, JSON.stringify(rdvs)); } catch {} }
         if (Array.isArray(state.parts)) { parts = state.parts; try { localStorage.setItem(PART_KEY, JSON.stringify(parts)); } catch {} }
         if (state.called && typeof state.called === "object") { called = state.called; try { localStorage.setItem(STORE_KEY, JSON.stringify(called)); } catch {} }
-        // On rafraîchit tous les affichages.
+        if (state.deleted && typeof state.deleted === "object") { deleted = state.deleted; try { localStorage.setItem(DELETED_KEY, JSON.stringify(deleted)); } catch {} }
         renderRdv(); renderPart(); renderNotesList(); renderPros(); renderFeed();
       }
       function scheduleSync() {
@@ -779,22 +815,16 @@
           });
         } catch {}
       }
-      function hasLocalData() {
-        const s = collectState();
-        return (s.notes && s.notes.length) || (s.rdvs && s.rdvs.length) ||
-               (s.parts && s.parts.length) || (s.called && Object.keys(s.called).length);
-      }
       async function pullState() {
         try {
           const r = await fetch("/api/data");
           const j = await r.json();
           if (!j || !j.configured) { syncReady = false; return; }
           syncReady = true;
-          if (j.data) {
-            applyState(j.data); // le serveur fait foi
-          } else if (hasLocalData()) {
-            pushState(); // serveur vide + données locales → on initialise le serveur
-          }
+          // Fusion locale + serveur (au lieu d'écraser) : on ne perd jamais de données.
+          const merged = mergeStates(collectState(), j.data || {});
+          applyState(merged);
+          pushState(); // on renvoie l'union au cloud
         } catch { syncReady = false; }
       }
       pullState();
